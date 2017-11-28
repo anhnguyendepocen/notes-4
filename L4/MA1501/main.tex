@@ -18,6 +18,7 @@
 \usepackage{color}
 \usepackage{lipsum}
 
+
 \setlength{\textheight}{252mm}
 \setlength{\topmargin}{-17mm}  \setlength{\oddsidemargin}{-4mm}
 \setlength{\textwidth}{170mm}  \setlength{\parindent}{0mm}
@@ -25,6 +26,13 @@
 
 \newcommand{\vx}{\underline{x}}
 \newcommand{\vtheta}{\underline{\theta}}
+
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+\theoremstyle{break}
+\theorembodyfont{\upshape}
+\setlength\theorempreskipamount{3ex}
+\setlength\theorempostskipamount{2ex}
+\qedsymbol{\rule{1ex}{1ex}}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{lemma}[theorem]{Lemma}
