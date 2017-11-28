@@ -1,4 +1,4 @@
-# Level 4 (Year 1)
+# Year 1 (Level 4)
 
 ## Modules
 - [MA1001](MA1001) Elementary Differential Equations
