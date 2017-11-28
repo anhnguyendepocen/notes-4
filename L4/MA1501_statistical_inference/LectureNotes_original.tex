@@ -1,0 +1,1571 @@
+\documentclass[12pt]{article}
+\pagestyle{plain}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epsfig}
+\usepackage{subfigure}
+\usepackage{mdframed}
+\usepackage{color}
+\usepackage{lipsum}
+
+\setlength{\textheight}{252mm}
+\setlength{\topmargin}{-17mm}  \setlength{\oddsidemargin}{-4mm}
+\setlength{\textwidth}{170mm}  \setlength{\parindent}{0mm}
+\setlength{\marginparsep}{9mm} \setlength{\parskip}{3mm}
+
+\newcommand{\vx}{\underline{x}}
+\newcommand{\vtheta}{\underline{\theta}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newenvironment{proof}[1][Proof]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{definition}[1][Definition:]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Example:]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+
+
+%THINGS TO INCLUDE IN FUTURE YEARS
+% 1. PROOF OF CENTRAL LIMIT THEOREM USING MGF'S
+% 2. MORE ON POWER (HYPOTHESIS TESTING)
+
+\title{MA1501: Statistical Inference}
+\author{Dr Jonathan Gillard\\GillardJW@Cardiff.ac.uk\\M1.26}
+\date{}
+\begin{document}
+\maketitle
+
+\subsection*{Topics Covered (informal description)}
+\begin{enumerate}
+\item{Sampling distributions}
+\item{Point estimation and confidence intervals}
+\item{Hypothesis testing}
+\item{Linear regression (fitting a straight line)}
+
+\end{enumerate}
+
+\subsection*{How will this module be lectured?}
+Main mode of lecturing will be `fill in the blanks' on provided lecture notes.  Additional handouts, and material presented via the board/computer may also be given. Electronic lecture notes are not available for this module.
+
+Example lectures will just be used as normal lectures.
+
+
+
+\subsection*{Assessment}
+The summative assessment ($100\%$) is through an unseen written examination (two hours).
+
+Formative assessments will be given out. Feedback on these formative assessments will be given via (i) written comments, (ii) tutorial sessions (which will go over the assessments) and (iii) videos available on Learning Central which will go through the solutions of some of the problems on the formative assessments (which I will call Example Sheets).
+
+\subsection*{Reading List}
+Probability and Statistical Inference, by Hogg and Tanis.
+
+Many other suitable books - too many to mention (just look in library for any introductory statistics text).
+
+
+
+
+
+
+\newpage
+\section{Sampling distributions}
+\subsection{Formal definitions}
+For the moment, consider a population as a collection of objects, such as people, families, cars etc.  A sample is a sub-collection or part of the population.  Populations are studied because they have some property or characteristic that varies among different members of the population.  Such a characteristic is called a variable e.g. the monthly income of families, the fuel consumption of a car etc.
+
+A variable identifies a property of interest, and is the basis upon which values are associated with members of the population.  Formal definitions are:
+%\begin{definition}
+%A \emph{variable} is a rule that associates a numerical value with each member of a set (the population).  The set of values that are assigned is called the range of the variable.
+%\end{definition}
+\begin{definition}
+A \emph{population} is the collection of all values of the variable under study.
+\end{definition}
+\begin{definition}
+A \emph{sample} is any sub-collection of the population.
+\end{definition}
+\begin{definition}
+A \emph{population parameter} is some numerical measure associated with the population as a whole.
+\end{definition}
+%\begin{definition}
+%A \emph{random sample} of size $n$ is a sample selected by a process where by all samples of size $n$  have an equal chance of being chosen.  An equivalent statement is that each time a member of the sample is chosen, all members eligible for selection have an equal chance of being selected.  This is often called a simple random sample.
+%\end{definition}
+\begin{definition}
+Let $X$ denote a random variable. A \emph{random sample from the distribution} of $X$   is a set of independent and identically distributed (i.i.d) random variables $X_{1},X_{2},\ldots,X_{n}$.
+\end{definition}
+\begin{definition}
+The values taken by $X_{1},X_{2},\ldots,X_{n}$ in an actual sample are denoted by $x_{1},x_{2},\ldots,x_{n}$ and are called the \emph{sample values}.
+\end{definition}
+\begin{definition}
+A \emph{statistic} is a function of $X_{1},X_{2},\ldots,X_{n}$  and is thus itself a random variable.  It does not contain any unknown parameters.
+\end{definition}
+
+\subsection{Common sample statistics}
+\begin{mdframed}
+{\bf Definition:} The sample mean $\bar{x}$ is defined to be
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1]}
+\end{mdframed}
+
+\begin{mdframed}
+{\bf Definition:} The sample variance $s^{2}$ is defined to be
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1]}
+\end{mdframed}
+We use $(n-1)$  in the denominator compared with the definition of the variance of the population $(n)$.  We use $(n-1)$  instead of $n$ for a practical reason, and shall prove why it is beneficial to use $(n-1)$ later.
+
+To emphasize the occasions when we are treating the sample mean and sample variance as random variables, we shall use the notation $\bar{X}$ and $S^{2}$ respectively.
+
+\begin{lemma}
+$s^2$ may also be written as $\displaystyle s^{2}=\frac{1}{n-1}\left\{\sum_{i=1}^{n}x_{i}^{2}-n\bar{x}^{2}\right\}=\frac{1}{n-1}\left\{\sum_{i=1}^{n}x_{i}^{2}-\frac{\left(\sum_{i=1}^{n}x_{i}\right)^{2}}{n}\right\}\, .$
+\end{lemma}
+\begin{mdframed}
+{\bf Proof:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-3]}
+\end{mdframed}
+
+\subsection{Sampling distributions}
+\subsubsection{Motivating example}
+A purse contains six coins: one 5p, two 10p, one 20p, two 50p coins.  Consider the selection of two coins from the purse, obtained with replacement. Let $X$ be the value of a randomly chosen coin, and let $X_{1}$ and $X_{2}$ be the values of the two selected coins.
+
+We can construct the probability distribution of $X$:
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  $x$ & 5p & 10p & 20p & 50p \\ [8pt] \hline
+  $P[X=x]$ & \hspace{1.5cm} & \hspace{1.5cm}  & \hspace{1.5cm}  & \hspace{1.5cm} \\ [8pt]
+  \hline
+\end{tabular}
+\end{center}
+We can also compute $E[X]=$\\[75pt]
+and we can compute $Var[X]=$
+
+Now consider the distribution of $(X_{1},X_{2})$:
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  $(x_{1},x_{2})$ & No. of ways & Prob. & $\bar{x}$ & $s^{2}$ \\ \hline
+  (5p,5p) & 1 & $\frac{1}{36}$ & 5 & 0 \\[8pt] \hline
+  (5p,10p)& 4 & $\frac{4}{36}$ & 7.5 & 12.5 \\[8pt] \hline
+   &  &  &  &  \\[8pt] \hline
+   &  &  &  & \\[8pt] \hline
+   &  &  &  &  \\[8pt] \hline
+   &  &  &  &  \\[8pt] \hline
+   &  &  &  &  \\[8pt]\hline
+   &  &  &  &  \\[8pt]\hline
+   &  &  &  &  \\[8pt]\hline
+   &  &  &  &  \\[8pt]
+  \hline
+\end{tabular}
+\end{center}
+We can now work out the sampling distribution for $\bar{X}$:
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  $\bar{x}$ & 5 & 7.5 & 10 & 12.5 & 15 & 20 & 27.5 & 30 & 35 & 50 \\ \hline
+  $P[\bar{X}=\bar{x}]$ & $\frac{1}{36}$ & $\frac{4}{36}$ & $\frac{4}{36}$ & $\frac{2}{36}$ & $\frac{4}{36}$ & $\frac{1}{36}$ & $\frac{4}{36}$ & $\frac{8}{36}$ & $\frac{4}{36}$ & $\frac{4}{36}$ \\
+  \hline
+\end{tabular}
+\end{center}
+and $E[\bar{X}]=24.1667=E[X]$, $ \displaystyle Var[\bar{X}]=176.736=\frac{Var[X]}{2}$.
+
+The sampling distribution for $S^{2}$ is:
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|c|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  $s^{2}$ & 0 & 12.5 & 50 & 112.5 & 450 & 800 & 1012.5 \\ \hline
+  $P[S^{2}=s^{2}]$ & $\frac{10}{36}$ & $\frac{4}{36}$ & $\frac{4}{36}$ & $\frac{2}{36}$ & $\frac{4}{36}$ & $\frac{8}{36}$ & $\frac{4}{36}$ \\
+  \hline
+\end{tabular}
+\end{center}
+and $E[S^{2}]=353.4722=Var[X]$. We can also compute $Var[S^2]$ if we wish. We can also do the same for other sample statistics, such as the sample minimum.
+
+\subsubsection{Sampling from a distribution: commonly used results}
+\begin{theorem}
+Let $X_{1},X_{2},\ldots,X_{n}$ be a random sample from a distribution with mean $\mu$ and variance $\sigma^2$. Then $\displaystyle E[\bar{X}]=\mu$ and $\displaystyle Var[\bar{X}]=\frac{\sigma^2}{n}.$
+\end{theorem}
+\begin{mdframed}
+{\bf Proof:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-3]}
+\end{mdframed}
+
+\begin{theorem}
+Let $X_{1},X_{2},\ldots,X_{n}$ be a random sample from a distribution with mean $\mu$ and variance $\sigma^2$. Then $\displaystyle E[S^{2}]=\sigma^2$.
+\end{theorem}
+\begin{mdframed}
+{\bf Proof:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-3]}
+\end{mdframed}
+
+\begin{theorem}
+Let $X_{1},X_{2},\ldots,X_{n}$ be a random sample from a continuous distribution with cumulative distribution function $F(x)$ and probability density function $f(x).$ The probability density function of the maximum and minimum of $X_{1},X_{2},\ldots,X_{n}$ are given by $\displaystyle g(z)=nf(z)[F(z)]^{n-1}$ and $\displaystyle h(w)=nf(w)[1-F(w)]^{n-1},$ where $z=\max(x_{1},x_{2},\ldots,x_{n})$ and $w=\min(x_{1},x_{2},\ldots,x_{n}).$
+\end{theorem}
+\begin{mdframed}
+{\bf Proof:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-8]}
+\end{mdframed}
+It is also possible to prove a similar result for discrete distributions, but we will not do that in this module.
+\begin{example}
+The random variable $X$ has probability density function
+$$f(x)=12x^{2}(1-x)\,\,\, 0\leq x \leq 1.$$ Obtain the probability density function of the sample maximum, when a random sample of size $n$ is taken from $X$. Hence, or otherwise, find the probability that the largest maximum is $\frac{1}{2}.$
+\end{example}
+\begin{mdframed}
+{\bf Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-7]}
+\end{mdframed}
+
+\subsection{Special distribution results and commonly used distributions for inference}
+
+
+\subsubsection{Normal distribution}
+Let $X$ be a normally distributed random variable. Its probability density function is given by $$f(x;\mu,\sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp \left\{ -\frac{(x-\mu)^2}{2\sigma^2} \right\}.$$
+We have that $E[X]=$\\[20pt]
+and $Var[X]=$\\[20pt]
+For brevity we write $X \sim N[\mu,\sigma^2].$
+
+Graphs of this probability density function for different $\mu$ and $\sigma^2$ are given below:
+\begin{center}
+  \includegraphics[width=0.5\textwidth,trim=1cm 13cm 6cm 2cm]{normal1}
+\end{center}
+
+%\begin{figure}[h!]
+%\centering
+%    \subfigure[]{\includegraphics[width=0.33\textwidth,trim=1cm 15cm 6cm 2cm]{normal01}}
+%    \subfigure[]{\includegraphics[width=0.33\textwidth,trim=1cm 15cm 6cm 2cm]{normal52}}
+%    \subfigure[]{\includegraphics[width=0.33\textwidth,trim=1cm 15cm 6cm 2cm]{normal55}}
+%  \caption{Average and standard deviation of bias against $p$, $\tilde{\beta_{1}}$ in circle, $\tilde{\beta_{2}}$ in square and $\tilde{\beta_{3}}$ in triangle.}
+%\label{fig:biasp}
+%\end{figure}
+If $X$ is normally distributed, the so-called standardized random variable $\displaystyle Z=\frac{X-\mu}{\sigma}$ is also normally distributed, with mean 0 and variance 1. Its probabilities and percentiles are tabulated.
+
+%Recall that if $X_{1},X_{2},\ldots,X_{n}$ are independent and identically distributed random variables, then $\displaystyle \bar{X} \sim N\left[\mu,\frac{\sigma^{2}}{n}\right]$.
+%\begin{mdframed}
+%{\bf Hence, its standardized version is:}
+%\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-2]}
+%\end{mdframed}
+
+
+\begin{example}
+Let $X \sim N[4,3^2]$. Find $P[X<5]$, $P[X>7]$ and the value of $x$ such that\\ $P[X<x]=0.95$.
+\end{example}
+\begin{mdframed}
+{\bf Here we use statistical tables (available on Learning Central):}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-2]}
+\end{mdframed}
+\begin{theorem}
+If $X_{1},X_{2},\ldots,X_{n}$ are independent normally distributed random variables, such that each $X_{i}$ has mean $\mu_{i}$ and variance $\sigma_{i}^{2}$, then for any constants $a_{i}$, $i=1,2,\ldots,n$, the random variable $\displaystyle \sum_{i=1}^{n}a_{i}X_{i}$:\\
+a. is normally distributed,\\
+b. has mean $\displaystyle \sum_{i=1}^{n}a_{i}\mu_{i}$,\\
+c. has variance $\displaystyle \sum_{i=1}^{n}a_{i}^{2}\sigma_{i}^{2}$.
+\end{theorem}
+This tells us that `a linear combination of normally distributed variables is also normally distributed'.
+
+\begin{lemma}
+If $X_{1},X_{2},\ldots,X_{n}$ are independent and identically distributed normal random variables, such that each $X_{i}$ has mean $\mu$ and variance $\sigma^{2}$, then $\displaystyle \sum_{i=1}^{n}X_{i} \sim N\left[n\mu, n\sigma^2\right]$.
+\end{lemma}
+
+\begin{mdframed}
+{\bf Proof:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1]}
+\end{mdframed}
+
+\begin{lemma}
+If $X_{1},X_{2},\ldots,X_{n}$ are independent normally distributed random variables, such that each $X_{i}$ has mean $\mu$ and variance $\sigma^{2}$, then $\displaystyle \bar{X} \sim N\left[\mu, \frac{\sigma^{2}}{n}\right]$.
+\end{lemma}
+
+\begin{mdframed}
+{\bf Proof:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1]}
+\end{mdframed}
+
+\begin{mdframed}
+{\bf Its standardized version which is used in practise is:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-2]}
+\end{mdframed}
+
+\begin{example}
+The weights of sacks of potatoes are normally distributed with mean $25kg$ and standard deviation $1kg$. Find:\\
+(i) the probability that the mean weight of a random sample of four sacks is greater than $26kg$;\\
+(ii) the probability that the total weight of a random sample of 16 sacks lies between $396kg$ and $405kg$;\\
+(iii) the sample size necessary for the sample mean to be within $0.25kg$ of the true mean $25kg$ at least $95\%$ of the time.
+\end{example}
+\begin{mdframed}
+{\bf Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-6]}
+\end{mdframed}
+
+
+\subsubsection{Students' t-distribution}
+In probability and statistics, Students' t-distribution (or simply the t-distribution) is a family of continuous probability distributions that arises when estimating the mean of a normally distributed population in situations where the sample size is small and population standard deviation is unknown. The t-distribution is symmetric and bell-shaped, like the normal distribution, but has heavier tails, meaning that it is more prone to producing values that fall far from its mean. Let the random variable $X$ have the Students' t-distribution. Its probability density function is given by:
+$$f(x;\nu) = \frac{\Gamma(\frac{\nu+1}{2})} {\sqrt{\nu\pi}\,\Gamma(\frac{\nu}{2})} \left(1+\frac{x^2}{\nu} \right)^{-\frac{\nu+1}{2}}.$$
+It depends on one parameter $\nu$, called the \emph{degrees of freedom}. For brevity we write $X \sim t(\nu)$.
+%\begin{mdframed}
+%{\bf How it arises in practice:}
+%\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-2]}
+%\end{mdframed}
+Note that as $\nu \rightarrow \infty$ the Students' t-distribution behaves like the normal distribution.
+
+Plots of the probability density function for the Students' t-distribution for different $\nu$ are given below:
+
+\begin{center}
+  \includegraphics[width=0.5\textwidth,trim=1cm 13cm 6cm 2cm]{student}
+\end{center}
+
+\begin{lemma}
+If $X_{1},X_{2},\ldots,X_{n}$ is a random sample from a normal distribution with mean $\mu$ and variance $\sigma^2$, then the random variable $\displaystyle T=\frac{\bar{X}-\mu}{S/\sqrt{n}}$ has the Students' t-distribution with $(n-1)$ degrees of freedom.
+\end{lemma}
+Most statistical tables give only the percentiles of $T$, for example, with $n=11$, $P[T<1.812]=0.95.$
+
+\subsubsection{Chi-squared distribution}
+For $n$ a positive integer, the chi-squared distribution is the distribution of
+$$
+X_{1}^{2}+X_{2}^{2}+\ldots+X_{n}^{2}
+$$
+where
+$X_{1},X_{2},\ldots,X_{n}$ are all independently and identically normally distributed with zero mean, and unit variance.
+
+The chi-squared distribution depends on one parameter, which again is called the degrees of freedom.
+
+Shortly, if $X$ is a random variable with chi-squared distribution with $\nu$ we can write $X \sim \chi^{2}(\nu)$. Here $E[X]=\nu$ and $Var[X]=2\nu$.
+
+Note that this distribution is not symmetric. A plot of the chi-squared distribution for different degrees of freedom $\nu$ is given below:
+\begin{center}
+  \includegraphics[width=0.5\textwidth,trim=1cm 13cm 6cm 2cm]{chi}
+\end{center}
+
+
+
+\begin{lemma}
+Let $X_{1},X_{2},\ldots,X_{n}$ be a random sample from a normal distribution with mean $\mu$ and variance $\sigma^2$. Then $\displaystyle \frac{(n-1)S^{2}}{\sigma^{2}}$ has a chi-squared distribution with $(n-1)$ degrees of freedom.
+\end{lemma}
+
+
+\subsubsection{F-distribution}
+The F-distribution is another skewed distribution which depends on two parameters, again known as two degrees of freedom $m$ and $n$. If $X \sim \chi^{2}(m)$ and $Y \sim \chi^{2}(n)$ are two independent random variables, then
+$$
+Z=\frac{X/m}{Y/n}\sim F(m,n)
+$$
+is said to have the F distribution with $m$ and $n$ degrees of freedom. A plot of the F distribution with different degrees of freedom  is given below:
+\begin{center}
+  \includegraphics[width=0.5\textwidth,trim=1cm 13cm 6cm 2cm]{f}
+\end{center}
+
+Note that if $Z \sim F(m,n)$ then $1/Z \sim F(n,m).$
+
+\begin{lemma}
+Let $X_{1},X_{2},\ldots,X_{m}$ and $Y_{1},Y_{2},\ldots,Y_{n}$ be random samples from $X\sim N[\mu_{X},\sigma_{X}^{2}]$ and $Y\sim N[\mu_{Y},\sigma_{Y}^{2}] $ respectively. Let $S_{X}^{2}$ and $S_{Y}^{2}$ be the corresponding sample variances. It follows that $\displaystyle \frac{(m-1)S_{X}^{2}}{\sigma_{X}^{2}} \sim \chi^{2}(m-1)$ and $\displaystyle \frac{(n-1)S_{Y}^{2}}{\sigma_{Y}^{2}} \sim \chi^{2}(n-1).$
+Hence $$ \frac{S_{X}^{2}/\sigma_{X}^{2}}{S_{Y}^{2}/\sigma_{Y}^{2}} \sim F(m-1,n-1).$$
+\end{lemma}
+%\subsubsection{Properties of the sample mean and variance for normally distributed data}
+
+%
+%\begin{theorem}
+%Let $X_{1},X_{2},\ldots,X_{n}$ be a random sample from a normal distribution with mean $\mu$ and variance $\sigma^2$. Then:\\
+%a. $\bar{X}$ and $S^{2}$ are independent random variables,\\
+%b. $\displaystyle \sum_{i=1}^{n}X_{i} \sim N\left[n\mu, n\sigma^2\right]$,\\
+%c. $\displaystyle \bar{X} \sim N\left[\mu, \frac{\sigma^{2}}{n}\right]$,\\
+%d. $\displaystyle \frac{(n-1)S^{2}}{\sigma^{2}}$ has a chi-squared distribution with $(n-1)$ degrees of freedom.
+%\end{theorem}
+%\begin{mdframed}
+%{\bf Proof of b. and c.:}
+%\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-4]}
+%\end{mdframed}
+
+
+\subsubsection{The Central Limit Theorem}
+
+\begin{theorem}
+Let $X_{1},X_{2},\ldots,X_{n}$ be independent, identically distributed random variables with mean $\mu$ and variance $\sigma^{2}$. Then:\\
+a. $\displaystyle \sum_{i=1}^{n}X_{i} \sim N\left[n\mu, n\sigma^2\right]$, approximately\\
+b. $\displaystyle \bar{X} \sim N\left[\mu, \frac{\sigma^{2}}{n}\right]$,
+approximately.\\ The approximation improves as $n \rightarrow \infty.$
+\end{theorem}
+
+\begin{example}
+The number of typing errors made on a page follows a Poisson distribution with mean 2. Use the central limit theorem to calculate (approximately) the probability that there are more than 950 typing errors in a 450 page book.
+\end{example}
+\begin{mdframed}
+{\bf Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-2]}
+\end{mdframed}
+
+\newpage
+\section{Point estimation and confidence intervals}
+\subsection{Point estimation}
+In statistics, we take a sample which we use to infer things regarding a population. Thats why this module is called `Statistical Inference'.
+
+Statistical inference is needed to answer questions such as:
+\begin{itemize}
+\item What are the voting intentions before an election? \emph{Market research, opinion
+polls, surveys}
+\item What is the effect of obesity on life expectancy? \emph{Epidemiology}
+\item What is the average benefit of a new cancer therapy? \emph{Clinical trials}
+\item What proportion of temperature change is due to man? \emph{Environmental
+statistics}
+\item What is the benefit of speed cameras? \emph{Traffic studies}
+\item What portfolio maximises expected return? \emph{Financial and actuarial
+applications}
+\item How confident are we the Higgs Boson exists? \emph{Science}
+\item What are possible benefits and harms of genetically-modified plants?
+\emph{Agricultural experiments}
+\item What proportion of the UK economy involves prostitution and illegal drugs?
+\emph{Official statistics}
+\item What is the chance Liverpool will best Arsenal next week? \emph{Sport}
+\end{itemize}
+
+In the population we have population parameters, properties of the population that we may or may not know. Upon taking a sample, we can compute sample statistics. For example, to estimate the population mean, we may take a sample, then compute a sample mean, and this seems a reasonable approach.
+
+However, sometimes, there may be several alternative estimators that can be used to estimate a parameter. We therefore need criteria to compare estimators and to decide which is the `best' in a particular situation.
+
+\begin{example}
+Let $X$ be the random variable denoting the duration between calls to 999. $X$ is known to follow an exponential distribution, with probability density function
+\begin{equation*}
+f(x;\lambda)=\frac{1}{\lambda}\exp(-x/\lambda), \,\,\, x \geq 0 \, .
+\end{equation*}
+You are asked to compute the probability that the duration between calls is less than 1 minute. You correctly note that to do this, you need to estimate $\lambda$. Suggest a strategy to estimate $\lambda$.
+\end{example}
+
+Methods of finding estimators are covered in later modules. Here we concentrate on
+\begin{enumerate}
+\item `Obvious' estimators, or ones that can be deduced from sensible statistical reasoning
+\item Properties of estimators
+\item Potential ways to compare estimators
+\end{enumerate}
+
+For notation, and to be general, let $\theta$ denote a general population parameter that we wish to estimate. Estimators are often denoted by a circumflex above the parameter e.g. $\hat{\theta}$ is an estimator of $\theta$.
+\begin{mdframed}
+{\bf Definition:}
+\textcolor[rgb]{1.00,1.00,1.00}{estimator is a statistic\lipsum[1-2]}
+\end{mdframed}
+
+\begin{mdframed}
+{\bf Definition:}
+\textcolor[rgb]{1.00,1.00,1.00}{unbiased \lipsum[1-2]}
+\end{mdframed}
+
+\begin{definition}
+The mean square error (MSE) of an estimator $\hat{\theta}$ of $\theta$ is defined as $$MSE[\hat{\theta}]=E \left[(\hat{\theta}-\theta)^{2}\right] \,.$$
+\end{definition}
+
+\begin{theorem}
+The mean square error (MSE) of an estimator $\hat{\theta}$ of $\theta$ may be written as $$MSE[\hat{\theta}]=Var[\hat{\theta}]+\{bias[\hat{\theta}]\}^2$$
+\end{theorem}
+\begin{mdframed}
+{\bf Proof:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-3]}
+\end{mdframed}
+
+If $\hat{\theta}_{1}$ and $\hat{\theta}_{2}$ are two estimators of a parameter $\theta$, $\hat{\theta}_{1}$ is said to be a better estimator, in mean square error, than $\hat{\theta}_{2}$ if $MSE[\hat{\theta}_{1}]<MSE[\hat{\theta}_{2}]$.
+
+
+\begin{example}
+A scientist wants to estimate the volume $v$ of a cuboid whose unequal edges are of lengths $x$, $y$ and $z$. The scientist can estimate the volume using either of these two methods.
+
+\emph{Method (i): Obtain a direct measurement $V$ of the volume. $V$ can be regarded as a random variable having mean $v$ and variance $\sigma_{V}^{2}$. \\
+      Method (ii): Obtain measurements $X$, $Y$ and $Z$ of the unequal edges, and estimate the volume using $\hat{v}=XYZ$. It may be assumed that $X$, $Y$ and $Z$ are independent random variables with respective means $x$, $y$ and $z$ and common variance $\sigma^{2}$.}
+
+Show that method (ii) gives an unbiased estimate of the volume, but that method (i) is preferable to method (ii) if $$\sigma_{V}^{2}<\sigma^{6}+\sigma^{4}(x^{2}+y^{2}+z^{2})+\sigma^{2}(x^{2}y^{2}+x^{2}z^{2}+y^{2}z^{2}).$$
+\end{example}
+
+\begin{mdframed}
+{\bf Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-8]}
+\end{mdframed}
+
+
+
+\subsection{Confidence intervals}
+The discussed properties of estimators provide valuable information on comparing and choosing an estimator, but say rather little about the quality of a particular estimate.
+\begin{definition}
+ A $100(1-\alpha)\%$ confidence interval for an unknown parameter $\theta$, with estimator $\hat{\theta}$ is an interval
+$$C=[\hat{\theta}-l,\hat{\theta}+u]$$
+for a lower value $l$ and upper value $u$ such that
+$$P[\theta \in C]=1-\alpha\, .$$
+\end{definition}
+This interval $C$ is random, because the value of $\hat{\theta}$ depends on the data.  In the long run, $100(1 - \alpha)\%$ of confidence intervals will contain $\theta$.
+
+
+\subsubsection{Confidence intervals for means, with normally distributed population and variance known}
+\begin{example}
+Construct a $100(1-\alpha)\%$ confidence interval for the unknown mean $\mu$ of a normally distributed population, with known variance $\sigma^{2}$, having observed a random sample $X_{1},X_{2},\ldots, X_{n}$ from this population.
+\end{example}
+\begin{mdframed}
+{\bf Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-8]}
+\end{mdframed}
+
+\begin{example}
+A sample of size $n=4$ gave values 12.4, 13.6, 12.9 and 13.4 when randomly sampled from a normally distributed population with unknown mean $\mu$, and variance $\sigma^{2}=0.25^2.$ Compute a $95\%$ confidence interval for $\mu.$
+\end{example}
+
+\begin{mdframed}
+{\bf Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-3]}
+\end{mdframed}
+
+
+
+\begin{example}
+Let $X_{1},X_{2},\ldots, X_{m}$ and $Y_{1},Y_{2},\ldots,Y_{n}$ be two random samples, each from a normal distribution with unknown means $\mu_{1}$ and $\mu_{2}$, but known variances $\sigma_{1}^{2}$ and $\sigma_{2}^{2}$ respectively. A $100(1-\alpha)\%$ confidence interval for the difference of the unknown means $\mu_{1}-\mu_{2}$, is given by $$(\bar{x}-\bar{y})\pm z_{1-\alpha/2}\sqrt{\frac{\sigma_{1}^{2}}{m}+\frac{\sigma_{2}^{2}}{n}}\, .$$
+\end{example}
+\begin{mdframed}
+{\bf Solution:}
+The idea of the method is entirely the same as the confidence interval derived previously. Make sure you can derive this confidence interval yourself. The main steps are as follows:
+
+Let $\bar{X}$ and $\bar{Y}$ denote the sample means of $X_{1},X_{2},\ldots, X_{m}$ and $Y_{1},Y_{2},\ldots,Y_{n}$.
+
+It follows that $\bar{X}\sim N\left[\mu_{1},\sigma_{1}^{2}/m\right]$ and $\bar{Y}\sim N\left[\mu_{2},\sigma_{2}^{2}/n\right].$
+
+Hence $\bar{X}-\bar{Y}\sim N\left[\mu_{1}-\mu_{2},\sigma_{1}^{2}/m+\sigma_{2}^{2}/n\right]$ and $ \displaystyle Z=\frac{(\bar{X}-\bar{Y})-(\mu_{1}-\mu_{2})}{\sqrt{\sigma_{1}^{2}/m+\sigma_{2}^{2}/n}}\sim N\left[0,1\right].$
+
+So we can find a value $z_{1-\alpha/2}$ such that $P[-z_{1-\alpha/2}<Z<z_{1-\alpha/2}]=1-\alpha.$ This equation can be rearranged to yield a $100(1-\alpha)\%$ confidence interval for $\mu_{1}-\mu_{2}$.
+
+Compare and contrast the steps outlined above with the confidence interval we have derived previously.
+\end{mdframed}
+
+\begin{example}
+The mean life of two types of light bulbs, A and B, were compared by testing 20 bulbs of type A and 25 bulbs of type B. The sample means, in obvious notation, were given by $\bar{x}_{A}=1021.3$ hours and $\bar{x}_{B}=1005.7$ hours. Assuming that the life of both types of bulbs is normally distributed with standard deviation 30 hours (for both cases), find a $95\%$ confidence interval for the difference in the population means for both types.
+\end{example}
+\begin{mdframed}
+{\bf Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-4]}
+\end{mdframed}
+
+\subsubsection{Confidence intervals for means, with normally distributed population, but variance unknown}
+In the previous section we considered confidence intervals for means when the population variance was known if we have an independent and identically distributed sample from a normally distributed population. Hence, we use the fact that $$Z=\frac{\bar{X}-\mu}{\frac{\sigma}{\sqrt{n}}}\sim N[0,1]$$
+to construct a probability statement concerning $Z$, and then algebraically manipulate this to achieve a probability statement for $\bar{X}$.
+
+If we do not know what $\sigma^{2}$ is, we can make use of the following fact considered in the previous chapter:
+\begin{quote}
+If $X_{1},X_{2},\ldots,X_{n}$ is a random sample from a normal distribution with mean $\mu$ and variance $\sigma^2$, then the random variable $$ T=\frac{\bar{X}-\mu}{S/\sqrt{n}}$$ has the Students' t-distribution with $(n-1)$ degrees of freedom.
+\end{quote}
+
+\begin{example}
+Construct a $100(1-\alpha)\%$ confidence interval for the unknown mean $\mu$ of a normally distributed population, with unknown variance, having observed a random sample $X_{1},X_{2},\ldots, X_{n}.$
+\end{example}
+\begin{mdframed}
+{\bf Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-8]}
+\end{mdframed}
+
+\begin{example}
+The heights of 16 randomly selected children aged 11 were measured, with sample mean 121cm. The sample variance was calculated to be 25cm. Assuming that these heights are normally distributed, find the $90\%$ confidence interval for the population mean height.
+\end{example}
+\begin{mdframed}
+{\bf Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-2]}
+\end{mdframed}
+
+We now wish to find confidence intervals for the difference of two population means. Let $X_{1},X_{2},\ldots, X_{m}$ and $Y_{1},Y_{2},\ldots,Y_{n}$ be two random samples, each from a normal distribution with unknown means $\mu_{1}$ and $\mu_{2}$ and known variances $\sigma_{1}^{2}$ and $\sigma_{2}^{2}$ respectively.
+
+If we knew the variances, then we can use the fact that
+$$\bar{X}-\bar{Y}\sim N \left[\mu_{1}-\mu_{2},\frac{\sigma_{1}^{2}}{m}+\frac{\sigma_{2}^{2}}{n}\right]\, ,$$
+and derive a confidence interval in the usual way.
+
+If we do not know $\sigma_{1}^{2}$ and $\sigma_{2}^{2}$, we again can use Students' t-distribution, but we also can consider two other options:
+\begin{enumerate}
+\item $\sigma_{1}^{2}=\sigma_{2}^{2}=\sigma^{2}.$ In this case we assume both samples come from populations which may have equal variances. This means we can use both samples combined to estimate $\sigma^2$, rather than using each sample separately, to consequently estimate $\sigma_{1}^{2}$ and $\sigma_{2}^{2}$ separately.
+\item $\sigma_{1}^{2} \neq \sigma_{2}^{2}.$ In this case we assume both samples come from populations which do not have equal variances, and so we have to consequently estimate $\sigma_{1}^{2}$ and $\sigma_{2}^{2}$ separately.
+\end{enumerate}
+\paragraph{Case 1. $\sigma_{1}^{2}=\sigma_{2}^{2}=\sigma^{2}$}
+Let $S_{X}^{2}$ be the sample variance computed from $X_{1},X_{2},\ldots, X_{m}$, and let $S_{Y}^{2}$ be the sample variance computed from $Y_{1},Y_{2},\ldots,Y_{n}$. Both of these are estimators of $\sigma^{2}$.
+\begin{mdframed}
+The optimal combination of $S_{X}^{2}$ and $S_{Y}^{2}$ to estimate $\sigma^2$(in the sense that it is the estimator with minimum variance is):
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-2]}
+See the exercise sheets for a proof of this result.
+\end{mdframed}
+
+One can show that
+$$
+T=\frac{(\bar{X}-\bar{Y})-(\mu_{1}-\mu_{2})}{S\sqrt{\frac{1}{m}+\frac{1}{n}}}
+$$
+has the Students' t distribution with $m+n-2$ degrees of freedom. Hence one may construct a $100(1-\alpha)\%$ confidence interval for $\mu_{1}-\mu_{2}$ as
+$$
+(\bar{x}-\bar{y}) \pm t_{1-\alpha/2}(m+n-2)s\sqrt{\frac{1}{m}+\frac{1}{n}}\, .
+$$
+
+\paragraph{Case 2. $\sigma_{1}^{2} \neq \sigma_{2}^{2}$}
+Let $S_{X}^{2}$ be the sample variance computed from $X_{1},X_{2},\ldots, X_{m}$, and let $S_{Y}^{2}$ be the sample variance computed from $Y_{1},Y_{2},\ldots,Y_{n}$.
+If $\sigma_{1}^{2} \neq \sigma_{2}^{2}$ then
+$$
+T=\frac{(\bar{X}-\bar{Y})-(\mu_{1}-\mu_{2})}{\sqrt{\frac{S_{X}^{2}}{m}+\frac{S_{Y}^{2}}{n}}}
+$$
+can be shown to have a Students' t-distribution with $\nu$ degrees of freedom.
+
+But $\nu$ can only be estimated from
+$$
+\nu=\frac{\left(\frac{s_{X}^{2}}{m}+\frac{s_{Y}^{2}}{n}\right)^2}{\frac{\left(\frac{s_{X}^{2}}{m}\right)^2}{m-1}+\frac{\left(\frac{s_{Y}^{2}}{n}\right)^2}{n-1}} \,.
+$$
+This is known as Satterthwaite's approximation.
+
+Hence one may construct a $100(1-\alpha)\%$ confidence interval for $\mu_{1}-\mu_{2}$ as
+$$
+(\bar{x}-\bar{y}) \pm t_{1-\alpha/2}(\nu)\sqrt{\frac{s_{X}^{2}}{m}+\frac{s_{Y}^{2}}{n}}\, .
+$$
+
+\subsubsection{Confidence intervals for means, with normally distributed population, with paired observations}
+Sometimes the assumption that two random variables $X$ and $Y$ are independent is inappropriate because there is a natural pairing of results. For example, lets imagine that I measure your systolic blood pressure today, and then measure it again tomorrow. You would provide me with two measurements, and it is not appropriate to assume that both measurements are independent.
+
+Suppose however that I still want to obtain a confidence interval for the difference of the population means $X$ and $Y$.
+\begin{mdframed}
+{It is possible to construct such a confidence interval:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-4]}
+\end{mdframed}
+
+\begin{example}
+An experiment was conducted to measure mileages of cars under two types of petrol: Fast Oil, and Slicker. Ten cars are initially used with Fast Oil petrol, and these cars are used again under the same conditions but with Slicker petrol. The results were as follows:
+\begin{center}
+\begin{tabular}{|r|c|c|c|c|c|c|c|c|c|c|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  Car: & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+  Fast Oil & 38.4 & 39.6 & 37.6 & 40.2 & 36.9 & 39.4 & 38.3 & 39.6 & 39.1 & 38.2 \\
+  Slicker  & 39.8 & 40.3 & 39.7 & 41.2 & 38.6 & 40.6 & 39.9 & 41.1 & 40.8 & 39.8 \\
+  \hline
+\end{tabular}
+\end{center}
+Find a $90\%$ confidence interval for the population mean difference.
+\end{example}
+\begin{mdframed}
+{\bf Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-4]}
+\end{mdframed}
+
+\subsubsection{Approximate confidence intervals using the Central Limit Theorem}
+The possibility of generating approximate confidence intervals using the Central Limit Theorem is demonstrated by an example.
+\begin{example}
+Suppose that $X$ has a Poisson distribution with mean $\lambda$. A random sample of size 100 is taken from the distribution of $X$. Given that the sample mean is 6.1, obtain an approximate $90\%$ confidence interval for $\lambda$. Find also an approximate confidence interval for $\exp(-\lambda),$ the probability that $X$ takes the value zero.
+\end{example}
+\begin{mdframed}
+{\bf Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-3]}
+\end{mdframed}
+
+\subsubsection{Confidence intervals for variances}
+Recall that
+\begin{quote}
+Let $X_{1},X_{2},\ldots,X_{n}$ be a random sample from a normal distribution with mean $\mu$ and variance $\sigma^2$. Then $\displaystyle \frac{(n-1)S^{2}}{\sigma^{2}}$ has a chi-squared distribution with $(n-1)$ degrees of freedom.
+\end{quote}
+
+\begin{example}
+Let $X_{1},X_{2},\ldots,X_{n}$ be a random sample from a normal distribution with mean $\mu$ and variance $\sigma^2$. Derive a $100(1-\alpha)\%$ confidence interval for $\sigma^{2}.$
+\end{example}
+
+\begin{mdframed}
+{\bf Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-3]}
+\end{mdframed}
+
+\begin{example}
+Suppose a random sample of 25 observations was taken from a normal distribution, and it was found that the sample variance was equal to 10. Find a $95\%$ confidence interval for $\sigma^2.$
+\end{example}
+
+\begin{mdframed}
+{\bf Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-4]}
+\end{mdframed}
+
+\subsubsection{Confidence intervals for ratio of variances}
+Recall the following:
+\begin{quote}
+Let $X_{1},X_{2},\ldots,X_{m}$ and $Y_{1},Y_{2},\ldots,Y_{n}$ be  random samples from $X\sim N[\mu_{X},\sigma_{X}^{2}]$ and $Y\sim N[\mu_{Y},\sigma_{Y}^{2}] $ respectively. Let $S_{X}^{2}$ and $S_{Y}^{2}$ be the corresponding sample variances. It follows that $\displaystyle \frac{(m-1)S_{X}^{2}}{\sigma_{X}^{2}} \sim \chi^{2}(m-1)$ and $\displaystyle \frac{(n-1)S_{Y}^{2}}{\sigma_{Y}^{2}} \sim \chi^{2}(n-1).$ Hence $\displaystyle \frac{S_{X}^{2}/\sigma_{X}^{2}}{S_{Y}^{2}/\sigma_{Y}^{2}} \sim F(m-1,n-1).$
+\end{quote}
+
+ A $100(1-\alpha)\%$ confidence interval for $\displaystyle \frac{\sigma_{X}^{2}}{\sigma_{Y}^{2}}$ is given by
+$$
+\left[\frac{s_{X}^{2}}{s_{Y}^{2}}\frac{1}{F_{1-\alpha/2}(m-1,n-1)},\frac{s_{X}^{2}}{s_{Y}^{2}}\frac{1}{F_{\alpha/2}(m-1,n-1)}\right]
+$$
+This will be derived in an exercise sheet. Here, $F_{1-\alpha/2}(m-1,n-1)$ is the $100(1-~\alpha/2)th$ percentile of the F-distribution with $m-1$ and $n-1$ degrees of freedom.
+
+\begin{example}
+Using the notation introduced in this section, obtain a $95\%$ confidence interval for $\sigma_{X}^{2}/\sigma_{Y}^{2}$ if $m=10$, $n=5$, $s_{X}^{2}=20$ and $s_{Y}^{2}=35.6.$
+\end{example}
+
+\begin{mdframed}
+{\bf Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-3]}
+\end{mdframed}
+
+\newpage
+\section{Hypothesis testing}
+\subsection{Introduction and key concepts}
+A statistical hypothesis is a statement concerning the distribution of a random variable e.g. the hypothesis that a coin is fair. This hypothesis concerns the distribution of the random variable generating the process, as tossing coins can be modelled as a binomial random variable, where we toss the coin $n$ times and have a proportion $p$ of heads. The hypothesis that a coin is fair is testing the hypothesis that $p=\frac{1}{2}$ or not. To perform an hypothesis test we need to define lots of terminology, concepts and notation. As far as possible we will remain general and test hypotheses concerning an unknown population parameter $\theta.$
+
+The purpose of the test is to choose between two hypotheses. One is called the null hypothesis, and the other is called the alternative hypothesis.
+The null hypothesis is denoted $H_0$ and the alternative hypothesis is denoted $H_1$.
+
+The null hypothesis is commonly of the form:
+\begin{mdframed}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1]}
+\end{mdframed}
+
+Corresponding to this null hypothesis, the alternative hypothesis can be one of the following:
+\begin{mdframed}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1]}
+The first option is known as `two-tailed' whilst the latter two are known as `one-tailed'.
+\end{mdframed}
+
+We thus have two options:
+\begin{enumerate}
+\item We reject $H_{0}$, and accept $H_{1}$
+\item We accept $H_{0}$, and reject $H_{1}$
+\end{enumerate}
+
+Consequently there are two types of errors that we can make:
+\begin{enumerate}
+\item The incorrect rejection of $H_{0}$, known as a Type I error, which happens with probability $\alpha$.
+\item The incorrect rejection of $H_{1}$, known as a Type II error, which happens with probability $\beta$.
+\end{enumerate}
+
+The probability of making a Type I error is denoted $\alpha$, and this is known as the significance level of the hypothesis test. The probability of making a Type II error is denoted $\beta$. Another concept used in hypothesis testing is the so-called power of the hypothesis test, and this is given by $1-\beta$. Naturally for any hypothesis test, we desire $\alpha$ to be as small as possible, and the power $1-\beta$ to be as large as possible.
+
+We now address the problem of how to create the decision rule of accepting $H_0$ or rejecting $H_0$. This is decided on the basis of a test statistic. We will now consider an example to illuminate some of these concepts described so far, and also outline each of the main steps necessary.
+
+\begin{example}
+A beer-dispensing machine is supposed to deliver 20 fluid ounces of beer. The amount dispensed by the machine is thought to be normally distributed. 10 samples are measured from the machine, with the following results: 19.89, 19.90, 19.87, 19.94, 19.92, 19.90, 19.93, 19.91. The sample mean is given by 19.904, and the sample standard deviation is given by 0.0217. Test the hypothesis that the mean amount dispensed by the machine is indeed 20 fluid ounces.
+\end{example}
+
+We will now deconstruct the steps necessary to perform this hypothesis test.
+
+\begin{mdframed}
+\it{Formally form the hypotheses}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1]}
+\end{mdframed}
+
+\begin{mdframed}
+\it{Select an appropriate test statistic with a known distribution, and compute it assuming $H_0$ is true}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1]}
+\end{mdframed}
+
+\begin{mdframed}
+\it{``Determine how likely the test statistic is to happen"}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-6]}
+\end{mdframed}
+
+\begin{mdframed}
+\it{Clearly state your conclusions}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1]}
+\end{mdframed}
+
+Interpretations of a
+p-value should be along the following
+lines:
+\begin{itemize}
+\item $p < 0.01$; there is very strong evidence
+for rejecting $H_{0}$.
+\item $0.01 \leq p \leq 0.05$; there is strong evidence
+for rejecting $H_0$.
+\item $p > 0.05$; there is insufficient evidence
+for rejecting $H_0$.
+\end{itemize}
+\subsection{Examples}
+\begin{example}
+It is claimed that a shop makes a profit of $\pounds850$, per week, on average. To test this, the manager records the weekly profit across five randomly selected weeks, and finds the average to be $\pounds905$, with standard deviation $\pounds50$. The manager asks the question ``Have profits increased significantly?". Perform a suitable hypothesis test at a $5\%$ significance level. Also approximate the p-value.
+\end{example}
+
+\begin{mdframed}
+\bf{Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-4]}
+\end{mdframed}
+
+\begin{example}
+Ten students failed a diagnostic test, and are asked to resit after a period of intensive revision and support. The results are given below:
+\begin{center}
+\begin{tabular}{|c|c|c|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  Student & Test 1 & Test 2 \\ \hline
+  1 & 30 & 40 \\
+  2 & 32 & 34 \\
+  3 & 27 & 50 \\
+  4 & 30 & 38 \\
+  5 & 35 & 33 \\
+  6 & 32 & 45 \\
+  7 & 25 & 40 \\
+  8 & 20 & 30 \\
+  9 & 31 & 38 \\
+  10 & 30 & 42 \\
+  \hline
+\end{tabular}
+\end{center}
+Conduct an appropriate hypothesis test to determine if the intensive revision and support was effective.
+\end{example}
+
+\begin{mdframed}
+\bf{Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-4]}
+\end{mdframed}
+
+\begin{example}
+A petrol additive is supposed to increase the mpg (miles per gallon) of cars. A company runs a fleet of 30 identical cars. For a period of two months, 20 of the cars were run on petrol with the additive, whilst the other 10 were run without. Cars without the additive gave an average mpg of 38.2 with standard deviation 5.3. Cars with the additive gave an average mpg of 45.6, with standard deviation 4.7. Clearly stating your assumptions, perform a suitable hypothesis test to compare the average mpg between cars that received the additive, and those that didn't.
+\end{example}
+
+\begin{mdframed}
+\bf{Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-4]}
+\end{mdframed}
+
+\begin{example}
+Two samples of size 16 and 26 taken from two normally distributed populations had sample variances of 29.6 and 9.8 respectively. Use an appropriate hypothesis test to test the assertion that the population variances are equal.
+\end{example}
+
+\begin{mdframed}
+\bf{Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-4]}
+\end{mdframed}
+
+
+\subsection{Hypothesis testing using the Central Limit Theorem}
+
+The hypothesis tests considered so far are based on scenarios when the data are normally distributed. This small section of notes will show that the central limit theorem can be used to design similar tests when the sample sizes are large enough for this theorem to apply.
+
+Suppose therefore that $X$ is a random variable with mean $\mu$ and variance $\sigma^{2}$. Let $X_{1},\ldots,X_{n}$ be a random sample from the distribution of $X$, then by the central limit theorem the statistic $$Z=\frac{\bar{X}-\mu_{0}}{\sigma/\sqrt{n}}$$ under a null hypothesis $H_{0}:\mu=\mu_{0}$ is approximately $N[0,1]$ for large $n$.
+
+This method is widely applicable, and the example that will be demonstrated here involves the binomial distribution. The binomial distribution is characterised by two parameters: $p$ and $n$. $n$ is the number of trials, and $p$ is the probability of success. Lets imagine that we want to test hypotheses concerning $p$. The theory is contained here.
+
+Suppose that we observe a sequence of Bernoulli trials with unknown success probability $p$, and we wish to test the null hypothesis against a suitable one or two tailed alternative. Let $Y$ be the number of successes obtained in $n$ trials and let $\hat{p}=\frac{Y}{n}$ be the observed proportion of successful trials.
+
+It follows that $Y$ has a binomial distribution, $B[n,p]$, which is approximately $N[np,np(1-p)]$ for large $n$. Thus $\hat{p}$ is approximately $N[p,\frac{p(1-p)}{n}]$ (why?) and the standardised statistic $$z=\frac{\hat{p}-p_0}{\sqrt{\frac{p_0(1-p_0)}{n}}}$$ is approximately $N[0,1]$ under a null hypothesis $H_{0}:p=p_0$. We can then reject or accept $H_{0}$ by comparing $z$ with the appropriate critical value of the normal distribution.
+
+\begin{example}
+A drug company claims in an advertisement that $60\%$ of people suffering from a certain complaint gain instant relief by using a particular product. In a random sample, 106 out of 200 did gain instant relief. Test the validity of this claim, and find the p-value.
+\end{example}
+
+\begin{mdframed}
+{\bf Solution:}\\
+The sample is large enough to use the normal approximation. The test statistic is $$z=\frac{\hat{p}-p_0}{\sqrt{\frac{p_0(1-p_0)}{n}}}=\frac{0.53-0.6}{\sqrt{1/200 \times 0.6 \times 0.4}}=-2.021$$
+The p-value for a one tailed test (with alternative $p<0.6$ or $p>0.6$) is $P[N[0,1]<-2.021]=0.022$. This is small and so the null hypothesis $p=0.6$ is rejected. The p-value for a two tailed test is $2 \times 0.022=0.044$. This is still small, and so for a $5\%$ significance level, the null hypothesis is rejected again.
+\end{mdframed}
+
+\subsection{Relationship between hypothesis testing and confidence intervals}
+The formal definition of a $100(1-\alpha)\%$ confidence interval is that it is the set of values of a parameter that would be accepted as the null hypothesis in a hypothesis test with significance level $\alpha.$
+
+So, a $95\%$ confidence interval corresponds to a test with significance level $0.05.$ However the two should not be interchanged. The role of a confidence interval is to provide an interval estimator for a parameter with an associated level of uncertainty. A hypothesis test is used to gauge the strength of the evidence in the data for or against a specified null hypothesis, and this evidence is most clearly stated by quoting the p-value of the test.
+
+\begin{mdframed}
+Consider the usual two-tailed test for the difference in means of two independent normally distributed populations, using the significance level approach.
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-6]}
+\end{mdframed}
+
+
+\subsection{Principles of hypothesis testing}
+The principles of statistical hypothesis testing can be summarized in five steps.
+
+1. Set up a null hypothesis about a parameter for testing. Also decide the level of evidence that is needed to reject this null hypothesis (see steps 4 and 5).
+
+2. Take a random sample from the population.
+
+3. Estimate the parameter from the sample and use this to calculate the value of a test statistic, whose distribution is known when the null hypothesis is known.
+
+Steps 4 and 5 depend on whether the significance level approach is adopted, or the p-value approach. The latter is preferred, if it is possible to calculate or approximate the p-value, because it gives more information about the strength of evidence for or against the null hypothesis that is contained in the observations.
+
+4a. In the $p$-value approach, calculate the probability, using the  probability distribution of the test statistic, of a result as extreme or more so than the one observed.
+
+5a. If the probability calculated in Step 4a is judged to be small, reject the null hypothesis, otherwise accept the null hypothesis.
+
+4b. In the significance level approach a pre-determined significance level, a smallish probability (typically 0.05 or 0.01) is predetermined in Step 1 as the level of evidence needed to reject the null hypothesis. Using this significance level a critical value of the test statistic is calculated that determines a critical region and an acceptance region.
+
+5b. If the value of the test statistic is in the critical region, the null hypothesis is rejected (at the pre-determined level of significance). If the value of the test statistic is in the acceptance region, accept the null hypothesis.
+
+\subsection{The Power function}
+In previous sections we have designed tests, using only the significance level $\alpha$ and the probability distribution of the test statistic when $H_{0}$ is true. We cannot, in general, compute the Type II error probability ($\beta$) as it varies with the parameter values consistent with $H_{1}$.
+
+We can however regard it as a function of these values and knowledge of this function helps us to assess the performance of the test. We make the following definition:
+
+\textbf{Definition:} Consider a test of two hypotheses, $H_{0}$ and $H_{1}$, concerning a parameter $\theta.$ The power function of the test, denoted by $\pi(\theta)$ is the probability of rejecting $H_{0}$, and hence accepting $H_{1},$ expressed as a function of $\theta.$ If $C$ is the critical region, we use the notation $P(C;\theta)$ to denote this, i.e. $$\pi(\theta)=P(C;\theta).$$
+
+The following example shows how the power function can be calculated.
+
+\begin{example}
+A random variable $X$ has the distribution $N[\theta,1].$ Using a random sample of size 100 and a $5\%$ significance level, compute the power function for the following hypothesis test:
+$$
+H_{0}: \theta=0; \qquad H_{1}: \theta \neq 0\,.
+$$
+\end{example}
+
+\begin{mdframed}
+\bf{Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-6]}
+\end{mdframed}
+
+The graph of the power function for the above example is given below.
+
+\begin{center}
+  \includegraphics[width=0.85\textwidth, trim=1cm 1cm 1cm 1cm]{power}
+\end{center}
+
+Three points are worth noting:
+\begin{enumerate}
+\item $\pi(\theta)$ is a probability and lies between 0 and 1.
+\item $\pi(0)=P(C;0)=\alpha=0.05.$
+\item As $|\theta|$ increases, $\pi(\theta)$ approaches unity. At the same time the type II error probability $\beta$ approaches zero since $\beta=1-\pi(\theta).$
+\end{enumerate}
+
+A good test will reject $H_{0}$ with low probability if it is true but will reject it with high probability if it is false. Thus $\pi(\theta)$ should be close to zero for values of $\theta$ consistent with $H_{0}$ and close to unity otherwise. In the above example the ideal power function is thus:
+$$\pi(\theta)=\left\{
+    \begin{array}{ll}
+      0, & \hbox{if}\;\; \theta=0 \\
+      1, & \hbox{if}\;\; \theta\neq 0.
+    \end{array}
+  \right.
+$$
+The ideal power function is not attainable in practice but the closer the actual power function is to this, the better the test. We can usually improve the power function by increasing the sample size.
+
+\begin{example}
+Let $X_{1},X_{2},\ldots,X_{n}$ be a random sample from the distribution $N[\mu,1].$ Construct a test of the hypotheses $$
+H_{0}: \mu=0; \qquad H_{1}: \mu \neq 0\,.
+$$
+at the $5\%$ significance level and plot its power function for sample sizes of 25, 100 and 500.
+\end{example}
+
+\begin{mdframed}
+\bf{Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-6]}
+\end{mdframed}
+
+\begin{example}
+Let $X$ have a uniform distribution on $[0,\theta]$. Using a random sample of size 12, we wish to test the hypotheses
+$$
+H_{0}: \theta=6; \qquad H_{1}: \theta>6\,.
+$$
+at the $10\%$ level of significance. Which of the statistics, the sample mean $\bar{X}$ and the sample maximum $Z,$ gives the better test?
+\end{example}
+\begin{mdframed}
+\bf{Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-7]}
+\end{mdframed}
+
+
+
+
+\subsection{Categorical data}
+\begin{mdframed}
+{\it This next section of notes is `self-study'. The reason why this section is `self-study' is to provide you with an opportunity to practise and enhance your independent mathematical reading. To accompany this section, a video has been placed on Learning Central summarising the main points. This material is fully assessable, and you should not leave it until the last minute to assimilate this material. }
+\end{mdframed}
+
+\subsubsection{Introduction}
+
+The vast majority of the hypothesis tests investigated so far assume that the data is sampled from a normally distributed random variable. When the random variable is specified as something else, such as the Poisson distribution, or even if it is unknown, we can use the Central Limit Theorem to construct an approximate hypothesis test.
+
+We will now study hypothesis tests designed to investigate experiments where the outcome can fall into one of a finite number of categories.
+
+\subsubsection{The Chi-square test}
+Suppose that the result of an experiment is classified into one of $k$ categories $c_{1},c_{2},\ldots,c_{k}$, and that for a given model the expected numbers of outcomes in each category are $E_{1},E_{2},\ldots,E_{k}$ respectively. If $O_{1},O_{2},\ldots,O_{k}$ are the observed numbers in each category, the chi-square statistic is given by
+$$
+\chi^{2}=\sum_{i=1}^{k}\frac{(O_{i}-E_{i})^2}{E_{i}}
+$$
+The statistic $\chi^2$ has a distribution which is approximately chi-square with $k-m-1$ degrees of freedom, where $m$ is the number of parameters that need to be estimated from the data to fit any theoretical distribution. The approximation is good, provided $E_{i}>5$ for all $i$. If any $E_{i}<5,$ the outcomes may be grouped to ensure that all $E_{i}\geq 5.$
+
+\begin{example}
+A die is rolled 60 times, and the outcome of this experiment is given below. Test at both a $5\%$ and $1\%$ significance level the null hypothesis $H_{0}$ that the die is fair
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  Face & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline
+  Outcome $O_{i}$ & 15 & 7 & 4 & 11 & 6 & 17 \\
+  \hline
+\end{tabular}
+\end{center}
+\end{example}
+\begin{mdframed}
+{\bf Solution:}\\
+Here we test the null hypothesis that the die is fair, against the alternative hypothesis that the die is unfair. If the null hypothesis is true, then we would expect to see, after rolling the die 60 times, 10 of each possible outcome. Now due to experimental variation, it is unlikely given $60$ rolls of a die, to perfectly observe 10 ones, 10 twos, etc. So given the data we have above, is it reasonable that the die is fair?
+
+In the previous paragraph we have motivated how to calculate the $E_{i}$, the expected outcome for each category under the null hypothesis. Thus we can construct the following table
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  Face & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline
+  Outcome $O_{i}$ & 15 & 7 & 4 & 11 & 6 & 17 \\
+  Expected $E_{i}$ & 10 & 10 & 10 &10 &10 &10\\
+  \hline
+\end{tabular}
+\end{center}
+
+So we compute the test statistic as
+$$
+\chi^{2}=\sum_{i=1}^{6}\frac{(O_{i}-E_{i})^2}{E_{i}}=13.6 \, .
+$$
+We now compare the value of the test statistic with percentage points of the chi-square distribution, with $5$ degrees of freedom
+\begin{itemize}
+\item The 95th percentage point of the chi-square distribution with 5 degrees of freedom is 11.070. So at $5\%$ significance, we reject the null hypothesis that the die is fair.
+\item The 99th percentage point of the chi-square distribution with 5 degrees of freedom is 15.086. So at $1\%$ significance, we accept the null hypothesis that the die is fair.
+\end{itemize}
+\end{mdframed}
+
+It is possible to write $\chi^2$ in an easier computational form. Prove the following theorem yourself, in the space provided.
+\begin{theorem}
+Let $N$ be the total number of observations {(\rm in the previous example $N=60$)}. Then
+$$
+\chi^{2}=\sum_{i=1}^{k}\frac{(O_{i}-E_{i})^2}{E_{i}}=\sum_{i=1}^{k}\frac{O_{i}^{2}}{E_{i}}-N \, .
+$$
+\end{theorem}
+
+\begin{mdframed}
+{\bf Proof:}
+\textcolor[rgb]{1.00,1.00,1.00}{terry notes\lipsum[1-7]}
+\end{mdframed}
+
+\begin{example}
+100 squares each 1 meter square were randomly placed in a field where daffodils were growing. The number of clumps of daffodils in each square was counted and the following table of these observed numbers was drawn up.
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+   & 0 & 1 & 2 & 3 & 4 & 5 & $\geq$ 6\\ \hline
+  $O_{i}$ & 4 & 17 & 20 & 22 & 15 & 15 & 7 \\
+  \hline
+\end{tabular}
+\end{center}
+A Poisson distribution is suggested as a model for the number of clumps of daffodils in a square. Estimate an appropriate value for the mean of this distribution using the data in the table above. Calculate a table of expected numbers to fit the Poisson distribution to these data and perform a chi-square goodness of fit test to determine if the model is a good fit to the observed data.
+\end{example}
+
+\begin{mdframed}
+{\bf Solution:}\\
+The total is given by $(0 \times 4)+(1 \times 17)+\ldots+(6 \times 7)=300.$ Hence an estimate of the mean is $300/100=3.$
+
+The formula for the probability density function for a Poisson distribution is $$f(x;\mu)=\mu^{x}\exp(-\mu)/x! \, ,$$
+where $\mu$ is the mean. We need to estimate a value for $\mu$ to use this probability density function, hence we estimate $\mu$ by the sample mean above, that is $\hat{\mu}=3.$
+
+We can then use $f(x;3)$ to obtain the following table of expected numbers, by multiplying the Poisson probabilities by 100. Note that the expected number for the last class $x \geq 6,$ is found by subtracting the sum of the expected numbers from 0 to 5 inclusive from 100.
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+   & 0 & 1 & 2 & 3 & 4 & 5 & $\geq$ 6\\ \hline
+  $O_{i}$ & 4 & 17 & 20 & 22 & 15 & 15 & 7 \\ \hline
+  $E_{i}$ & 4.98 & 14.94 & 22.40 & 22.40 & 16.80 & 10.08 & 8.39 \\
+  \hline
+\end{tabular}
+\end{center}
+From this table the chi-square goodness of fit test statistic is calculated
+$$
+\chi^{2}=\sum_{i=1}^{7}\frac{(O_{i}-E_{i})^{2}}{E_{i}}=3.5658.
+$$
+Since one parameter was estimated to derive the expected numbers, the degrees of freedom are 5. There are 7 classes in total, so we calculate the degrees of freedom by taking one away from 7, but then take another one away as we have estimated $\mu$ leaving 5.
+
+From statistical tables the 90th percentile of the chi-square distribution with 5 degrees of freedom is 9.236 thus we conclude that there is no significant discrepancy between the fitted numbers and the observed ones, i.e. the Poisson distribution is a good fit to the data.
+\end{mdframed}
+
+\subsubsection{Contingency tables}
+In the previous example, the probabilities used in the null hypothesis were obtained from theoretical considerations.  We often want to test the hypothesis that effects are independent without having a theory to predict the relevant probabilities.  In this case, the probabilities must be estimated from the contingency table.
+
+Contingency means dependence, so a contingency table is simply a table that displays how two or more characteristics depend on each other.  For example, a contingency table, where Effect 1 has three categories $I, II, III$ and Effect 2 has four categories $A, B, C, D$ is:
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+   & $A$ & $B$ & $C$ & $D$ &  \\ \hline
+  $I$ & $O_{11}$ & $O_{12}$ & $O_{13}$ & $O_{14}$ & $R_{1}$ \\
+  $II$ & $O_{21}$ & $O_{22}$ & $O_{23}$ & $O_{24}$ & $R_{2}$ \\
+  $III$ & $O_{31}$ & $O_{32}$ & $O_{33}$ & $O_{34}$& $R_{3}$ \\ \hline
+   & $C_{1}$ & $C_{2}$ & $C_{3}$ & $C_{4}$ & $N$ \\
+  \hline
+\end{tabular}
+\end{center}
+where the $O_{ij}$ is the number of observations observed in the $i$th row and $j$th column, $R_{i}$ are row totals, $C_{j}$ are column totals, and $N$ is the total number of observations.
+
+Under the null hypothesis that the effects are independent, the probability associated with cell $(i,j)$ is estimated by:
+$$
+P_{ij}=\frac{R_{i}}{N}\times\frac{C_{j}}{N}=\frac{R_{i}C_{j}}{N^{2}}
+$$
+and hence the expected number for each cell $(i,j)$ is given by:
+$$
+E_{ij}=N \times P_{ij}=\frac{R_{i}C_{j}}{N} \,.
+$$
+
+The statistic
+$$
+\chi^{2}=\sum_{i=1}^{r}\sum_{j=1}^{c}\frac{(O_{ij}-E_{ij})^{2}}{E_{ij}}=\sum_{i=1}^{r}\sum_{j=1}^{c}\frac{O_{ij}^{2}}{E_{ij}}-N
+$$
+where $r$ is the number of rows, and $c$ is the number of columns follows a chi-square distribution with $(r-1)(c-1)$ degrees of freedom.
+
+\begin{example}
+The distribution of five plant species $A, B, C, D, E$ is being investigated at three different locations $I, II, III$. The contingency table of the results is presented below.
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+               \hline
+               % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+                & $A$ & $B$ & $C$ & $D$ & $E$ \\ \hline
+               $I$ & 10 & 22 & 38 & 8 & 66 \\
+               $II$ & 27 & 62 & 120 & 30 & 200 \\
+               $III$ & 45 & 100 & 207 & 49 & 342 \\
+               \hline
+\end{tabular}
+\end{center}
+Use an appropriate statistical test to address the problem of whether the species of plant is independent of the location.
+\end{example}
+
+\begin{mdframed}
+{\bf Solution:}\\
+To estimate the probabilities, and thus estimate the expected values, we need to compute row and column totals.
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+               \hline
+               % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+                & $A$ & $B$ & $C$ & $D$ & $E$ & \\ \hline
+               $I$ & 10 & 22 & 38 & 8 & 66 & 144\\
+               $II$ & 27 & 62 & 120 & 30 & 200 & 439 \\
+               $III$ & 45 & 100 & 207 & 49 & 342 &743\\ \hline
+                & 82 & 184& 365 & 87 & 608 &1326\\
+               \hline
+\end{tabular}
+\end{center}
+Under the null hypothesis of independence (here between plant species and location) we estimate the expected values using the formula given above, giving the following table of expected values:
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+               \hline
+               % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+                & $A$ & $B$ & $C$ & $D$ & $E$ & \\ \hline
+               $I$ & 8.9 & 20.0 & 39.6 & 9.4 & 66 & 144\\
+               $II$ & 27.1 & 60.9 & 120.8 & 28.8 & 201.3 & 439 \\
+               $III$ & 45.9 & 103.1 & 204.5 & 48.7 & 340.7 &743\\ \hline
+                & 82 & 184& 365 & 87 & 608 &1326\\
+               \hline
+\end{tabular}
+\end{center}
+
+The test statistic is computed as
+$$
+\chi^{2}=\sum_{i=1}^{3}\sum_{j=1}^{5}\frac{(O_{ij}-E_{ij})^{2}}{E_{ij}}=\sum_{i=1}^{3}\sum_{j=1}^{5}\frac{O_{ij}^{2}}{E_{ij}}-1326=1.14
+$$
+The $95th$ percentage point of the chi-square distribution with $(r-1)(c-1)=2 \times 4 = 8$ degrees of freedom is 15.507, so the null hypothesis that the distribution of the plants is independent of location, is accepted.
+\end{mdframed}
+
+This is the end of the self-study section. To complete your study and to evaluate your understanding of this material, look through some text books to find your own examples. Attempt them, and write up your solutions.
+
+\newpage
+
+\subsection{One-way ANOVA: One-way Analysis of Variance}
+\subsubsection{Introduction and motivation}
+In this section the analysis is described of an experiment that has several groups of observations. These could either be different levels of the same factor, such as concentrations of a chemical, or several different factors that might affect the observations made. The main objective is to determine if there are significant differences amongst the means of the levels, but the analysis is based on an examination of variation, and is often called the one-way analysis of variance. The one-way factorial experiment can be viewed as an extension of  hypothesis tests for two means, to an experiment where there are more than two groups to be compared. The ideas presented in this section can be extended to factorial experiments, where several factors are measured simultaneously at all combinations of levels. These multi-factorial experiments will not be described in this module.
+
+A valid question is ``why do we need to construct another hypothesis test to compare the difference of three or more means, when we can do lots of tests comparing pairs of means?". Remember that every single statistical test that you perform runs the risk of making a Type I error. If you do lots of hypothesis tests on the same data, then you accumulate more and more risk of making a Type I error. Hence, if we can do one statistical test that answers all our hypothesis simultaneously, then this is often preferable.
+
+\subsubsection{Notation and set-up}
+Suppose there are $m$ groups of data. The notation for the $j$th observation in the $i$th group is $x_{ij}$.
+
+There can be different numbers of observations from group to group, so the number of observations in the $i$th group is $n_i$.
+
+So $j$ runs from 1 to $n_i$, in the $i$th group, and $i$ runs from 1 to $m$.
+
+Thus the data might be arranged as:
+\begin{center}
+\begin{tabular}{ccccc}
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  Group 1: & $x_{11}$ & $x_{12}$ & $\ldots$ & $x_{1n_{1}}$ \\
+  Group 2: & $x_{21}$ & $x_{22}$ & $\ldots$ & $x_{2n_{2}}$ \\
+  $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \\
+  Group $m$: & $x_{m1}$ & $x_{m2}$ & $\ldots$ & $x_{mn_{m}}$ \\
+\end{tabular}
+\end{center}
+The null hypothesis here is $H_{0}: \mu_{1}=\mu_{2}=\ldots=\mu_{m}$, where $\mu_{i}$ is the population mean corresponding to the $i$th group. The alternative hypothesis is $H_{1}:\mu_{a}\neq\mu_{b}$, where $a\neq b$.
+
+\begin{mdframed}
+Let us introduce the following notation.
+\textcolor[rgb]{1.00,1.00,1.00}{terry notes\lipsum[1-8]}
+\end{mdframed}
+
+\subsubsection{Possible sources of variation}
+
+\begin{mdframed}
+The following sketch, for $m=3$, helps us to identify all the sources of variation possible for our data.
+\textcolor[rgb]{1.00,1.00,1.00}{terry notes p58\lipsum[1-4]}
+\end{mdframed}
+
+We thus have three sums of squares:
+\begin{enumerate}
+\item Total sum of squares
+\item Between group sum of squares
+\item Within group sum of squares (also known as error, or residual sum of squares)
+\end{enumerate}
+We now describe each in turn.
+
+\begin{mdframed}
+Total sum of squares.
+\textcolor[rgb]{1.00,1.00,1.00}{terry notes\lipsum[1-6]}
+\end{mdframed}
+
+\begin{mdframed}
+Between group sum of squares.
+\textcolor[rgb]{1.00,1.00,1.00}{terry notes\lipsum[1-6]}
+\end{mdframed}
+
+\begin{mdframed}
+Within group sum of squares.
+\textcolor[rgb]{1.00,1.00,1.00}{terry notes\lipsum[1-6]}
+\end{mdframed}
+
+\subsubsection{ANOVA table}
+The comparison of sums of squares is done in a table called the analysis of variance table, because the variation in the observations is being partitioned into part that is explained by the data because they are sampled from different groups (the between groups component), and a part that remains unexplained (the residual component).
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  Source of variation & df & ss & ms & F-ratio \\ [20pt]\hline
+  Between groups & $m-1$ & $\displaystyle \sum_{i=1}^{m}\frac{X_{i\cdot}^{2}}{n_{i}}-\frac{X_{\cdot\cdot}^{2}}{N}$ & $s_{G}^{2}$ & $\displaystyle \frac{s_{G}^{2}}{s^{2}}$ \\[20pt] \hline
+  Within groups (error or residual) & $N-m$ & $\displaystyle  \sum_{i=1}^{m}\sum_{j=1}^{n_{i}}x_{ij}^{2}-\sum_{i=1}^{m}\frac{X_{i\cdot}^{2}}{n_{i}}$ & $s^{2}$ & - \\[20pt] \hline
+  Total & $N-1$ & $\displaystyle \sum_{i=1}^{m}\sum_{j=1}^{n_{i}}x_{ij}^{2}-\frac{X_{\cdot\cdot}^2}{N}$ & - & - \\[20pt]
+  \hline
+\end{tabular}
+\end{center}
+
+
+The mean squares (ms) are calculated by dividing the sum of squares (ss) by degrees of freedom (df). The F-ratio is the ratio of between groups mean square to error mean square.
+
+\begin{lemma}
+Under the null hypothesis $H_{0}: \mu_{1}=\mu_{2}=\ldots=\mu_{m}$, then the F-ratio $\displaystyle \frac{s_{G}^{2}}{s^{2}}$ follows an F-distribution with $(m - 1)$ and $(N - m)$ degrees of freedom.
+\end{lemma}
+
+The percentiles of the F distribution with $(m - 1)$ and $(N - m)$ degrees of freedom are used to judge the significance of the observed F-ratio. If the observed F-ratio exceeds the tabulated 95th percentile, for example, then with a $5\%$ level of significance the null hypothesis (of equal group means) is rejected.
+
+\subsubsection{Multiple comparison tests}
+Although one-way ANOVA can be used to identify that there are statistically significant differences in the means of m groups of data, it does not identify which particular groups differ in this respect from the others.
+
+Various tests have been suggested to do this. The simplest to describe is Fisher's least significant difference (LSD) test.
+
+\begin{mdframed}
+Fisher's least significant difference test is described as follows.
+\textcolor[rgb]{1.00,1.00,1.00}{terry notes\lipsum[1-7]}
+\end{mdframed}
+
+
+\subsubsection{Example}
+\begin{example}
+The systolic blood pressure was measured for 7 human subjects, with 5 replicate observations being made for each subject. The results obtained (in mmHg) are tabulated below, together with some totals.
+\begin{center}
+\begin{tabular}{|c|c|c|}
+                                  \hline
+                                  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+                                  Subject & Systolic blood pressure & Totals \\ \hline
+                                  1 & 108 104 108 120 108 & 548 \\
+                                  2 & 118 104 118 120 128 & 588 \\
+                                  3 & 124 118 120 122 124 & 608 \\
+                                  4 & 126 122 120 120 132 & 620 \\
+                                  5 & 128 124 118 112 142 & 624 \\
+                                  6 & 130 128 138 116 124 & 636 \\
+                                  7 & 152 128 132 150 142 & 704 \\
+                                    &                     & 4328 \\
+                                  \hline
+                                \end{tabular}
+\end{center}
+Complete an analysis of variance table for these data and test to determine if there are significant differences amongst the means of the subjects. Follow up your analysis by attempting to identify which groups differ from which.
+\end{example}
+
+\begin{mdframed}
+{\bf Solution:}\\
+\textcolor[rgb]{1.00,1.00,1.00}{terry notes y10 paper\lipsum[1-8]}
+\end{mdframed}
+
+%\newpage
+%\section{Linear regression (fitting a straight line)}
+%\subsection{Introduction and estimators of the slope and intercept}
+%In this section statistical methods for fitting a straight line to set of $n$ pairs of $(x, y)$ data is described. The method used is known as least squares. As well as finding estimators for the slope and intercept of the line, hypothesis tests and confidence intervals for these parameters can be developed. For historical, and somewhat strange, reasons this theory is usually called regression.
+%
+%\begin{mdframed}
+%{Here is a sketch of the typical data we will investigate in this section:}\\
+%\textcolor[rgb]{1.00,1.00,1.00}{terry notes y10 paper\lipsum[1-3]}
+%\end{mdframed}
+%
+%Thus the underlying model relating $y$ and $x$ is
+%\begin{mdframed}
+%\textcolor[rgb]{1.00,1.00,1.00}{line\\ line \\line}
+%\end{mdframed}
+%Later, further assumptions will be made about the error terms $\varepsilon_{i}.$
+%
+%Given $n$ pairs of data $(x_{i},y_{i})$, we need an objective way to fit our line. That is we need estimators of $\alpha$ and $\beta$, which we will call $\hat{\alpha}$ and $\hat{\beta}$ respectively.
+%
+%We will use the principle of least squares, that is, we will find the values $\hat{\alpha}$ for $\alpha$ and $\hat{\beta}$ for $\beta$ that minimize the sum of squares
+%\begin{mdframed}
+%\textcolor[rgb]{1.00,1.00,1.00}{line\\ line \\line}
+%\end{mdframed}
+%
+%In solving this problem use is made of some identities for sums of squares. We introduce and define the following:
+%\begin{eqnarray*}
+%S_{xx}&=&\sum_{i=1}^{n}(x_{i}-\bar{x})^{2}=\sum_{i=1}^{n}(x_{i}-\bar{x})x_{i}=\sum_{i=1}^{n}x_{i}^{2}-\frac{(\sum_{i=1}^{n}x_{i})^{2}}{n}=\sum_{i=1}^{n}x_{i}^{2}-n\bar{x}^{2}\\
+%S_{xy}&=&\sum_{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y})=\sum_{i=1}^{n}(x_{i}-\bar{x})y_{i}=\sum_{i=1}^{n}x_{i}(y_{i}-\bar{y})=\sum_{i=1}^{n}x_{i}y_{i}-\frac{\left(\sum_{i=1}^{n}x_{i}\right)\left(\sum_{i=1}^{n}y_{i}\right)}{n}\\&=&\sum_{i=1}^{n}x_{i}y_{i}-n\bar{x}\bar{y}
+%\end{eqnarray*}
+%$S_{yy}$ is defined analogously to $S_{xx}$ with the obvious changes.
+%
+%
+%Calculus is used to find the minimum of the sum of squares given earlier, yielding the so-called least squares estimates of the parameters $\alpha$ and $\beta$ to be
+%\begin{mdframed}
+%\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1]}
+%\end{mdframed}
+%Hence, given a value of $x$, we can estimate the corresponding value of $y$ by using the formula
+%$$
+%\hat{y}=\hat{\alpha}+\hat{\beta}x \,.
+%$$
+%
+%\subsection{Testing the significance of the line}
+%Once we have fitted our straight line, a natural question to ask is ``Is the model significant?"
+%
+%
+%
+%This question addresses the following hypotheses test:
+%\begin{eqnarray*}
+%H_{0}:\beta &=& 0\\
+%H_{1}:\beta &\neq& 0
+%\end{eqnarray*}
+%Here we are testing between two possible models for the data. One is
+%$y=\alpha$ and the other is $y=\alpha+\beta x.$ If $\beta$ is not significantly different from 0, then we can effectively create a sufficient model for $y$, by just approximating this variable by a constant.
+%
+%The formal analysis is done in a table called the analysis of variance table for regression. For this module the table is just produced here, without theoretical development.
+%\begin{center}
+%\begin{tabular}{|c|c|c|c|c|}
+%  \hline
+%  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+%  Source of variation & df & ss & ms & F-ratio \\ \hline
+%  Regression & 1 & $\displaystyle \frac{(S_{xy})^{2}}{S_{xx}}$ & $s_{reg}^{2}$ & $\displaystyle \frac{s_{reg}^{2}}{s^{2}}$ \\
+%  Residual & $n-2$ & $\displaystyle S_{yy}-\frac{(S_{xy})^{2}}{S_{xx}}$ & $s^{2}$ & - \\ \hline
+%  Total & $n-1$ & $S_{yy}$ & - & - \\
+%  \hline
+%\end{tabular}
+%\end{center}
+%
+%
+%The F ratio is compared with standard F tables with $1$ and $(n-2)$ degrees of freedom. If this is in the right hand tail of the F distribution the hypothesis of zero slope is rejected, and we say  that  the  regression  is  statistically  significant,  often  quoting  the  $p$-value  (eg $p << 0.01$). If the F ratio is not in the right hand tail, we accept the hypothesis that the slope is equal to zero and therefore that the straight line model is not an adequate fit to the data. Note that this test is automatically 2-tailed.
+%
+%\subsection{Confidence intervals and hypothesis tests for the slope, intercept and predicted value of $y$}
+%In order to construct confidence intervals and hypothesis tests for estimators of the parameters of the model, and for predictions of $y$ using it, we need to make some distributional assumptions concerning the error term $\varepsilon_{i}$ of the model:
+%\begin{enumerate}
+%\item They are all independent
+%\item They have expectation 0
+%\item They all have the same variance $\sigma^{2}$ (independent of $x$ and $i$. Note that an estimator of $\sigma^{2}$ is $s^{2}$ as defined in the ANOVA table in the previous section,
+%\item They are normally distributed
+%\end{enumerate}
+%Remember also that we assume that the $x$'s are not random, but observed fixed values.
+%
+%This allows us to derive the following distributional results.
+%
+%\begin{mdframed}
+%\paragraph{Distribution of $\hat{\beta}:$}
+%\textcolor[rgb]{1.00,1.00,1.00}{terry notes y10 paper\lipsum[1-4]}
+%\end{mdframed}
+%
+%\begin{mdframed}
+%\paragraph{Distribution of $\hat{\alpha}:$}
+%\textcolor[rgb]{1.00,1.00,1.00}{terry notes y10 paper\lipsum[1-4]}
+%\end{mdframed}
+%
+%\begin{mdframed}
+%\paragraph{Distribution of $\hat{y}:$}
+%\textcolor[rgb]{1.00,1.00,1.00}{terry notes y10 paper\lipsum[1-4]}
+%\end{mdframed}
+%
+%\subsection{Example}
+%\begin{example}
+%The following table gives measurements of two variables $x$ and $y$ that are known to be linearly related. The variable $x$ is measured without error, but there is a measurement error associated with $y$ that you can assume is Normally distributed with mean of zero and variance $\sigma^{2}$.
+%\begin{center}
+%\begin{tabular}{|c|c|c|c|c|c|}
+%  \hline
+%  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+%x&	 5.0&	 7.5&	10.0&	12.5&	15.0\\
+%y& 	1.23&	1.39&	1.52&	1.66&	1.81 \\
+%  \hline
+%\end{tabular}
+%\end{center}
+%Find the least squares estimates of the slope and intercept of the straight line to predict $y$ with $x$. Also calculate an unbiased estimate of the error variance $\sigma^{2}$. Find a $95\%$ confidence interval for the intercept.									
+%\end{example}
+%
+%\begin{mdframed}
+%{\bf Solution:}
+%\textcolor[rgb]{1.00,1.00,1.00}{y2ex06\lipsum[1-7]}
+%\end{mdframed}
+
+
+\newpage
+\section{Linear regression (fitting a straight line)}
+\subsection{Introduction}
+We now consider data consisting of pairs of observations $(x_{1},y_{1}),(x_{2},y_{2}),\dots,(x_{n},y_{n})$ where the $x$ and $y$ values may be related. We use the data to investigate the nature of the relationship between the two variables.
+
+Specifically we will consider that the observed data $(x_{1},y_{1}),(x_{2},y_{2}),\dots,(x_{n},y_{n})$  follows a linear relationship of the form $$Y=\alpha+\beta x +\varepsilon$$
+where $\alpha$ and $\beta$ are constants and $\varepsilon$ is a random error term with zero mean. Note that the errors are assumed to be independent. This is equivalent to assuming that $E[Y]=\alpha+\beta x$ so that the mean (or expected value) of $Y$ is a linear function of $x$.
+
+In general the variable $x$ is called the independent variable and the variable $Y$ is called the dependent variable. Examples include the following:
+\begin{center}
+\begin{tabular}{|c|c|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  $x$ & $Y$ \\ \hline
+  Amount spent advertising a product& Sales of the product \\
+  Age & Height \\
+  Distance & Time to run distance \\
+  Weight of fertilizer & Tomato yield  \\
+  \hline
+\end{tabular}
+\end{center}
+
+The primary aim of regression is to estimate the parameters $\alpha$ and $\beta$. We consider this in the next section.
+
+\subsection{Least squares regression}
+Suppose we have $n$ pairs of observations $(x_{1},y_{1}),(x_{2},y_{2}),\dots,(x_{n},y_{n})$  from the model $$Y=\alpha+\beta x +\varepsilon$$
+where $\alpha$ (the intercept) and $\beta$ (the slope) are constants and $\varepsilon$ is a random error term with zero mean.
+
+
+
+\begin{mdframed}
+{Here is a sketch of typical data:}\\
+\textcolor[rgb]{1.00,1.00,1.00}{terry notes y10 paper\lipsum[1-3]}
+\end{mdframed}
+
+The principle of least squares regression, in this scenario is to find $\alpha$ and $\beta$ such that $$\sum_{i=1}^{n}(y_{i}-\alpha-\beta x_{i})^{2}$$ is as small as possible. The values of $\alpha$ and $\beta$ which minimize this sum are known as least squares estimates.
+
+\begin{theorem}\label{th_reg}
+Suppose we have $n$ pairs of observations $(x_{1},y_{1}),(x_{2},y_{2}),\dots,(x_{n},y_{n})$  from the model $$Y=\alpha+\beta x +\varepsilon$$
+where $\alpha$ and $\beta$ are constants and $\varepsilon$ is a random error term with zero mean. The least squares estimators of $\alpha$ and $\beta$, denoted $\hat{\alpha}$ and $\hat{\beta}$ are given by:
+\begin{eqnarray*}
+% \nonumber % Remove numbering (before each equation)
+  \hat{\alpha} &=& \bar{y}-\hat{\beta}\bar{x} \\
+  \hat{\beta} &=& \frac{\sum_{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y})}{\sum_{i=1}^{n}(x_{i}-\bar{x})^{2}}\, .
+\end{eqnarray*}
+\end{theorem}
+
+\begin{mdframed}
+{\bf Proof:}
+\textcolor[rgb]{1.00,1.00,1.00}{terry notes\lipsum[1-7]}
+\end{mdframed}
+
+If we write:
+\begin{eqnarray*}
+S_{xx}&=&\sum_{i=1}^{n}(x_{i}-\bar{x})^{2}=\sum_{i=1}^{n}(x_{i}-\bar{x})x_{i}=\sum_{i=1}^{n}x_{i}^{2}-\frac{(\sum_{i=1}^{n}x_{i})^{2}}{n}=\sum_{i=1}^{n}x_{i}^{2}-n\bar{x}^{2}\\
+S_{xy}&=&\sum_{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y})=\sum_{i=1}^{n}(x_{i}-\bar{x})y_{i}=\sum_{i=1}^{n}x_{i}(y_{i}-\bar{y})=\sum_{i=1}^{n}x_{i}y_{i}-\frac{\left(\sum_{i=1}^{n}x_{i}\right)\left(\sum_{i=1}^{n}y_{i}\right)}{n}\\&=&\sum_{i=1}^{n}x_{i}y_{i}-n\bar{x}\bar{y}
+\end{eqnarray*}
+where $S_{yy}$ is defined analogously to $S_{xx}$ with the obvious changes, then $$\hat{\beta}=\frac{\sum_{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y})}{\sum_{i=1}^{n}(x_{i}-\bar{x})^{2}}=\frac{S_{xy}}{S_{xx}}=\frac{\sum_{i=1}^{n}x_{i}y_{i}-n\bar{x}\bar{y}}{\sum_{i=1}^{n}x_{i}^{2}-n\bar{x}^{2}}\,.$$
+
+The minimum value of $\sum_{i=1}^{n}(y_{i}-\alpha-\beta x_{i})^{2}$ is given by $$\sum_{i=1}^{n}(y_{i}-\hat{\alpha}-\hat{\beta} x_{i})^{2}, $$ and is known as the residual sum of squares. We denote this by $SS_{error}$.
+\begin{lemma}
+Let $\hat{\alpha}$ and $\hat{\beta}$ be defined as in Theorem \ref{th_reg}. The residual sum of squares, $SS_{error}$ may be written
+$$SS_{error}=\sum_{i=1}^{n}(y_{i}-\hat{\alpha}-\hat{\beta} x_{i})^{2}=S_{yy}-\frac{S^{2}_{xy}}{S_{xx}}.$$
+\end{lemma}
+Try to prove this yourself. We will use this result later.
+
+\subsection{Properties of the least squares estimators: distributions}
+Recall that we have $n$ pairs of observations from the model $Y_{i}=\alpha+\beta x_{i} +\varepsilon_{i}$.
+
+Let $Y_{i}$ denote the random variable whose observed value is $y_{i}$. It is a random variable due to the addition of the random error term $\varepsilon_{i}$. To consider properties of the estimator $\hat{\beta}$ (which will enable us to consider properties of the estimator $\hat{\alpha}$ as well as the predicted value of $y$ given $x$) we write
+$$
+\hat{\beta}=\sum_{i=1}^{n}\frac{(x_{i}-\bar{x})(Y_{i}-\bar{Y})}{S_{xx}}.
+$$
+
+\begin{lemma}
+  We may write
+  $$
+  \hat{\beta}=\sum_{i=1}^{n}\frac{(x_{i}-\bar{x})(Y_{i}-\bar{Y})}{S_{xx}}=\sum_{i=1}^{n}\frac{(x_{i}-\bar{x})Y_{i}}{S_{xx}}.
+  $$
+\end{lemma}
+We use this form to derive properties of $\hat{\beta}$ (and other parameters).
+
+\begin{mdframed}
+{\bf Proof:}
+\textcolor[rgb]{1.00,1.00,1.00}{\lipsum[1-3]}
+\end{mdframed}
+
+In order to construct confidence intervals and hypothesis tests for estimators of the parameters of the model, and for predictions of $y$ using it, we need to make some distributional assumptions concerning the random error term $\varepsilon_{i}$ of the model:
+\begin{enumerate}
+\item They are all independent.
+\item They have zero expectation.
+\item They all have the same variance $\sigma^{2}$ (independent of $x$ and $i$).
+\item They are normally distributed.
+\end{enumerate}
+
+Straight away, we can derive the following facts using the above assumptions.
+\begin{eqnarray*}
+% \nonumber % Remove numbering (before each equation)
+  E[Y_{i}] &=& E[\alpha+\beta x_{i} +\varepsilon_{i}]=E[\alpha+\beta x_{i}] +E[\varepsilon_{i}]=\alpha+\beta x_{i}, \\
+   Var[Y_{i}] &=& Var[\alpha+\beta x_{i} +\varepsilon_{i}]=Var[\alpha+\beta x_{i}] +Var[\varepsilon_{i}]=\sigma^{2}.
+\end{eqnarray*}
+
+
+We will use these facts in what follows.
+\newpage
+\subsubsection{Mean and variance of $\hat{\beta}$}
+
+\begin{mdframed}
+\textcolor[rgb]{1.00,1.00,1.00}{terry notes y10 paper\lipsum[1-4]}
+\end{mdframed}
+
+\subsubsection{Mean and variance of $\hat{\alpha}$}
+\begin{mdframed}
+\textcolor[rgb]{1.00,1.00,1.00}{terry notes y10 paper\lipsum[1-4]}
+\end{mdframed}
+
+\subsubsection{Mean and variance of $\hat{y_{0}}$}
+Suppose we are given a value of $x$, say $x_{0}$. We may be asked to estimate the mean response $y_{0}$ at this given value. Since $y_{0}=\alpha+\beta x_{0}$ the obvious estimator of $y_{0}$ is $\hat{y_{0}}=\hat{\alpha}+\hat{\beta} x_{0}.$ We can consider the mean and variance of this estimate.
+\begin{mdframed}
+\textcolor[rgb]{1.00,1.00,1.00}{terry notes y10 paper\lipsum[1-4]}
+\end{mdframed}
+
+An examination of the expressions for $\hat{\beta}$, $\hat{\alpha}$ and $\hat{y_{0}}$ shows that they are all expressible as linear combinations of $Y_{1},Y_{2},\ldots,Y_{n}$. It follows that if the $\varepsilon_{i}$'s are normally distributed then so are $\hat{\beta}$, $\hat{\alpha}$ and $\hat{y_{0}}$. In this case we can summarise the preceding results by stating that
+\begin{eqnarray*}
+% \nonumber % Remove numbering (before each equation)
+  \hat{\beta} &\sim& N\left[\beta,\frac{\sigma^{2}}{S_{xx}}\right], \\
+  \hat{\alpha} &\sim& N\left[\alpha,\sigma^{2}\left(\frac{1}{n}+\frac{\bar{x}^{2}}{S_{xx}}\right)\right], \\
+  \hat{y_{0}}=\hat{\alpha}+\hat{\beta}x_{0} &\sim& N\left[y_{0},\sigma^{2}\left(\frac{1}{n}+\frac{(x_{0}-\bar{x})^{2}}{S_{xx}}\right)\right].
+\end{eqnarray*}
+These can be used to make confidence intervals and hypothesis tests about these parameters. You will be expected to do these! Derive the confidence intervals for yourself, and think how you could perform hypothesis tests using these results.
+
+\subsection{Estimating the error variance $\sigma^{2}$}
+The value of the error variance $\sigma^{2}$ is usually unknown and must be estimated from the data.
+
+Earlier we stated that the residual sum of squares, $SS_{error}$ may be written
+$$SS_{error}=\sum_{i=1}^{n}(y_{i}-\hat{\alpha}-\hat{\beta} x_{i})^{2}=S_{yy}-\frac{S^{2}_{xy}}{S_{xx}}.$$
+
+\begin{lemma}
+  $$\frac{SS_{error}}{n-2}$$ is an unbiased estimator of $\sigma^{2}$.
+\end{lemma}
+
+It follows from earlier results that if the errors are normally distributed then the random variables
+$$\frac{\hat{\beta}-\beta}{\sqrt{\frac{\sigma^{2}}{S_{xx}}}}, \frac{\hat{\alpha}-\alpha}{\sqrt{\sigma^{2}\left(\frac{1}{n}+\frac{\bar{x}^{2}}{S_{xx}}\right)}}, \frac{\hat{y_{0}}-y_{0}}{\sqrt{\sigma^{2}\left(\frac{1}{n}+\frac{(x_{0}-\bar{x})^{2}}{S_{xx}}\right)}}$$
+are have the distribution $N[0,1].$
+
+It can be shown that when $\sigma^{2}$ is estimated by $$\hat{\sigma^{2}}=\frac{SS_{error}}{n-2}$$ then the random variables
+$$\frac{\hat{\beta}-\beta}{\sqrt{\frac{\hat{\sigma^{2}}}{S_{xx}}}}, \frac{\hat{\alpha}-\alpha}{\sqrt{\hat{\sigma^{2}}\left(\frac{1}{n}+\frac{\bar{x}^{2}}{S_{xx}}\right)}}, \frac{\hat{y_{0}}-y_{0}}{\sqrt{\hat{\sigma^{2}}\left(\frac{1}{n}+\frac{(x_{0}-\bar{x})^{2}}{S_{xx}}\right)}}$$
+all have the Student's t distribution with $(n-2)$ degrees of freedom. Again these can be used to make confidence intervals, or to perform hypothesis tests in the usual way.
+
+\subsection{Example}
+\begin{example}
+The following table gives measurements of two variables $x$ and $y$ that are known to be linearly related. The variable $x$ is measured without error, but there is a measurement error associated with $y$ that you can assume is normally distributed with zero mean and variance $\sigma^{2}$.
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+$x$&	 5.0&	 7.5&	10.0&	12.5&	15.0\\
+$y$& 	1.23&	1.39&	1.52&	1.66&	1.81 \\
+  \hline
+\end{tabular}
+\end{center}
+Find the least squares estimates of the slope and intercept of the straight line to predict $y$ with $x$. Also calculate an unbiased estimate of the error variance $\sigma^{2}$. Find a $95\%$ confidence interval for the intercept.									
+\end{example}
+
+\begin{mdframed}
+{\bf Solution:}
+\textcolor[rgb]{1.00,1.00,1.00}{y2ex06\lipsum[1-7]}
+\end{mdframed}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

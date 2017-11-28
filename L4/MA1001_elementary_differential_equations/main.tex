@@ -1,0 +1,43 @@
+% main.tex for Camel-MA1001
+
+% document class
+\documentclass[oneside, 12pt]{book}
+\usepackage[proofs]{camel}
+
+\usepackage{cumaths}
+
+
+% module info
+\modulecode{L4-MA1001}
+\moduletitle{}
+\academicyear{}
+
+\renewcommand{\thetheorem}{\arabic{chapter}.\arabic{theorem}}
+% load packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{caption}
+
+% document info
+\title{Level 4 - MA1001- Elementary Differential Equations}
+\author{}
+\date{}
+
+% new commands
+\newcommand{\mawr}{\huge}
+
+%----------------------------------------
+\begin{document}
+\maketitle
+\tableofcontents
+
+\input{Introductory_Examples}
+\input{First_Order_Differentials}
+\input{Second_Order_Differentials}
+\input{Conservative_Equations}
+
+
+\end{document}
+%----------------------------------------
+
+
