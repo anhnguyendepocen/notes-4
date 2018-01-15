@@ -1,5 +1,5 @@
-Code: MA2500
+Module Code: MA2500
 
-Title: Foundations of Probability and Statistics
+Module Title: Foundations of Probability and Statistics
 
-Author: DE
+Module Leader: DE
