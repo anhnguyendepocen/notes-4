@@ -1,0 +1,148 @@
+% !TEX root = main.tex
+
+Expectation is to random variables what probability is to events. 
+\bit
+\it Probability quantifies the `size' of a random event.
+\it Expectation quantifies the `size' of a random variable.
+\eit
+
+\subsubsection*{Elementary probability} 
+Let $\Omega$ be a finite sample space and let $p:\Omega\to[0,1]$ be a probability mass function on $\Omega$. In elementary probability the \emph{expectation} of a random variable $X:\Omega\to\R$ is defined to be
+\[
+\expe(X) = \sum_{\omega\in\Omega} X(\omega)\prob(\omega)
+\]
+This is a sum over the \emph{domain} of $X$. Expectation can also be defined over the \emph{range} of $X$.
+
+%\subsubsection*{Frequentist model} 
+%Let $\Omega$ be the sample space of a random experiment which can be repeated many times under the same conditions, let $X$ be a simple random variable on $\Omega$, and let $\{x_1,x_2,\ldots,x_n\}$ be its range. 
+%
+%Suppose we repeat the experiment $N$ times. Let $N(\omega)$ be the number of times outcome $\omega$ is observed. record the sequence of values $\xi_1,\xi_2,\ldots,\xi_N$ taken by $X$. Let $N_i$ be the number of times the event $\{X=x_i\}$ is observed. Under the \emph{frequentist model}, the sample mean of the observations satisfies
+%
+%\[
+%\bar{X} 
+%	= \frac{1}{N}\sum_{j=1}^{N} \xi_j 
+%	= \frac{1}{N}\sum_{i=1}^{n} x_i N_i 
+%	= \sum_{i=1}^{n} x_i \left(\frac{N_i}{N}\right)
+%	\longrightarrow \sum_{i=1}^{n} x_i P(X=x_i) \quad\text{as $N\to\infty$}.
+%\]
+%
+%Suppose we repeat the experiment $N$ times and record the sequence of values $\xi_1,\xi_2,\ldots,\xi_N$ taken by $X$. Let $N_i$ be the number of times the event $\{X=x_i\}$ is observed. Under the \emph{frequentist model}, the sample mean of the observations satisfies
+%\[
+%\bar{X} 
+%	= \frac{1}{N}\sum_{j=1}^{N} \xi_j 
+%	= \frac{1}{N}\sum_{i=1}^{n} x_i N_i 
+%	= \sum_{i=1}^{n} x_i \left(\frac{N_i}{N}\right)
+%	\longrightarrow \sum_{i=1}^{n} x_i P(X=x_i) \quad\text{as $N\to\infty$}.
+%\]
+%
+%This motivates the following definition of expectation for simple random variables.
+
+%-------------------------------------------------
+\section{Simple variables}\label{sec:expe-simple}
+
+\begin{definition}[Expectation of simple random variables]
+%Let $X$ be a simple random variable and $\{x_1,x_2,\ldots,x_n\}$ be its range. The expectation of $X$ is
+The expectation of a simple random variable $X:\Omega\to\R$ is
+\[
+%\expe(X) = \sum_{i=1}^n x_i \prob(X=x_i).
+\expe(X) = \sum_{i=1}^n x_i f(x_i).
+\]
+where $f$ is the PMF of $X$ and $\{x_1,x_2,\ldots,x_n\}$ is the range of $X$.
+\end{definition}
+
+In particular, the expectation of an indicator variable $I_A:\Omega\to\R$ is
+\[
+\expe(I_A) = \prob(A)
+\]
+which shows the connection between an event and its indicator function.
+
+
+%-----------------------------
+%\subsection{Properties}
+%Before deriving the properties of expectation for simple random variables we need the following.
+
+% definition: positivity & domination
+\begin{definition}
+Let $X$ and $Y$ be random variables.
+\ben
+\it We say that $X$ is \emph{non-negative} if $X(\omega)\geq 0$ for all $\omega\in\Omega$. This is denoted by $X\geq 0$.
+%\it We say that $X$ is \emph{non-negative} (denoted by $X\geq 0$) if $X(\omega)\geq 0$ for all $\omega\in\Omega$.
+\it We say that $X$ \emph{dominates} $Y$ if $X(\omega)\geq Y(\omega)$ for all $\omega\in\Omega$. This is denoted by $X\geq Y$.
+\een
+\end{definition}
+
+% theorem: properties
+\begin{theorem}[Properties of expectation for simple random variables]
+Let $X$ and $Y$ be simple random variables.
+\ben
+\it \textbf{Linearity}.  For every $a,b\in\R$,\ \ $\expe(aX+bY) = a\expe(X) + b\expe(Y)$.
+\it \textbf{Positivity}. If $X\geq 0$ then $\expe(X)\geq 0$.
+\it \textbf{Monotonicity}. If $X\geq Y$ then $\expe(X)\geq\expe(Y)$.
+\een
+\end{theorem}
+
+\begin{proof}
+\ben
+\it % << (ii)
+\textbf{Linearity}. Let $\{x_1,x_2,\ldots,x_m\}$ be the range of $X$ and $\{y_1,y_2,\ldots,y_n\}$ be the range of $Y$. We define two partitions $\{A_1,A_2,\ldots,A_m\}$ and $\{B_1,B_2,\ldots,B_n\}$ of the underlying sample space $\Omega$ by
+\[
+A_i = \{\omega:X(\omega)=x_i\} \quad\text{and}\quad B_j = \{\omega:Y(\omega)=y_j\}.
+\]
+These can be combined to produce another partition of $\Omega$:
+\[
+\{A_i\cap B_j: i=1,2,\ldots,m;\ j=1,2,\ldots,n\}.
+\]
+The composite variable $aX + bY$ takes the value $ax_i+by_j$ on the set $A_i\cap B_j$. Because there are only finitely many such sets, it follows that $aX+bY$ is also a simple random variable, so its expectation is given by
+\begin{align*}
+\expe(aX+bY)
+	& = \sum_{i=1}^m\sum_{j=1}^n (ax_i + by_j) \prob(A_i\cap B_j) \\
+	& = a\sum_{i=1}^m x_i \sum_{j=1}^n \prob(A_i\cap B_j) + b\sum_{j=1}^n y_j \sum_{i=1}^m \prob(A_i\cap B_j).
+\end{align*}
+By the additivity of probability measures:
+\bit
+\it $\{A_i\cap B_j\}_{j=1}^n$ is a partition of $A_i$, so $\sum_{j=1}^n \prob(A_i\cap B_j) = \prob(A_i)$.
+\it $\{A_i\cap B_j\}_{i=1}^m$ is a partition of $B_j$, so $\sum_{i=1}^m \prob(A_i\cap B_j) = \prob(B_j)$.
+\eit
+Hence,
+\[
+\expe(aX+bY)
+	= a\sum_{i=1}^n x_i\prob(A_i) + b\sum_{j=1}^m y_j\prob(B_j)
+	= a\expe(X) + b\expe(Y).
+\]
+
+\it % << (ii)
+\textbf{Positivity}. If $X(\omega)\geq 0$ for all $\omega$ we must have that each $x_i\geq 0$. Thus $\expe(X) = \sum_{i=1}^n x_i \prob(X=x_i)$ is a sum of non-negative terms, so $\expe(X)\geq 0$.
+
+\it % << (iii)
+\textbf{Monotonicity}. If $X\geq Y$ then $X-Y\geq 0$, so
+\bit
+\it by positivity, $\expe(X-Y)\geq 0$;
+\it by linearity, $\expe(X)-\expe(Y)\geq 0$, so $\expe(X)\geq\expe(Y)$.
+\eit
+\een
+\end{proof}
+
+% expectation of transformed variables
+For a transformed variable, we need not compute its PMF to compute its expectation. The following result is sometimes called the \emph{law of the unconscious statistician}.
+
+\begin{theorem}[Expectation of transformed simple random variables]\label{thm:expe-simple-transformed}
+If $X$ be a simple random variable and $g:\R\to\R$ is a transformation, the expected value of the transformed variable $g(X)$ is
+\[
+\expe\big[g(X)\big] = \sum_{i=1}^{n} g(x_i) f(x_i).
+\]
+\end{theorem}
+\begin{proof}
+Let $Y=g(X)$. Because $X$ is simple, $Y$ must also be simple. Let $\{x_1,\ldots,x_m\}$ and $\{y_1,\ldots,y_n\}$ be the range of $X$ and $Y$ respectively and let $C_j$ be the set containing those $x_i$ that are mapped to $y_j$:
+\[
+C_j  = \{x_i:g(x_i)=y_j\} \qquad\text{for $i=1,2,\ldots,m$.}
+\]
+Clearly, $\prob(Y=y_j) = \displaystyle\sum_{x_i\in C_j}\prob(X=x_i)$, so
+\begin{align*}
+\expe(Y)
+	& = \sum_{j=1}^n y_j\prob(Y=y_j) = \sum_{j=1}^n y_j\left(\sum_{x_i\in C_j} \prob(X=x_i)\right) \\
+	& = \sum_{j=1}^n \sum_{x_i\in C_j} y_j\prob(X=x_i) \\
+	& = \sum_{j=1}^n \sum_{x_i\in C_j} g(x_i)\prob(X=x_i) \text{\quad because $y_j=g(x_i)$ whenever $x_i\in C_j$,}\\
+	& = \sum_{i=1}^m g(x_i)\prob(X=x_i),
+\end{align*}
+where the last equality follows because $\{C_1,C_2,\ldots,C_m\}$ is a partition of $\{x_1,\ldots,x_n\}$.
+\end{proof}

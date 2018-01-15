@@ -1,0 +1,266 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Analysis of variance}\label{sec:anova}
+
+Analysis of variance is a method for testing hypotheses about means by looking at sample variances.
+
+\bigskip
+Let $Y$ be a continuous variable, let $X\in\{1,2,\ldots,k\}$ be a simple random variable representing \emph{group membership}, and consider the location model
+\[
+Y = \expe(Y|X=i) + \epsilon \qquad\text{where $\epsilon\sim N(0,\sigma^2)$.}
+\]
+Let $\mu = \expe(Y)$ and $\mu_i = \expe(Y|X=i)$. We wish to test the null hypothesis that the conditional means $\mu_i$ are all equal against the alternative hypothesis that they are not.
+%\[
+%H_0:\mu_1=\mu_2=\ldots=\mu_k
+%\qquad\text{against}\qquad
+%H_1:\mu_i\neq\mu_j \text{ for some $i\neq j$}.
+%\]
+\begin{align*}
+& H_0:\mu_1=\mu_2=\ldots=\mu_k \\
+& H_1:\mu_i\neq\mu_j \text{ for some $i\neq j$}.
+\end{align*}
+
+%-----------------------
+\subsection{Partition of variance}
+
+Given that $X=i$ we have $Y\sim N(\mu_i,\sigma^2)$ so
+\[
+\expe(Y|X=i) = \mu_i \quad\text{and}\quad \var(Y|X=i) = \sigma^2.
+\]
+Hence
+\[
+\var\big[\expe(Y|X)] = \sum_{i=1}^k (\mu_i-\mu)^2\prob(X=i) \quad\text{and}\quad \expe[\var(Y|X)\big] = \sigma^2.
+\]
+By the law of total variance, 
+\begin{align*}
+\var(Y)	& = \expe\big[\var(Y|X)\big] + \var\big[\expe(Y|X)\big] \\
+		& = \sigma^2 + \sum_{i=1}^k (\mu_i-\mu)^2\prob(X=i).
+\end{align*}
+
+Thus we have divided the variance of $Y$ into two components,
+\bit
+\it an \emph{explained} component $\sum_{i=1}^k (\mu_i-\mu)^2\prob(X=i)$ due to variation \emph{between} groups;
+\it an \emph{unexplained} component $\sigma^2$ due to variation \emph{within} groups.
+\eit
+%\bit
+%\it If $H_0$ is true, $\var(Y)=\sigma^2$. 
+%\it If $H_0$ is false, $\var(Y) > \sigma^2$.
+%\eit
+
+%-----------------------
+\subsection{Test statistics}
+
+% data
+Suppose we obtain independent random samples from each group.
+\bit
+\it $Y_{11},Y_{12},\ldots,Y_{1n_1}$ where $Y_{1j}\sim N(\mu_1,\sigma^2)$,
+\it $Y_{21},Y_{22},\ldots,Y_{2n_2}$ where $Y_{2j}\sim N(\mu_2,\sigma^2)$,
+\it[] $\ldots$
+\it $Y_{k1}, Y_{k2}, \ldots, Y_{kn_k}$ where $Y_{kj}\sim N(\mu_k,\sigma^2)$.
+\eit
+
+Let $N=\sum_{i=1}^k n_i$ be the total number of observations. We estimate the overall mean $\mu$ and the individual group means $\mu_i$ by the sample means
+\[
+\hat{\mu} = \displaystyle\frac{1}{N}\sum_{i=1}^k\sum_{j=1}^{n_i} Y_{ij}
+\quad\text{and}\quad
+\hat{\mu}_i = \displaystyle\frac{1}{n_i}\sum_{j=1}^{n_i} Y_{ij}
+\quad\text{respectively.}
+\]
+
+Consider the sum of the squared differences between the $Y_{ij}$ and the overall sample mean $\hat{\mu}$,
+\begin{align*}
+\sum_{i=1}^k\sum_{j=1}^{n_i} (Y_{ij}-\hat{\mu})^2
+	& = \sum_{i=1}^k\sum_{j=1}^{n_i} (Y_{ij}-\hat{\mu}_i + \hat{\mu}_i-\hat{\mu})^2 \\
+	& = \sum_{i=1}^k\sum_{j=1}^{n_i} \big[(Y_{ij}-\hat{\mu}_i)^2 + 2(Y_{ij}-\hat{\mu}_i)(\hat{\mu}_i-\hat{\mu}) + (\hat{\mu}_i-\hat{\mu})^2\big] \\
+%	& = \sum_{j=1}^{n_i} (Y_{ij}-\hat{\mu}_i)^2 + 2(\sum_{j=1}^{n_i}Y_{ij}-n_i\hat{\mu}_i)(\hat{\mu}_i-\hat{\mu}) + \sum_{j=1}^{n_i}(\hat{\mu}_i - \hat{\mu})^2 \\
+	& = \sum_{i=1}^k\sum_{j=1}^{n_i} (Y_{ij}-\hat{\mu}_i)^2 + \sum_{i=1}^k n_i(\hat{\mu}_i-\hat{\mu})^2 \\
+\end{align*}
+
+We write this as $SST = SSE + SSG$ where
+\[
+\begin{array}{lll}
+SST	& = \displaystyle\sum_{i=1}^k\sum_{j=1}^{n_i} (Y_{ij}-\hat{\mu})^2
+\qquad\qquad & \text{is the \textbf{total sum-of-squares,}} \\
+SSE	& = \displaystyle\sum_{i=1}^k\sum_{j=1}^{n_i} (Y_{ij}-\hat{\mu}_i)^2
+\qquad & \text{is the \textbf{error sum-of-squares} (due to variation within groups),} \\
+SSG	& = \displaystyle\sum_{i=1}^k n_i (\hat{\mu}_i-\hat{\mu})^2
+\qquad & \text{is the \textbf{groups sum-of-squares} (due to variation between groups).} \\
+\end{array}
+\]
+
+%If the ratio $SSG/SSE$ is large, we might be inclined to reject the null hypothesis that all group means are equal.
+%
+%Thus
+%\begin{align*}
+%\sum_{i=1}^k\sum_{j=1}^{n_i} \left(\frac{Y_{ij}-\hat{\mu}}{\sigma})^2
+%	& = \sum_{i=1}^k\sum_{j=1}^{n_i} \left(\frac{Y_{ij}-\hat{\mu}_i}{\sigma}\right)^2 + \sum_{i=1}^k n_i\left(\frac{\hat{\mu}_i-\hat{\mu}}{\sigma}\right)^2 \\
+%\end{align*}
+
+% lemma: combined
+\begin{lemma}
+The error sum-of-squares and groups sum-of-squares both have $\chi^2$-distribution:
+\[\begin{array}{ll}
+\displaystyle\frac{1}{\sigma}\sum_{i=1}^k\sum_{j=1}^{n_i} (Y_{ij}-\hat{\mu}_i)^2 
+	& \sim \chi^2_{N-k} \\[2ex]
+\displaystyle\frac{1}{\sigma}\sum_{i=1}^k n_i (\hat{\mu}_i-\hat{\mu})^2	
+	& \sim \chi^2_{k-1}(\lambda)\text{ where }\lambda = \displaystyle\sum_{i=1}^k n_i(\mu_i-\mu)^2.
+\end{array}\]
+%\begin{align*}
+%\frac{1}{\sigma}\sum_{i=1}^k\sum_{j=1}^{n_i} (Y_{ij}-\hat{\mu}_i)^2 
+%	& \sim \chi^2_{N-k} \\
+%\frac{1}{\sigma}\sum_{i=1}^k n_i (\hat{\mu}_i-\hat{\mu})^2	
+%	& \sim \chi^2_{k-1}(\lambda)\text{ where }\lambda = \sum_{i=1}^k n_i(\mu_i-\mu)^2.
+%\end{align*}
+%\begin{align*}
+%\frac{1}{\sigma}SSE 	& \sim \chi^2_{N-k}. \\
+%\frac{1}{\sigma}SSG 	& \sim \chi^2_{k-1}(\lambda)\quad\text{where}\quad\lambda = \sum_{i=1}^k n_i(\mu_i-\mu)^2.
+%\end{align*}
+\end{lemma}
+%\begin{lemma}
+%\begin{align*}
+%\sum_{i=1}^k\sum_{j=1}^{n_i}\left(\frac{Y_{ij}-\hat{\mu}_i}{\sigma}\right)^2 
+%	& \sim \chi^2_{N-k}. \\
+%\sum_{i=1}^k n_i \left(\frac{\hat{\mu}_i-\hat{\mu}}{\sigma}\right)^2 
+%	& \sim \chi^2_{k-1}(\lambda)\quad\text{where}\quad\lambda = \sum_{i=1}^k n_i(\mu_i-\mu)^2. \\
+%\end{align*}
+%\end{lemma}
+\begin{proof}
+\ben
+\it % SSE
+By independence, because $Y_{ij}\sim N(\mu_i,\sigma^2)$ we have
+\[
+\sum_{j=1}^{n_i}\left(\frac{Y_{ij}-\mu_i}{\sigma}\right)^2 \sim \chi^2_{n_i}.
+\]
+Replacing the unknown expectation $\mu_i$ by the sample mean $\hat{\mu}_i$, we obtain
+\[
+\frac{1}{\sigma^2}\sum_{j=1}^{n_i}(Y_{ij}-\hat{\mu}_i)^2 \sim \chi^2_{n_i-1}.
+\]
+If $U\sim\chi^2_m$ and $V\sim\chi^2_n$ then $U+V\sim\chi^2_{m+n}$, so
+\[
+\frac{1}{\sigma^2}\sum_{i=1}^k\sum_{j=1}^{n_i}(Y_{ij}-\hat{\mu})^2 \sim \chi^2_{N-k}.
+\]
+\it % SSG
+Because $\hat{\mu_i}$ is a sample mean, we have $\hat{\mu}_i\sim N(\mu_i,\sigma^2/n_i)$, so
+\[ 
+\sqrt{n_i}\left(\frac{\hat{\mu}_i - \mu}{\sigma}\right) \sim N(\mu_i-\mu,1)
+\]
+Because all observations are independent, the sample means $\hat{\mu}_i$ are also independent so
+\[
+\sum_{i=1}^k n_i\left(\frac{\bar{Y}_i - \mu}{\sigma}\right)^2 \sim \chi^2_{k}(\lambda) 
+\quad\text{where}\quad \lambda = \sum_{i=1}^k(\mu_i-\mu)^2.
+\]
+Finally, replacing the unknown expectation $\mu$ by the sample mean $\hat{\mu}$, we obtain 
+\[
+\frac{1}{\sigma^2}\sum_{i=1}^k n_i (\hat{\mu}_i - \hat{\mu})^2 \sim \chi^2_{k-1}(\lambda).
+\]
+\een
+\end{proof}
+
+% theorem: test statistic
+\begin{theorem}[Test Statistic for ANOVA]
+Let $F = s^2_G/s^2_E$ where
+\[
+s^2_G = \frac{1}{k-1}\sum_{i=1}^k n_i (\hat{\mu}_i-\hat{\mu})^2
+\quad\text{and}\quad
+s^2_E = \frac{1}{N-k}\sum_{i=1}^k\sum_{j=1}^{n_i} (Y_{ij}-\hat{\mu}_i)^2.
+\]
+Then $F\sim F_{k-1,N-k}$ under $H_0:\mu_1=\mu_2=\ldots=\mu_k$.
+\end{theorem}
+
+% remark
+\begin{remark}
+Under the alternative hypothesis we have $\lambda>0$, in which case the $s^2_G$ is likely to be larger than it would be under the null hypothesis. Thus we require an upper-tail test: $H_0$ is rejected whenever $F > F_{\alpha}$ where $F_{\alpha}$ is the upper-tail critical value of the $F_{k-1,N-k}$ distribution at significance level $\alpha$. 
+\end{remark}
+
+The various statistics computed during a one-way analysis of variance are usually reported in tabular form:
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|} \hline
+Source 	& \qquad df\qquad\mbox{}& \qquad SS\qquad\mbox{}& \qquad MS\qquad\mbox{}& \qquad F\qquad\mbox{}	\\ \hline
+Groups	& $k-1$					& $SSG$					& $s^2_G$				& $F = s^2_G/s^2_E$		\\ \hline
+Error 	& $N-k$					& $SSE$					& $s^2_E$				&						\\ \hline
+Total	& $N-1$					& $SST$					& 						& 						\\ \hline
+\end{tabular}\par
+\end{center}
+
+\begin{example}
+The data below are the yields (per hectare) of eight types of wheat, recorded over four independent trials. 
+\[
+\begin{array}{|c|cccc|}\hline
+\text{Type}	& \multicolumn{4}{c|}{\text{Yield}} \\ \hline
+1 &  182 & 214 & 216 & 231 \\
+2 &  196 & 202 & 208 & 224 \\
+3 &  203 & 212 & 221 & 242 \\
+4 &  198 & 203 & 207 & 222 \\
+5 &  171 & 192 & 197 & 204 \\
+6 &  194 & 218 & 223 & 232 \\
+7 &  208 & 216 & 218 & 239 \\
+8 &  183 & 188 & 193 & 198 \\ \hline
+\end{array}
+\]
+Perform a one-way analysis-of-variance to determine whether there are significant differences among the mean yields of the eight types.
+\end{example}
+
+\begin{solution}
+%\[
+%\begin{array}{|c|cccc|r|r|}\hline
+%\text{Type} (i)	& \multicolumn{4}{c|}{\text{Yield}} & \sum_j X_{ij} &  \sum_j X_{ij}^2 \\ \hline
+%1 				&  182 & 214 & 216 & 231 	&  843 &  178937 \\
+%2 				&  196 & 202 & 208 & 224 	&  830 &  172660 \\
+%3 				&  203 & 212 & 221 & 242 	&  878 &  193558 \\
+%4 				&  198 & 203 & 207 & 222 	&  830 &  172546 \\
+%5 				&  171 & 192 & 197 & 204 	&  764 &  146530 \\
+%6 				&  194 & 218 & 223 & 232 	&  867 &  188713 \\
+%7 				&  208 & 216 & 218 & 239 	&  881 &  194565 \\
+%8 				&  183 & 188 & 193 & 198 	&  762 &  145286 \\ \hline
+%\text{Overall}	&      &     &     &    		& 6655 & 1392795 \\ \hline
+%\end{array}
+%\]
+Tedious calculations give the following sums-of-squares:
+\[
+SST = 8762.97,\quad SSG = 3848.72 \text{\quad and\quad} SSE = 4914.25.
+\]
+
+%The sums of squares are computed as follows:
+%\begin{align*}
+%S_T
+%	& = \sum_{i=1}^k \sum_{j=1}^{n_i} (X_{ij}-\bar{X}_{\cdot\cdot})^2 \\
+%	& = \sum_{i=1}^k \sum_{j=1}^{n_i} X_{ij}^2 - \frac{1}{N}\left(\sum_{i=1}^k\sum_{j=1}^{n_i} X_{ij}\right)^2 \\
+%	& = (182^2 + 214^2 + \ldots + 762^2) - \frac{6655^2}{32} \\
+%	& = 1392795 - 1384032.03125 = 8762.96875 \\ 
+%\end{align*}
+%
+%\begin{align*}
+%S_G
+%	& = \sum_{i=1}^k n_i(\bar{X}_{i\cdot}-\bar{X}_{\cdot\cdot})^2 \\
+%	& = \sum_{i=1}^k \frac{1}{n_i}\left(\sum_{j=1}^{n_i} X_{ij}\right)^2 
+%			- \frac{1}{N}\left(\sum_{i=1}^k\sum_{j=1}^{n_i} X_{ij}\right)^2 \\
+%	& \left(\frac{843^2}{4} + \frac{830^2}{4} +\ldots+ \frac{762^2}{4}\right) - \frac{6655^2}{32} \\
+%	& = 1387880.75 - 1384032.03125 = 3848.71875. 
+%\end{align*}
+%\begin{align*}
+%S_E
+%	& = \sum_{i=1}^k \sum_{j=1}^{n_i} (X_{ij}-\bar{X}_{i\cdot})^2  \\
+%	& = \sum_{i=1}^k \sum_{j=1}^{n_i} X^2_{ij} - \sum_{i=1}^k \frac{1}{n_i}\left(\sum_{j=1}^{n_i} X_{ij}\right)^2 \\ 
+%	& = (182^2 + 214^2 + \ldots + 762^2) - \left(\frac{843^2}{4} + \frac{830^2}{4} +\ldots+ \frac{762^2}{4}\right) \\
+%	& = 1392795 - 1387880.75 = 4914.25 \\
+%\end{align*}
+%Check: $S_G + S_E = 3848.77 + 4914.20 = 8762.9 = S_0$.
+
+The ANOVA table is:
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|} \hline
+Source	& df	& SS		& MS		& F 			\\ \hline
+Groups	& 7		& 3848.72	& 549.8170	& 2.6852		\\ \hline
+Error	& 24	& 4914.25	& 204.7604 	& 			\\ \hline
+Total	& 31	& 8762.97 	& 			&			\\ \hline
+\end{tabular}\par
+\end{center}
+
+From tables of the $F_{7,24}$ distribution, 
+\bit
+\it The 95th percentile is $F_{0.05} = 2.42$.
+\it The 99th percentile is $F_{0.01} = 3.50$.
+\eit
+The observed value of the test statistic lies between these two values: we would reject the null hypothesis at $\alpha=0.05$, but not at $\alpha=0.01$.
+\end{solution}

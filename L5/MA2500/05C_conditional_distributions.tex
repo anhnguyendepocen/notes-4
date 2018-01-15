@@ -1,0 +1,561 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Conditional distributions}\label{sec:cond_dist}
+
+Recall that for any two events $A$ and $B$ with $\prob(A)>0$, the \emph{conditional probability} of $B$ given $A$ is 
+\[
+\prob(B|A) = \frac{\prob(A\cap B)}{\prob(A)}.
+\]
+This notion extends to random variables: if $C$ and $D$ are subsets of $\R$, the conditional probability of $\{Y\in D\}$ given $\{X\in C\}$ is
+\[
+\prob(Y\in D|X\in C) = \frac{\prob(X\in C,Y\in D)}{\prob(X\in C)}.
+\]
+
+%-----------------------------
+\subsection{Conditioning on events}
+Let $A$ be an event and let $Y$ be a random variable.
+
+\begin{definition}\label{def:conditional_on_events}
+\ben
+\it The \emph{conditional distribution} of $Y|A$ is the function $\prob_{Y|A}$ defined on subsets of $\R$ by
+\[
+\prob_{Y|A}(D) = \prob(Y\in D|A) = \frac{\prob\big(\{Y\in D\}\cap A\big)}{\prob(A)}\qquad\text{for all $D\subseteq\R$}.
+\]
+\it The \emph{conditional CDF} of $Y|A$ is the function $F_{Y|A}$ defined on $\R$ by
+\[
+F_{Y|A}(y) = \prob(Y\leq y|A) = \frac{\prob\big(\{Y\leq y\}\cap A\big)}{\prob(A)}\qquad\text{for all $y\in\R$}.
+\]
+\it If $Y$ is discrete the, \emph{conditional PMF of $Y|A$} is the function 
+\[
+f_{Y|A}(y) = \prob(Y=y|A) = \frac{\prob\big(\{Y=y\}\cap A\big)}{\prob(A)}.
+\]
+\it If $Y$ is continuous the \emph{conditional PDF of $Y|A$} is the function 
+\[
+f_{Y|A}(y) = F'_{Y|A}(y).
+\]
+\it The \emph{conditional expectation of $Y|A$} is taken with respect to the conditional distribution of $Y|A$:
+\[
+\expe\big(Y|X) = \begin{cases}
+	\ \displaystyle\sum_{i=1}^{\infty} y_i f_{Y|A}(y_i)		& \text{if $Y$ is discrete;} \\[3ex]
+	\ \displaystyle\int_{-\infty}^{\infty} y f_{Y|A}(y)\,dy	& \text{if $Y$ is continuous.} 
+\end{cases}
+\]
+\een
+\end{definition}
+
+% example
+\begin{example}\label{example:cond_pmf}
+A fair coin is tossed repeatedly until a head occurs. Find the conditional PMF of the number of times the coin is tossed, given that the coin is tossed an odd number of times.
+\begin{solution}
+Let $A$ be the event that the coin is tossed an odd number of times and let $Y$ be the number of times the coin is tossed. 
+The sample space is $\Omega=\{H,TH,TTH,TTTH,\ldots\}$ and $A=\{H,TTH, TTTTH,\ldots\}$, and because the coin is fair, $\prob(Y=k)=1/2^k$ so
+\[
+\prob(A) = \frac{1}{2} + \frac{1}{8} + \frac{1}{32} + \frac{1}{128} + \ldots = \frac{2}{3}.
+\]
+Hence the conditional PMF of $Y|A$ is 
+\[
+f_{Y|A}(k)
+	= \frac{\prob(\{Y=k\}\cap A)}{\prob(A)}
+	= \begin{cases}
+	3/2^{k+1}	& \text{if $k$ is odd,} \\
+	0			& \text{if $k$ is even.} 
+	\end{cases}
+\]
+Note that the denominator acts as a \emph{scale factor} to ensure that the conditional probabilities $f_{Y|A}(k)$ sum to $1$.
+The conditional expectation of $Y|A$ is
+\[
+\expe(Y|A) 
+	= \sum_{k=1}^{\infty} k f_{Y|A}(y)
+	= \sum_{\stackss{k=1}{k\text{ odd}}}^{\infty} \frac{3k}{2^{k+1}}
+	= \sum_{\ell=1}^{\infty} \frac{3(l+1)/2}{2^{(\ell+1)/2+1}}
+	= \sum_{\ell=1}^{\infty} \frac{3(l+1)}{4\sqrt{2^{\ell+1}}}
+\]
+\end{solution}
+\end{example}
+
+% example
+\begin{example}
+Let $Y\sim\text{Uniform}[0,1]$. Find the conditional expectation of $Y$ given that $1/2\leq Y\leq 3/4$.
+\begin{solution}
+The CDF of the standard uniform distribution is
+\[
+F_Y(y) = \begin{cases}
+	0	& \text{if $y < 0$} \\
+	y	& \text{if $0 \leq y \leq 1$} \\
+	1	& \text{if $y > 1$.}
+\end{cases}
+\]
+Let $A=\{1/2\leq Y\leq 3/4\}$. Then the conditional CDF of $Y|A$ is
+\begin{align*}
+F_{Y|A}(y) = \prob(Y\leq y|A)
+%	& = \frac{\prob(Y\leq y, A)}{\prob(A)} \\
+	& = \frac{\prob(Y\leq y\text{ and }1/2\leq Y\leq 3/4)}{\prob(1/2\leq Y\leq 3/4)} \\
+	& = \frac{\prob(Y\leq y)-\prob(Y\leq 1/2)}{\prob(Y\leq 3/4)-\prob(Y\leq 1/2)} \\
+	& = \frac{F_Y(y)-F_Y(1/2)}{F_Y(3/4)-F_Y(1/2)} 
+	= \begin{cases}
+    	0	& \text{if $y < 1/2$} \\
+    	4y	& \text{if $1/2 \leq y \leq 3/4$} \\
+    	1	& \text{if $y > 3/4$.}
+    \end{cases}
+\end{align*}
+The conditional PDF of $Y|A$ is therefore equal to $f_{Y|A}(y) = F'_{Y|X}(y) = 4$ if $1/2\leq y\leq 3/4$ and zero otherwise, which shows that $Y|A\sim\text{Uniform}[1/2,3/4]$. The conditional expectation of $Y|A$ is 
+\[
+\expe(Y|A) 
+	= \int_{-\infty}^{\infty} y f_{Y|A}(y)\,dy
+	= \int_{1/2}^{3/4} 4y \,dy
+	= 5/8,
+\]
+which is the mid-point of the interval $[1/2,3/4]$ as expected.
+\end{solution}
+\end{example}
+
+%-----------------------------
+\subsection{Conditioning on random variables}
+Let $X$ and $Y$ be two random variables defined on the same probability space.
+
+\begin{definition}
+\ben
+\it The conditional distribution of $Y|X$ is the function $\prob_{Y|X}$ defined on pairs of subsets of $\R$ by
+\[
+\prob_{Y|X}(C,D) = \prob(Y\in D|X\in C) = \frac{\prob(X\in C, Y\in D)}{\prob(X\in C)}\qquad\text{for all $C,D\subseteq\R$}.
+\]
+This is completely determined by the following.
+\it The conditional CDF of $Y|X$ is the function $F_{Y|X}$ defined on $\R^2$ by
+\[
+F_{Y|X}(x,y) = \prob(Y\leq y|X\leq x) = \frac{\prob(X\leq x, Y\leq y)}{\prob(X\leq x)}\qquad\text{for all $x,y\in\R$}.
+\]
+\een
+\end{definition}
+
+% lemma: cond CDF formula
+\begin{lemma}
+The conditional CDF of $Y|X$ satisfies 
+\[
+F_{Y|X}(x,y) = \frac{F_{X,Y}(x,y)}{F_X(x)}
+\]
+where $F_{X,Y}$ is the joint CDF of $X$ and $Y$, and $F_X$ is the marginal CDF of $X$.
+\end{lemma}
+\begin{proof}
+\[
+F_{Y|X}(x,y) 
+	= \prob(Y\leq y\,|\,X\leq x)
+	= \frac{\prob(X\leq x, Y\leq y)}{\prob(X\leq x)}
+	= \frac{F_{X,Y}(x,y)}{F_X(x)}.
+\]
+\end{proof}
+
+%% def: cond PMF/PDF
+%Suppose we observe the event $\{X=x\}$ where $x$ is a fixed value. If the marginal PMF/PDF of $X$ satisfies $f_X(x)>0$, we write the conditional PMF/PDF of $Y|X=x$ as
+%\begin{definition}
+%Let $x$ be a fixed value. If $f_X(x)>0$ the \emph{conditional PMF/PDF of $Y|X=x$} is
+%\[
+%f_{Y|X}(y|x) = \frac{f_{X,Y}(x,y)}{f_X(x)}
+%\]
+%where $f_{X,Y}$ is the joint PMF/PDF of $X$ and $Y$.
+%\end{definition}
+%
+%\bigskip
+%Recall the partition theorem for random events: if $\{A_1,A_2,\ldots\}$ is a partition of $B$ then
+%\[
+%\prob(B) = \sum_{i=1}^{\infty} \prob(B|A_i)\prob(A_i).
+%\]
+%We have the following version of the partition theorem for random variables. 
+%
+%% partition theorem
+%\begin{theorem}\label{thm:partition_for_rvs}
+%The marginal PMF/PDF of $Y$ satisfies
+%\[\begin{array}{lll}
+%f_Y(y) & = \displaystyle
+%	\sum_{i=1}^{\infty} 		f_{Y|X}(y|x_i)f_X(x_i)		& \quad\text{if $X$ is discrete, and} \\[4ex]
+%f_Y(y) & = \displaystyle
+%	\int_{-\infty}^{\infty} 	f_{Y|X}(y|x)f_X(x)\,dx		& \quad\text{if $X$ is continuous.} 
+%\end{array}
+%\]
+%\end{theorem}
+%\begin{proof}
+%For the continuous case (the discrete case is similar),
+%\[
+%\int f_{X|Y}(x|y) f_Y(y)\,dy 
+%	= \int \left(\frac{f_{X,Y}(x,y)}{f_Y(y)}\right) f_Y(y)\,dy
+%	= \int f_{X,Y}(x,y)\,dy
+%	= f_X(x).
+%\]
+%\end{proof}
+%
+%%-----------------------------
+%\subsubsection{Change notation}
+%
+%%-----------------------------
+
+% def: cond PMF/PDF
+%Let $x$ be a fixed value and suppose we observe that $X=x$. If $X$ is a continuous random variable, we cannot define the conditional PMF/PDF of $Y|X=x$ using definition~\ref{def:conditional_on_events}, because it might be that $\prob(X=x)=0$, and division by zero is undefined. Instead we use the following.
+% where $x$ is a fixed value. If the marginal PMF/PDF of $X$ satisfies $f_X(x)>0$, we write the conditional PMF/PDF of $Y|X=x$ as
+\begin{definition}
+If $f_X(x)>0$ the \emph{conditional PMF/PDF of $Y|X=x$} is 
+\[
+f_{Y|X=x}(y) = \frac{f_{X,Y}(x,y)}{f_X(x)}
+\]
+where $f_{X,Y}$ is the joint PMF/PDF of $X$ and $Y$.
+\end{definition}
+
+\bigskip
+Recall the partition theorem for random events: if $\{A_1,A_2,\ldots\}$ is a partition of $B$ then
+\[
+\prob(B) = \sum_{i=1}^{\infty} \prob(B|A_i)\prob(A_i).
+\]
+We have the following version of the partition theorem for random variables. 
+
+% partition theorem
+\begin{theorem}\label{thm:partition_for_rvs}
+The marginal PMF/PDF of $Y$ satisfies
+\[\begin{array}{lll}
+f_Y(y) & = \displaystyle
+	\sum_{i=1}^{\infty} 		f_{Y|X=x_i}(y)f_X(x_i)		& \quad\text{if $X$ is discrete, and} \\[4ex]
+f_Y(y) & = \displaystyle
+	\int_{-\infty}^{\infty} 	f_{Y|X=x}(y)f_X(x)\,dx		& \quad\text{if $X$ is continuous.} 
+\end{array}
+\]
+\end{theorem}
+\begin{proof}
+For the continuous case (the discrete case is similar),
+\[
+\int f_{Y|X=x}(y) f_Y(y)\,dx 
+	= \int \left(\frac{f_{X,Y}(x,y)}{f_Y(y)}\right) f_Y(y)\,dx
+	= \int f_{X,Y}(x,y)\,dx
+	= f_Y(y).
+\]
+\end{proof}
+
+\begin{definition}\label{def:cond_expe_x}
+Let $x$ be a fixed value. The \emph{conditional expectation of $Y|X=x$} is 
+\[
+\begin{array}{lll}
+\expe(Y|X=x) & = \displaystyle\sum_{j=1}^{\infty} y_j\,f_{Y|X=x}(y_j)		& \quad\text{if $Y$ is discrete, or} \\[4ex]
+\expe(Y|X=x) & = \displaystyle\int_{-\infty}^{\infty} y\,f_{Y|X=x}(y)\,dy	& \quad\text{if $Y$ is continuous.} 
+\end{array}
+\]
+\end{definition}
+
+%-----------------------------
+\subsection{Conditional expectation}
+
+
+For any fixed value of $x$ the conditional expectation $\expe(Y|X=x)$ is just a number. Let us now think of $x$ as a variable quantity, and consider the transformation
+\[
+\begin{array}{rccl}
+	g:	& \R	& \to		& \R \\
+		& x		& \mapsto	& \expe(Y|X=x)
+\end{array}
+\]
+This transformation of $X$ yields a new random variable.
+\begin{definition}\label{def:cond_expe}
+The \emph{conditional expectation of $Y|X$} is the random variable
+\[\begin{array}{llll}
+\expe(Y|X):	& \Omega 	& \to 		& \R \\
+			& \omega	& \mapsto 	& \expe\big[Y|X=X(\omega)\big].
+\end{array}\]
+\end{definition}
+
+The distribution of $\expe(Y|X)$ depends only on the distribution of $X$ and its expectation is given by
+\[
+\begin{array}{lll}
+\expe\big[\expe(Y|X)\big] & = \displaystyle\sum_{i=1}^{\infty}\expe(Y|X=x_i)f_X(x_i)		& \quad\text{if $X$ is discrete, or} \\[3ex]
+\expe\big[\expe(Y|X)\big] & = \displaystyle\int_{-\infty}^{\infty} \expe(Y|X=x)f_X(x)\,dx	& \quad\text{if $X$ is continuous.} 
+\end{array}
+\]
+
+% LTE
+\begin{theorem}[Law of total expectation]
+Let $X$ and $Y$ be random variables defined on the same probability space. Then
+\[
+\expe(Y) = \expe\big[\expe(Y|X)\big].
+\]
+\end{theorem}
+\begin{proof}
+For discrete random variables (the continuous case is similar):
+\begin{align*}
+\expe\big[\expe(Y|X)\big] 
+	= \sum_x \expe(Y|X=x) f_X(x) 
+	& = \sum_x\left(\sum_y y\,f_{Y|X}(y|x)\right) f_X(x) \\
+	& = \sum_x\left(\sum_y y\,\frac{f_{X,Y}(x,y)}{f_X(x)}\right) f_X(x) \\
+	& = \sum_x\left(\sum_y y f_{X,Y}(x,y)\right) \\
+	& = \sum_x y \left(\sum_y f_{X,Y}(x,y)\right) \\
+	& = \sum_x y f_Y(y)  
+	= \expe(Y).
+\end{align*}
+\end{proof}
+
+% LTV
+\begin{theorem}[Law of total variance]
+If $X$ and $Y$ are random variables defined on the same probability space,
+\[
+\var(Y) = \expe\big[\var(Y|X)\big] + \var\big[\expe(Y|X)\big] 
+\]
+where $\var(Y|X)=\expe(Y^2|X) - \expe(Y|X)^2$.
+\end{theorem}
+\begin{proof}
+By the law of total expectation,
+\begin{align*}
+\var(Y)
+	& = \expe(Y^2) - \expe(Y)^2 \\
+	& = \expe\big[\expe(Y^2|X)\big] - \expe\big[\expe(Y|X)\big]^2
+\end{align*}
+Because $\var(Y|X)=\expe(Y^2|X) - \expe(Y|X)^2$,
+\[
+\var(Y) = \expe\big[\var(Y|X) + \expe(Y|X)^2\big] - \expe\big[\expe(Y|X)\big]^2
+\]
+Hence, by the linearity of expectation,
+\begin{align*}
+\var(Y)
+	& = \expe\big[\var(Y|X)\big] + \Big(\expe\big[\expe(Y|X)^2\big] - \expe\big[\expe(Y|X)\big]^2\Big) \\
+	& = \expe\big[\var(Y|X)\big] + \var[\expe(Y|X)\big].
+\end{align*}
+\end{proof}
+
+% example
+\begin{example}
+Let the joint PDF of the continuous random variables $X$ and $Y$ be 
+\[
+f_{X,Y}(x,y) = \begin{cases}
+	cxy & \quad\text{for $x,y\geq 0$ with $x+y\leq 1$}, \\
+	0	& \quad\text{otherwise.}
+\end{cases}
+\]
+\ben
+\it Sketch the support of $f_{X,Y}$
+\it Show that $c=24$.
+\it Compute the conditional expectation $\expe(Y|X)$.
+\it Verify the identity $\expe\big[\expe(Y|X)\big]=\expe(Y)$.
+\een 
+
+\begin{solution}
+\ben
+
+\it % << (a)
+$\supp(f_{X,Y})$ is the lower-left half of the unit square.
+
+\it % << (b)
+The marginal PDF of $X$ is
+\[
+f_X(x) = c\int_{0}^{1-x} xy\,dy = \frac{cx(1-x)^2}{2}
+\]
+and similarly for $Y$. To find $c$,
+\[
+\int_{0}^{1} f_X(x)\,dx = 1, \qquad\text{so}\quad c=24.
+\]
+Thus
+\begin{align*}
+f_X(x)	& = 12x(1-x)^2 \qquad 0\leq x\leq 1 \\
+f_Y(y)	& = 12y(1-y)^2 \qquad 0\leq y\leq 1 \\
+\end{align*}
+and
+\begin{align*}
+\expe(X) & = 12\int_0^1 x(1-x)^2\,dx = 2/5 \\
+\expe(Y) & = 12\int_0^1 y(1-y)^2\,dy = 2/5 \\
+\end{align*}
+
+\it % << (c)
+To compute $\expe(Y|X)$,
+\begin{align*}
+\expe(Y|X=x)
+	= \int_0^1 y\left(\frac{f_{X,Y}(x,y)}{f_X(x)}\right)\,dy
+	& = \int_0^{1-x} y\left(\frac{24xy}{12x(1-x)^2}\right)\,dy \\
+	& = \frac{24x}{12x(1-x)^2}\int_0^{1-x} y^2\,dy \\
+	& =  \frac{24x}{12x(1-x)^2}\left[\frac{(1-x)^3}{3}\right]
+	= \frac{2}{3}(1-x)	
+\end{align*}
+so $\expe(Y|X) = 2(1-X)/3$.
+
+\it % << (d)
+\begin{align*}
+\expe\big(\expe(Y|X)\big)
+	& = \int_0^1 \expe(Y|X=x) f_X(x)\,dx \\
+	& = \frac{2}{3}\int_0^1 (1-x) f_X(x)\,dx \\
+	& = \frac{2}{3}\big(1-\expe(X)\big) = \frac{2}{3}\left(1-\frac{2}{5}\right) = \frac{2}{5}
+	= \expe(Y).
+\end{align*}
+\een
+\mbox{}
+\end{solution}
+\end{example}
+
+% exercises
+\begin{exercise}
+\begin{questions}
+\question
+Let $X$ and $Y$ be jointly continuous random variables having the following joint PDF,
+\[
+f_{X,Y}(x,y) = 
+\begin{cases}
+	\frac{21}{4}x^2y		& \quad x^2<y<1, \\
+	0						& \quad\text{otherwise.}
+\end{cases}
+\]
+\ben
+\it Sketch the support of $f_{X,Y}$.
+\it Find the marginal PDFs of $X$ and $Y$.
+\it Find the mean and variance of $Y$.
+\it Find the conditional PDF of $Y$ given $X=x$. 
+\it Are $X$ and $Y$ independent? 
+\it Find the conditional expectation of $Y$ given $X=x$. 
+\it Find the conditional expectation of $Y$ given $X$. 
+\it Verify that $\expe(Y)=\expe\big[\expe(Y|X)\big]$.
+\een
+
+\begin{answer}
+\ben
+\it % << (a)
+The support of the joint PDF $f(x,y)$ is the set $\{(x,y): x^2 < y < 1\}$.  This is the region of the plane between the vertical lines $x=-1$ and $x=+1$, bounded above by the horizontal line $y=1$ and below by parabola $y=x^2$. In particular,
+\bit
+\it For fixed $x\in[-1,1]$, $f_{X,Y}(x,y)\neq 0$ only for $y\in[x^2,1]$.
+\it For fixed $y\in[0,1]$, $f_{X,Y}(x,y)\neq 0$ only for $x\in[-\sqrt{y},+\sqrt{y}]$.
+\eit
+
+\it % << (b)
+The marginal distributions are computed as follows:
+\begin{align*}
+f_X(x) 	
+	& = \int_{-\infty}^{\infty} f(x,y)\,dy 
+	= \int_{x^2}^1 \frac{21}{4}x^2y\,dy 
+	= \frac{21}{4}x^2\left[\frac{y^2}{2}\right]_{x^2}^1 
+	= \begin{cases} \frac{21}{8}x^2(1-x^4)	& -1<x<1, \\ 0 & \text{ otherwise.}\end{cases} \\ [2ex]
+f_Y(y) 	
+	& = \int_{-\infty}^{\infty} f(x,y)\,dx 
+	= \int_{-\sqrt{y}}^{\sqrt{y}} \frac{21}{4}x^2y\,dx 
+	= \frac{21}{4}y\left[\frac{x^3}{3}\right]_{-\sqrt{y}}^{\sqrt{y}}
+	= \begin{cases} \frac{7}{2}y^{5/2} & 0< y< 1, \\ 0 & \text{ otherwise.}\end{cases} \\
+\end{align*}
+
+\it % << (c)
+The expected value and variance of $Y$ are computed as follows:
+\begin{align*}
+\expe(Y)
+	& = \int_{-\infty}^{\infty} y\,f_Y(y)\,dy 	= \int_0^1 y\left(\frac{7y^{5/2}}{2}\right)\,dy = \frac{7}{9}, \\
+\expe(Y^2)
+	& = \int_{-\infty}^{\infty} y^2\,f_Y(y)\,dy = \int_0^1 y^2\left(\frac{7y^{5/2}}{2}\right)\,dy = \frac{7}{11}, \\
+\var(Y)
+	& = \expe(Y^2) - \expe(Y)^2 = \frac{7}{11} - \frac{49}{81} = \frac{28}{891}.
+\end{align*}
+
+\it % << (d)
+The conditional PDF of $Y$ given $X=x$ is
+\[
+f_{Y|X=x}(y) 	
+	= \frac{f_{X,Y}(x,y)}{f_X(x)} 
+	= \frac{(21/4)x^2y}{(21/8)x^2(1-x^4)} 	
+	= \begin{cases} 
+		\displaystyle\frac{2y}{1-x^4} 	& x^2\leq y\leq 1, \\
+	 	0 								& \text{ otherwise}.
+	 \end{cases}
+\]	 
+
+\it % << (e)
+$X$ and $Y$ are clearly not independent, because the support of $f_{X,Y}$ is not a rectangular region, and moreover, the conditional PDF of $Y$ given $X=x$ depends on $x$.
+
+\it % << (f)
+The conditional expected value of $Y$ given that $X=x$ is
+\begin{align*}
+\expe(Y|X=x) 
+	& = \int_{-\infty}^{\infty} y f_{Y|X=x}(y\,|\,x)\,dy \\
+	& = \int_{x^2}^1 y \left(\frac{2y}{1-x^4}\right)\,dy 
+	= \frac{2}{1-x^4}\left[\frac{y^3}{3}\right]_{x^2}^1
+	= \frac{2(1-x^6)}{3(1-x^4)} 
+\end{align*}	
+
+\it % << (g)
+The conditional expectation of $Y$ given $X$ is the random variable 
+\[
+\expe(Y|X)=\displaystyle\frac{2(1-X^6)}{3(1-X^4)}
+\]
+
+\it % << (h)
+The expected value of $\expe(Y|X)$ is
+\begin{align*}
+\expe\big[\expe(Y|X)\big] 
+	& = \int_{-\infty}^{\infty} \expe(Y|X=x)f_X(x)\,dx \\
+	& = \frac{2}{3}\int_{-1}^{1} \left(\frac{1-x^6}{1-x^4}\right)\left(\frac{21}{8}x^2(1-x^4)\right)\,dx \\
+	& = \frac{7}{4}\int_{-1}^{1} x^2(1-x^6)\,dx 
+	= \frac{7}{9}.
+\end{align*}	
+Thus $\expe\big[\expe(Y|X)\big]=\expe(Y)$ as required.
+\een
+\end{answer}
+
+% house for sale
+\question
+A man puts his house for sale and decides to accept the first offer that exceeds the reserve price of $r$. Let $Y_1,Y_2,\ldots$ represent the sequence of offers received, and suppose that the $Y_i$ are independent and identically distributed random variables, each having exponential distribution with rate parameter $\lambda$. 
+\begin{parts}
+\part
+Show that the expected number of offers received before the house is sold is $e^{\lambda r}$.
+\begin{answer}
+Let $N$ be the number of offers received before the house is sold. Then $\{N=k\}$ is the event that the first $k-1$ offers are at most $r$, each occurring independently with probability $F(r)$, and the $k$th offer exceeds $r$, which occurs with probability $1-F(r)$. Thus $N$ has \emph{geometric} distribution, with `probability of success' equal to $1-F(r)$ (where `success' corresponds to the sale of the house). Hence the expected number of offers received before the house is sold is
+\[
+\expe(N) = \frac{1}{1-F(r)} = e^{\lambda r}.
+\]
+\end{answer}
+\part 
+Show that the expected the expected selling price of the house is $r+1/\lambda$.
+\begin{answer}
+Let $Y\sim\text{Exponential}(\lambda)$ and let $A=\{Y>r\}$. The con
+Let $F_S$ be the conditional CDF of $Y_i$ given that $X_i>r$:
+\[
+F_Y|A(y)  
+	= \frac{\prob(r < Y \leq y)}{\prob(Y > r)}
+	= \frac{F(y)-F(r)}{1-F(r)}
+	= \begin{cases}
+		1 - e^{-\lambda(y-r)} 	& y > r, \\
+		0						& \text{otherwise.}
+	\end{cases}
+\]
+A straightforward calculation yields $\expe(Y|Y>r) = r + 1/\lambda$.
+\end{answer}
+\end{parts}
+
+\question
+\textbf{Compound distributions}. If $Y\sim\text{Poisson}(\lambda)$ then $\expe(Y)=\lambda$ and $\var(Y)=\lambda$. The Poisson distribution has only a single parameter so we cannot shift and scale the distribution by different ammounts, which limits its usefulness in certain practical applications. This problem can be addressed by allowing the parameter itself to be a random variable.
+
+\begin{parts}
+\part % exp
+Let $Y\sim\text{Poisson}(X)$ where $X\sim\text{Exponential}(\theta)$ and $\theta>0$ is a fixed scale parameter. Use the laws of total expectation and total variance, and the fact that $\expe(X)=\theta$ and $\var(X)=\theta^2$, to show that $\expe(Y)=\theta$ and $\var(Y)=\theta(1+\theta)$.
+\begin{answer}
+The conditional expectation and conditional variance of $Y$ are
+\[
+\expe(Y|X) = X \quad\text{and}\quad \var(Y|X) = X.
+\]
+By the law of total expectation
+\[
+\expe(Y) = \expe\big[\expe(Y|X)\big] = \expe(X) = \theta,
+\]
+and by the law of total variance,
+\begin{align*}
+\var(Y)	
+	& = \expe\big[\var(Y|X)\big] + \var\big[\expe(Y|X)\big] \\
+	& = \expe(X) + \var(X) \\
+	& = \theta + \theta^2 
+	= \theta(1+\theta)
+\end{align*}	
+because $\expe(X)=\theta$ and $\var(X)=\theta^2$ for $X\sim\text{Exponential}(\theta)$.
+\end{answer}
+
+\part % gamma
+Let $Y\sim\text{Poisson}(X)$ where $X\sim\text{Gamma}(\alpha,\beta)$ for some fixed parameters $\alpha,\beta>0$. Find values for $\alpha$ and $\beta$ such that $\expe(Y)=2$ and $\var(Y)=9$.
+\begin{answer}
+Because $Y\sim\text{Poisson}(X)$ we have $\expe(Y|X)=X$ and $\var(Y|X)=X$, so both are distributed according to the $\text{Gamma}(\alpha,\beta)$ distribution, whose mean and variance are $\alpha/\beta$ and $\alpha/\beta^2$ respectively. 
+
+By the laws of total expectation and total variance,
+\begin{align*}
+\expe(Y)
+	& = \expe\big[\expe(Y|X)\big] = \expe(X) = \alpha/\beta \\
+\var(Y)	
+	& = \expe\big[\var(Y|X)\big] + \var\big[\expe(Y|X)\big] = \expe(X) + \var(X) = \alpha(\beta+1)/\beta^2.
+\end{align*}
+Solving $\alpha/\beta=2$ and $\alpha(\beta+1)/\beta^2=9$ yields $\alpha=4/7$ and $\beta=2/7$. 
+
+\bigskip
+If $\alpha$ is an integer, $Y$ has the so-called $\text{NegativeBinomial}(r,p)$ distribution with $r=\alpha$ and $p=1/(1+\beta)$. This is the distribution of the number of successes up to the $r$th failure in a sequence of independent Bernoulli trials where each trial has probability of success $p$. 
+\end{answer}
+\end{parts}
+\end{questions}
+\end{exercise}
+

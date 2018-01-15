@@ -1,0 +1,254 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{PMFs and PDFs}\label{sec:pmfs_pdfs}
+
+\begin{definition}
+A random variable is called
+\ben
+\it \emph{simple} if it takes only finitely many values;
+\it \emph{discrete} if it takes only countably many values;
+\it \emph{continous} if it takes uncountably many values (and satisfies some other conditions).
+\een
+\end{definition}
+Because finte sets are countable, simple random variables are also discrete random variables.
+%-----------------------------
+\subsection{Discrete distributions}
+
+Discrete random variables are completely described by their PMFs.
+\begin{definition}\label{def:pmf}
+The \emph{probability mass function} (PMF) of a discrete random variable $X$ is a function
+\[
+\begin{array}{rccl}
+f:	& \R	& \to 		& [0,1] \\
+	& x		& \mapsto 	& \prob (X=x),
+\end{array}
+\]
+with the property that $\sum_{i=1}^{\infty}x_i f(x_i) = 1$, where $\{x_1,x_2,\ldots\}$ is the range of $X$.
+\end{definition}
+
+\begin{example}\label{example:coloured_dice_game}
+Two fair dice are rolled independently. Each die has two faces coloured red, two coloured blue and two coloured green. Suppose we win \pounds 10 if both dice show the same colour but lose \pounds 5 if they show different colours. Let $X$ be the amount won.
+%\begin{blankbox}
+\bit
+\it The sample space can be expressed as $\Omega=\{RR,RB,RG,BR,BB,BG,GR,GB,GG\}$.
+\it The random variable $X:\Omega\to\R$ can then be defined by
+\[
+X(\omega) = \begin{cases}
+	-5	& \text{if $\omega\in\{RB,RG,BR,BG,GR,GB\}$,} \\
+	10	& \text{if $\omega\in\{RR,BB,GG\}$.}
+\end{cases}
+\]
+\it The range of $X$ is the set $\{-5,10\}$.
+\it The PMF and CDF of $X$ are the functions
+\[
+f(x) = \begin{cases}
+	2/3	& \text{if $x = -5$} \\
+	1/3	& \text{if $x = 10$} \\
+	0	& \text{otherwise}
+\end{cases}
+\quad\text{and}\quad
+%\]
+%\it The CDF of $X$ is the function
+%\[
+F(x) = \begin{cases}
+	0	& \text{if $x < -5$} \\
+	2/3	& \text{if $-5 \leq x < 10$} \\
+	1	& \text{if $x \geq 10$}
+\end{cases}
+\quad\text{respectively}.
+\]
+\eit
+%\end{blankbox}
+\end{example}
+
+\subsubsection*{Fundamental discrete distributions}
+A simple random variable taking all values in its range with equal probability is said to have a (discrete) \emph{uniform} distribution. For example, if $X$ represents the score on a fair die, we say that $X$ is uniformly distributed over the set $\{1,2,3,4,5,6\}$. 
+
+The \emph{Bernoulli} distribution is the distribution of an indicator variable. For example, suppose a coin has probability $p$ of landing on heads. If $X$ is the indicator variable of this event we say that $X$ has the $\text{Bernoullii}(p)$ distribution.
+
+Three other fundamental discrete distributions are derived from the following convergent series,
+\[
+\begin{array}{ll}
+\displaystyle\sum_{k=0}^n p^k(1-p)^{n-k} 		= 1  						& \text{(binomial theorem)}, \\
+\displaystyle\sum_{k=0}^{\infty} (1-p)^k 		= 1/p \quad\text{for $|p|<1$} 	& \text{(geometric series)}, \\
+\displaystyle\sum_{k=0}^{\infty} \lambda^k/k!	= e^{\lambda}	 			& \text{(exponential function)}.
+\end{array}
+\]
+which yield the binomial, geometric, and Poisson distributions respectively. 
+
+\begin{table}[h]
+\[\begin{array}{lclcl}\hline
+\text{Distribution} 			& & \text{PMF}					& & \text{Range}	\\ \hline
+X\sim\text{Uniform}(n)			& & 1/n 						& & \{1,2,\ldots,n\}\\
+X\sim\text{Bernoulli}(p)		& & p^x(1-p)^{1-x} 				& & \{0,1\}			\\
+X\sim\text{Binomial}(n,p)		& & \binom{n}{x}p^x(1-p)^{n-x} 	& & \{0,1,\ldots,n\}\\
+X\sim\text{Geometric}(p)		& & (1-p)^{x}p 					& & \{0,1,\ldots\}	\\
+X\sim\text{Poisson}(\lambda)	& & \lambda^x e^{-\lambda}/x! 	& & \{0,1,\ldots\} 	\\ \hline
+\end{array}\]
+\caption{Fundamental discrete distributions\label{tab:basic_discrete}}
+\end{table}
+
+\begin{exercise}
+For each distribution shown in the Table~\ref{tab:basic_discrete} verify that the expressions given for their PMFs are indeed PMFs.
+\end{exercise}
+
+%-----------------------------
+\subsection{Continuous distributions}
+
+Consider a random experiment which involves measuring the lifetime of a lightbulb. Let $X$ be the time elapsed between the start of the experiment and the point at which the lightbulb fails. Then $X$ can take any value in the non-negative real numbers $[0,\infty)$, which is an \emph{uncountable} set. The distribution of $X$ cannot therefore be specified by a probability mass function. Subject to a condition on its CDF however, the distribution of $X$ can be specified by a \emph{probability density function}.
+
+\begin{definition}\label{def:cts_rvs}
+Let $X$ be a random variable and let $F$ denote its CDF. If there exists an integrable function $f:\R\to [0,\infty)$ such that 
+\[
+F(x) = \int_{-\infty}^x f(t)\,dt \text{\quad for all\quad} x\in\R,
+\]
+then $X$ is called a \emph{continuous random variable} and $f$ is called its \emph{probability density function} (PDF).
+\end{definition}
+By the second fundamental theorem of calculus, $f(x) = F'(x)$. Note also that if $X$ is a continuous random variable then $\prob(X=x)=0$ for any $x\in\R$ (this is analagous to saying that the length of a point is zero). The following result is sometimes called the \emph{law of total probability}.
+\begin{proposition}
+For any PDF,
+\[
+\displaystyle\int_{-\infty}^{\infty} f(x)\,dx = 1.
+\]
+\begin{proof}
+By Theorem~\ref{thm:props_cdfs},
+\[
+\int_{-\infty}^{\infty} f(x)\,dx 
+	= \lim_{x\to\infty}\int_{-\infty}^{x} f(t)\,dt
+	= \lim_{x\to\infty}F(x)
+	= 1.
+\]
+\end{proof}
+\end{proposition}
+
+
+%\begin{remark}
+%To say that $X$ is a continuous random variable refers to the (absolute) continuity of its CDF, rather than to the continuity (or otherwise) of $X$ as a function on $\Omega$. In fact, the idea of a continuous function on $\Omega$ might not even make sense (because $\Omega$ is just a set and the notion of distance between its elements may not be defined).
+%\end{remark}
+
+\subsubsection*{Fundamental continuous distributions}
+
+The fundamental continuous distributions are derived from the following definite inegrals,
+\[
+\int_0^1\,dx = 1,\qquad \int_0^{\infty} e^{-x}\,dx = 1, \qquad \int_{-\infty}^{\infty} e^{-x^2} = \sqrt{\pi},
+\]
+which yield the standard uniform, exponential and normal distributions respectively. These standard distributions can be scaled and shifted to yield the parameterized families of distributions shown in Table~\ref{tab:basic_cts}.
+\begin{table}[ht]
+\[\begin{array}{lclcl}\hline
+\text{Distribution} 		& & \text{PDF}											& & \text{Range}	\\ \hline
+\text{Uniform}(a,b)			& & 1/(b-a)												& & [a,b]			\\
+\text{Exponential}(\lambda)	& & \lambda e^{-\lambda x} 								& & [0,\infty)		\\
+\text{Normal}(\mu,\sigma^2)	& & \exp\big[-(x-\mu)^2/2\sigma^2\big]/\sigma\sqrt{2\pi}& & (-\infty,\infty)\\ \hline
+\end{array}\]
+\caption{The fundamental continuous distributions\label{tab:basic_cts}}
+\end{table}
+
+Two other notable continuous distributions are based on the following definite integrals,
+\[
+B(\alpha,\beta) = \int_0^1 t^{\alpha-1}(1-t)^{\beta-1}\,dt
+\qquad\text{and}\qquad
+\Gamma(\alpha) = \int_0^{\infty} t^{\alpha-1}e^{-t}\,dt.
+\]
+These are special functions known the \emph{beta function} and the \emph{gamma function} respectively, and have been widely studied. Unsurprisingly the corresponding distriubtions are known as the beta distribution and the gamma distributions, as shown in Table~\ref{tab:beta_gamma}.
+\begin{table}[ht]
+\[\begin{array}{lclcl}\hline
+\text{Distribution} 		& & \text{PDF}											& & \text{Range}	\\ \hline
+\text{Beta}(\alpha,\beta)	& & x^{\alpha-1}(1-x)^{\beta-1}/B(\alpha,\beta)		& & [0,1]			\\
+\text{Gamma}(\alpha,\beta)		& & \beta^{\alpha}x^{\alpha-1}e^{-\beta x}/\Gamma(\alpha)& & [0,\infty)		\\ \hline
+\end{array}\]
+\caption{The beta and gamma distributions\label{tab:beta_gamma}}
+\end{table}
+
+\begin{exercise}
+For each distribution shown in Tables~\ref{tab:basic_cts} and \ref{tab:beta_gamma} verify that the expressions given for their PDFs are indeed PDFs.
+\end{exercise}
+
+
+
+\begin{exercise}
+\begin{questions}
+\question % MA0266
+The PDF of a continuous random variable $X$ is given by
+\[
+f(x) = \left\{\begin{array}{ll}
+	cx^2 	& 1\leq x\leq 2,  \\
+	0		& \text{otherwise.}
+\end{array}\right.	
+\]
+\begin{parts}
+\part Find the value of the constant $c$, and sketch the PDF of $X$.
+\begin{answer}
+ The PDF must integrate to 1:
+\[
+\int_{-\infty}^{\infty}f(x)\,dx
+	= \int_{1}^{2} cx^{2}\,dx 
+	= \left[\frac{cx^{3}}{3} \right]_{1}^{2} 
+	= \frac{7c}{3}
+	 = 1
+\]
+so $c=3/7$. (The sketch is a quadratic curve between $x=1$ and $x=2$.)
+\end{answer}
+\part Show that $\prob(X > 3/2) = 37/56$.
+\begin{answer}
+\[
+\prob(X > 3/2) 	= \int_{3/2}^{2}\frac{3x^{2}}{7}\,dx 
+			= \left[\frac{x^{3}}{7}\right]_{3/2}^{2} 
+			= \frac{37}{56}
+\]
+\end{answer}
+\part Find the CDF of $X$.
+\begin{answer}
+For $1\leq x\leq 2$,
+\[
+F(x) 	= \int_{-\infty}^{x} f(x)\,dx
+		= \int_{1}^{x}\frac{3x^{2}}{7}\,dx
+		= \left[ \frac{x^{3} }{7} \right] _{1}^{x} 
+		= \frac{x^{3}-1}{7}
+\]
+so the CDF of $X$ is
+\[
+F(x) = \begin{cases}
+	0				& x < 1 \\
+	(x^{3}-1)/7		& 1\leq x < 2 \\
+	1				& x \geq 2
+\end{cases}	
+\]	
+\end{answer}
+\end{parts}
+
+\question % GS 2.3.5(a)
+Consider the function
+\[
+f(x) = \begin{cases}
+	c/x^d	& x > 1, \\
+	0		& \text{otherwise.}
+\end{cases}
+\]
+\begin{parts}
+\part Why can $f$ be a PDF only when $d>1$?
+\begin{answer}
+The function $f(x)=c/x^d$ is only integrable when $d>1$. in which case
+\[
+\int_{-\infty}^\infty f(x)\,dx = \int_1^\infty \frac{c}{x^d}\,dx = \left[\frac{-c}{(d-1)x^{d-1}}\right]_1^{\infty} = \frac{c}{d-1}
+\]
+\end{answer}
+\part If $d>1$, find the value of $c$ and the corresponding CDF.
+\begin{answer}
+If $d>1$,
+\[
+\int_{-\infty}^\infty f(x)\,dx = \int_1^\infty \frac{c}{x^d}\,dx = \left[\frac{-c}{(d-1)x^{d-1}}\right]_1^{\infty} = \frac{c}{d-1}
+\]
+If $f$ is a PDF, we need that $\int_{-\infty}^\infty f(x)\,dx = 1$, so we must have that $c = d-1$. The corresponding CDF is
+\[
+F(x) = \int_{-\infty}^x f(u)\,du  
+	= \int_1^\infty \frac{d-1}{u^d}\,du 
+	= \left[\frac{-1}{x^{d-1}}\right]_1^x
+	= 1 - \frac{1}{x^{d-1}}
+\]
+for $x>1$, and zero otherwise.
+\end{answer}
+\end{parts}
+
+\end{questions}
+\end{exercise}

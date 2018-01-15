@@ -1,0 +1,376 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Maximum likelihood estimators}\label{sec:mle}
+
+% defn: MME
+\begin{definition}
+An estimator $T = T(\mathbf{X})$ is said to be a \emph{maximum likelihood estimator} (MLE) of $\theta$ if
+\[
+T = \argmax_{\theta\in\Theta} L(\theta;\mathbf{X}),
+\]
+which means that $T$ is a value of $\theta$ which maximises the likelihood function $L(\theta,\mathbf{X})$ over the parameter space $\Theta$.
+%
+%Given $\mathbf{X}=\mathbf{x}$, a \emph{maximum likelihood estimate} of the true parameter value is one that maximises the likelihood function over the parameter space $\Theta$. This can be written as
+%\[
+%T_{\text{\tiny{MLE}}}(\mathbf{x})
+%	= \argmax_{\theta\in\Theta} L(\theta;\mathbf{x}) 
+%%	= \argmax_{\theta\in\Theta} \prod_{i=1}^n f(x_i;\theta).
+%\]
+%The estimator $T_{\text{\tiny{MLE}}}(\mathbf{X})$ is called a \emph{maximum likelihood estimator} (MLE) of $\theta$.
+\end{definition}
+
+%%-----------------------------
+%\subsection{Log-likelihood}
+%
+To find a value of $\theta$ that maximises $L(\theta;\mathbf{X})$ we might differentiate it with respect to $\theta$, then set the resulting expression to zero and solve for $\theta$. Computing derivatives of products such as $\prod_{i=1}^n f(X_i;\theta)$ is not always straightforward however, so we work with the \emph{log-likelihood} function whenever possible.
+
+\begin{definition}
+Given $\mathbf{X}=\mathbf{x}$, the \emph{log-likelihood function} $\ell:\Theta\to [0,\infty)$ is
+\[
+\ell(\theta;\mathbf{x}) = \log L(\theta;\mathbf{x}) = \displaystyle\sum_{i=1}^n \log f(x_i;\theta).% \quad\text{for $\theta\in\Theta$.}
+\]
+\end{definition}
+%Because log is a one-to-one function, there is no loss of information in considering $\ell(\theta)$ instead of $L(\theta)$.
+%
+%
+%\begin{definition}
+%$\log L(\theta;\mathbf{x})$ is called the \emph{log-likelihood function} of $\theta$, which we denote by
+%\[
+%\ell(\theta;\mathbf{x}) 
+%%	= \log L(\theta;\mathbf{x}) 
+%	= \sum_{i=1}^n \log f(x_i;\theta)
+%\]
+%\end{definition}
+
+Because $\log$ is a strictly increasing function, a value of $\theta$ that maximizes $\ell(\theta;\mathbf{x})$ coincides with a value of $\theta$ that maximizes $L(\theta;\mathbf{x})$. A maximum likelihood estimate of $\theta=(\theta_1,\theta_2,\ldots,\theta_k)$ can therefore be obtained by solving the equations
+\[
+\frac{\partial\ell}{\partial\theta_1}=0,
+\quad
+\frac{\partial\ell}{\partial\theta_2}=0,
+\quad\ldots\quad,
+\frac{\partial\ell}{\partial\theta_k}=0.
+\]
+
+% example: MLE for bernoulli
+\begin{example}
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $\text{Bernoulli}(\theta)$ distribution where $0<\theta<1$ is unknown. Find the MLE of $\theta$.
+\begin{solution}
+Let $\boldx = (x_1,x_2,\ldots,x_n)$ be a realisation of the sample.
+\bit
+\it PMF: $ f(x_i;\theta) = \theta^{x_i} (1-\theta)^{1-x_i}$ for $x_i\in\{0,1\}$.
+\it Likelihood function: $ L(\theta) = L(\theta;\mathbf{x}) = \prod_{i=1}^n \theta^{x_i} (1-\theta)^{1-x_i}$
+\it Log-likelihood: $ \ell(\theta) = \sum_{i=1}^n\big[ x_i\log\theta + (1-x_i)\log(1-\theta) \big]$
+\it First derivative: $ \ell'(\theta) = \frac{1}{\theta(1-\theta)}\sum_{i=1}^n (x_i - \theta)$
+\it Setting $\ell'(\theta)=0$, we obtain $ \theta = \frac{1}{n}\sum_{i=1}^n x_i$.
+\it Second derivative: 
+$ \ell''(\theta) = -\sum_{i=1}^n \frac{x_i(1-\theta)^2 + (1-x_i)\theta^2}{\theta^2(1-\theta)^2} < 0$ because $x_i\in\{0,1\}$ and $0<\theta<1$.
+\it Since $\ell''(\theta) < 0$ for all $\theta>0$, the turning point is indeed a maximum.
+\it The MLE of $\theta$ is therefore the proportion of successes in $n$ trials:
+\[
+T = \frac{1}{n}\sum_{i=1}^n X_i.
+\]
+\eit
+%\textbf{Note}: in the expression for $\ell''(\theta)$ each summand is either $1/\theta^2$ (when $x_i=0$) or $1/(1-\theta)^2$ (when $x_i=1$), and hence greater than one. Thus $\ell''(\theta) < -n$, so the maximum becomes `sharper' as $n$ increases.
+\end{solution}
+\end{example}
+
+% example: MLE for uniform
+\begin{example}\label{ex:mleuniform}
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $\text{Uniform}[0,\theta]$ distribution where $\theta>0$ is unknown. Find the maximum likelihood estimator of $\theta$.
+\end{example}
+
+\begin{solution}
+Let $\boldx = (x_1,x_2,\ldots,x_n)$ be a realisation of the sample.
+
+\bigskip
+The PDF of the $\text{Uniform}[0,\theta]$ distribution is $f(x) = 1/\theta$ for $0 < x < \theta$ (and zero otherwise)
+
+\bigskip
+The parameter space is $\Theta = \{\theta:\theta>0\}$, and the likelihood function is
+\[
+L(\theta;\mathbf{x}) = \left\{\begin{array}{ll}
+	\displaystyle\frac{1}{\theta^n}	& \text{for } \theta > \max\{x_1,x_2,\ldots,x_n\} \\[2ex]
+	0				& \text{otherwise}.
+\end{array}\right.
+\]
+\bit
+\it $L(\theta;\mathbf{x})$ is a decreasing function of $\theta$ for all $\theta>\max\{x_1,x_2,\ldots,x_n\}$.
+\it Thus the MLE of $\theta$ is $\max\{X_1,X_2,\ldots,X_n\}$.
+\eit
+\end{solution}
+
+% example: mle for normal
+\begin{example}
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $N(\mu,\sigma^2)$ distribution, where $\mu$ and $\sigma^2$ are both unknown. Find the MLEs of $\mu$ and $\sigma^2$.
+\begin{solution}
+Let $\mathbf{x} = (x_1,x_2,\ldots,x_n)$ be a realisation of the sample. The common PDF of the $X_i$ is
+\[
+f(x;\mu,\sigma) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2\right).
+\]
+The likelihood function is 
+\[
+L(\mu,\sigma) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{(x_i-\mu)^2}{2\sigma^2}\right).
+\]
+The log-likelihood function is
+\begin{align*}
+\ell(\mu,\sigma) 
+	= \sum_{i=1}^n \log f(x_i;\mu,\sigma) 
+	& = \sum_{i=1}^n \left( -\log(\sqrt{2\pi}) - \frac{1}{2}\log(\sigma^2) - \frac{(x_i-\mu)^2}{2\sigma^2}\right) \\
+	& = -n\log(\sqrt{2\pi}) - \frac{n}{2}\log(\sigma^2) - \frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2
+\end{align*}
+The partial derivatives of $\ell(\mu,\sigma)$ with respect to $\mu$ and $\sigma$ are, respectively,
+\[
+\frac{\partial\ell}{\partial\mu} = \frac{1}{\sigma^2}\sum_{i=1}^n(x_i-\mu)
+\qquad\text{and}\qquad
+\frac{\partial\ell}{\partial\sigma} = -\frac{n}{\sigma} + \frac{1}{\sigma^3}\sum_{i=1}^n(x_i-\mu)^2.
+\]
+Setting these to equal zero then solving for $\mu$ and $\sigma$, we obtain
+\[
+\hat{\mu}_{\text{\scriptsize{MLE}}} = \frac{1}{n}\sum_{i=1}^n X_i = \Xbar
+\qquad\text{and}\qquad
+\hat{\sigma}^2_{\text{\scriptsize{MLE}}} = \frac{1}{n}\sum_{i=1}^n (X_i-\Xbar)^2.
+\]
+\bit
+\it The MLE of $\mu$ is the \emph{sample mean}.
+\it The MLE of $\sigma^2$ is the \emph{empirical mean squared deviation from the sample mean}.
+\eit
+\end{solution}
+\end{example}
+
+% exercises
+\begin{exercise}
+\begin{questions}
+
+\question % mle for exponential
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $\text{Exponential}(\lambda)$ distribution, where the rate parameter $\lambda>0$ is unknown. Find the MLE of $\lambda$. 
+\begin{answer}
+Let $\mathbf{x}=(x_1,x_2,\ldots,x_n\}$ be a realization of the sample. The PDF of the $\text{Exponential}(\lambda)$ distribution is
+\[
+f(x;\lambda) = \left\{\begin{array}{ll} 
+	\lambda\exp(-\lambda x) 	& \text{for } x>0, \\
+	0						& \text{otherwise}.
+\end{array}\right.
+\]
+Hence the likelihood function is
+\[
+L(\lambda) = L(\lambda;\mathbf{x}) 
+	= \prod_{i=1}^nf(x_i;\lambda)
+	= \prod_{i=1}^n\lambda e^{-\lambda x_i} 
+	= \lambda^n\exp\left(-\lambda\sum_{i=1}^n x_i\right).
+\]
+and the log-likelihood function is therefore 
+\[
+\ell(\lambda) = n\log\lambda - \lambda\sum_{i=1}^nx_i
+\]
+The first derivative of the log-likelihood function (with respect to $\lambda$) is
+\[
+\ell'(\lambda) = \frac{n}{\lambda } -\sum_{i=1}^{n}x_{i},
+\]
+and setting this equal to zero we obtain 
+\[
+\lambda =\left(\frac{1}{n}\sum_{i=1}^n x_i\right)^{-1}.
+\]
+The second derivative of $\ell(\lambda)$ is
+\[
+\ell''(\lambda) = -\frac{n}{\lambda^2} < 0 \text{\quad for all $\lambda > 0$.}
+\]
+Hence the turning point is a maximum, so the MLE is $\hat{\lambda}_{\text{\scriptsize{MLE}}} = \bar{X}^{-1}$.
+
+\end{answer}
+
+\question % mle for Poisson
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $\text{Poisson}(\lambda)$ distribution, where $\lambda>0$ is unknown. Find the MLE of $\lambda$.
+\begin{answer}
+Let $\mathbf{x}=(x_1,x_2,\ldots,x_n\}$ be a realization of the sample. The PMF of the $\text{Poisson}(\lambda)$ distribution is
+\[
+f(x;\lambda) = \left\{\begin{array}{ll} 
+	\displaystyle\frac{\lambda^x\exp(-\lambda)}{x!} 	& \text{for } x=0,1,2,3,\ldots \\[2ex]
+	0									& \text{otherwise}.
+\end{array}\right.
+\]
+The likelihood function is 
+\[
+L(\lambda) = L(\lambda;\mathbf{x}) 
+	= \prod_{i=1}^n f(x_i ;\lambda )
+	= \frac{\lambda^{\sum_{i=1}^n x_i}\exp(-n\lambda)}{\prod_{i=1}^n x_i!},
+\]
+and the log-likelihood function is therefore
+\[
+\ell(\lambda)= \left(\sum_{i=1}^n x_i\right)\log\lambda - n{\lambda}- \sum_{i=1}^n\log(x_i!)
+\]
+The first derivative of $\ell(\lambda)$ with respect to $\lambda$ is
+\[
+\ell'(\lambda) = \frac{\sum_{i=1}^n x_i}{\lambda} - n.
+\]
+Setting this equal to zero, we obtain 
+\[
+\lambda = \frac{1}{n}\sum_{i=1}^n x_i.
+\]
+The second derivative is
+\[
+\ell''(\lambda) = \frac{-\sum_{i=1}^n x_i}{\lambda ^{2}} < 0 \text{\quad for all $\lambda > 0$.}
+\]
+Hence the turning point is a maximum, so the MLE is $\hat{\lambda}_{\text{\scriptsize{MLE}}} = \bar{X}$.
+\end{answer}
+
+\question % mle for binomial
+Let $X$ be a single observation from the $\text{Binomial}(n,\theta)$ distribution, where $n$ is known but $\theta$ is unknown. Find the MLE of $\theta$. 
+
+\begin{answer}
+The likelihood function for the observation $X=k$ is 
+\[
+L(\theta) = L(\theta; k) = \binom{n}{\theta} \theta^{k}(1 - \theta)^{n-k}
+\]
+and the log-likelihood is
+\[
+\ell(\theta) = \log \binom{n}{k} + k\log \theta + (n - k)\log(1 - \theta).
+\]
+Taking the derivative of $\ell(\theta)$ with respect to the $\theta$,
+\[
+\ell'(\theta) = \frac{k}{\theta} -\frac{(n-k)}{(1-\theta)} 
+\]
+Setting this to zero,
+\[
+\frac{k(1-\theta)-(n-k)\theta}{\theta(1-\theta)} = 0 \quad\Rightarrow\quad \theta=\frac{k}{n}.
+\]
+The second derivative of $\ell(\theta)$ is 
+\[
+\ell''(\theta) =  \frac{-k}{\theta^{2}} - \frac{(n-k)}{(1-\theta)^{2}}.
+\]
+Because $k\leq n$, this is always negative, so the turning point is a maximum. Hence the MLE of $\theta$ is 
+\[
+\hat{\theta}(X) = \frac{X}{n},
+\]
+which is the observed proportion of successes.
+\end{answer}
+
+\question % mle for geometric
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $\text{Geometric}(\theta)$ distribution. Find the MLE of $\theta$. 
+\begin{answer}
+Let $X\sim\text{Geometric}(\theta)$ distribution. The PMF of $X$ is
+\[
+f(x;\theta) = \theta(1-\theta)^{x-1}\quad x = 1,2,\ldots \text{\quad (and zero otherwise).}
+\]
+Let $(x_1,x_2,\ldots,x_n)$ be a realisation of the sample. The likelihood function is
+\[
+L(\theta) = L(\theta;x_1,\ldots,x_n) 
+	= \prod_{i=1}^n f(x_i;\theta)
+	= \prod_{i=1}^n \theta(1-\theta)^{x_i-1}
+	= \theta^n(1-\theta)^{\sum_{i=1}^{n}(k_i-1)}.
+\]
+The log-likelihood function is
+\[
+\ell(\theta) = n\log\theta +  \log(1-\theta)\sum_{i=1}^{n}(k_i-1).
+\]
+The first derivative of $\ell(\theta)$ is
+\[
+\ell'(\theta) = \frac{n}{\theta} - \frac{\sum_{i=1}^{n}(k_i-1)}{1-\theta}.
+\]
+Setting this equal to zero, we obtain
+\[
+\theta = \left(\frac{1}{n}\sum_{i=1}^n k_i\right)^{-1}.
+\]
+Hence the maximum likelihood estimator of $\theta$ is $\bar{X}^{-1}$. This makes sense: the longer we wait until the first success, the lower our estimate of the probability of success.
+\end{answer}
+
+\question % ordinary-least-squares method
+\textbf{Simple Linear Model}. Let $X$ and $Y$ be two random variables, and consider the simple linear model:
+\[
+Y = \alpha + \beta X + \epsilon \quad\text{where}\quad \epsilon\sim N(0,\sigma^2)
+\]
+where $\alpha$, $\beta$ and $\sigma^2>0$ are unknown parameters and the \emph{error variable} $\epsilon$ is independent of $X$. Let $(X_1,Y_1),(X_2,Y_2),\ldots,(X_n,Y_n)$ be a random sample of observations from the joint distribution of $X$ and $Y$.
+\begin{parts}
+\part
+Show that the maximum likelihood estimators of $\alpha$ and $\beta$ are 
+\[
+\hat{\alpha} = \bar{Y}-\hat{\beta}\bar{X}
+\quad\text{and}\quad
+\hat{\beta} = \frac{\sum_{i=1}^n (X_i-\bar{X})(Y_i-\bar{Y})}{\sum_{i=1}^n (X_i-\bar{X})^2}
+\]
+respectively.
+\begin{answer}
+If we observe $X=x$ we have that $Y\sim N(\alpha+\beta x, \sigma^2)$, so
+\[
+f(y;\alpha,\beta) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left[-\frac{1}{2}\left(\frac{y-(\alpha+\beta x)}{\sigma}\right)^2\right]
+\]
+In particular,
+\[
+\expe(Y|X=x) = \alpha + \beta x \quad\text{and}\quad \var(Y|X=x) = \sigma^2.
+\]
+Let $\{(x_1,y_1),(x_2,y_2),\ldots,(x_n,y_n)\}$ be a realisation of the sample. The likelihood function and log-likelihood functions are 
+\begin{align*}
+L(\alpha,\beta,\sigma^2)
+	& = \left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^n \exp\left[-\frac{1}{2\sigma^2}\sum_{i=1}^n \big[y_i-(\alpha+\beta x_i)\big]^2\right].
+\ell(\alpha,\beta,\sigma^2) \\
+	& = - \frac{n}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}\sum_{i=1}^n \big[y_i-(\alpha+\beta x_i)\big]^2.
+\end{align*}
+The MLE estimates of $\alpha$ and $\beta$ are obtained by the \emph{method of least squares}, which is to minimise the sum of squared errors
+\[
+S(\alpha,\beta) = \sum_{i=1}^n \big[y_i-(\alpha+\beta x_i)\big]^2
+\]
+% partial derivatives
+The partial derivatives of $S(\alpha,\beta)$ with respect to $\alpha$ and $\beta$ are
+\begin{align*}
+\frac{\partial S}{\partial\alpha} 
+	& = 2\sum_{i=1}^n \big[y_i-(\alpha+\beta x_i)\big] (-1) \\
+\frac{\partial S}{\partial\beta} 
+	& = 2\sum_{i=1}^n \big[y_i-(\alpha+\beta x_i)\big] (-x_i) \\
+\end{align*}
+To find the MLEs of $\alpha$ and $\beta$, we set the partial derivatives to equal zero.
+% alpha
+\begin{align*}
+\frac{\partial H}{\partial\alpha} = 0
+	& \ \Rightarrow\  \sum_{i=1}^n y_i- n\alpha -\beta\sum_{i=1}^n x_i = 0 \\
+	& \ \Rightarrow\  n\alpha  = \sum_{i=1}^n y_i- \beta\sum_{i=1}^n x_i \\
+	& \ \Rightarrow\  \alpha = \bar{y}-\beta\bar{x}.
+\end{align*}
+% beta
+\begin{align*}
+\frac{\partial H}{\partial\beta} =0
+	& \ \Rightarrow\  \sum_{i=1}^n x_i y_i - \alpha\sum_{i=1}^n x_i -\beta\sum_{i=1}^n x_i^2 = 0 \\
+	& \ \Rightarrow\  \sum_{i=1}^n x_i y_i - (\bar{y}-\beta\bar{x})\sum_{i=1}^n x_i -\beta\sum_{i=1}^n x_i^2 = 0 \\
+	& \ \Rightarrow\  \sum_{i=1}^n x_i(y_i-\bar{y}) - \beta\sum_{i=1}^n x_i(x_i-\bar{x}) = 0 \\
+	& \ \Rightarrow\  \sum_{i=1}^n (x_i-\bar{x})(y_i-\bar{y}) - \beta\sum_{i=1}^n (x_i-\bar{x})^2 = 0 \\
+	& \ \Rightarrow\  \beta = \frac{\sum_{i=1}^n (x_i-\bar{x})(y_i-\bar{y})}{\sum_{i=1}^n (x_i-\bar{x})^2}
+\end{align*}
+The maximum-likelihood estimators of $\alpha$ and $\beta$ are therefore
+\[
+\hat{\alpha} = \bar{Y}-\hat{\beta}\bar{X}
+\text{\quad and\quad}
+\hat{\beta} = \frac{\sum_{i=1}^n (X_i-\bar{X})(Y_i-\bar{Y})}{\sum_{i=1}^n (X_i-\bar{X})^2}.
+\]
+\end{answer}
+
+\part % mle for residual variance
+Show that the MLE of the error variance $\sigma^2$ is 
+\[
+\hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n \hat{\epsilon}_i^2 
+\text{\quad where\quad} 
+\hat{\epsilon}_i = Y_i-(\hat{\alpha}+\hat{\beta} X_i).
+\]
+\begin{answer}
+Recall the log-likelihood function:
+\[
+\ell(\alpha,\beta,\sigma^2)
+	= \frac{n}{2}\log(2\pi\sigma^2) + \frac{1}{2\sigma^2}\sum_{i=1}^n \big[y_i-(\alpha+\beta x_i)\big]^2.
+\]
+The first partial derivative of $\ell(\alpha,\beta,\sigma^2)$ with respect to $\sigma^2$ is
+\[
+\frac{\partial\ell}{\partial(\sigma^2)} 
+	= \frac{n}{2\sigma^2} - \frac{1}{2(\sigma^2)^2}\sum_{i=1}^n \big[y_i-(\alpha+\beta x_i)\big]^2.
+\]
+Setting this equal to zero,
+\[
+\sigma^2 = \frac{1}{n}\sum_{i=1}^n \big[y_i-(\alpha+\beta x_i)\big]^2.
+\]
+Substituting our MLEs for $\alpha$ and $\beta$ we obtain the MLE
+\[
+\hat{\sigma^2} = \frac{1}{n}\sum_{i=1}^n \hat{\epsilon}_i^2 \text{\quad where\quad} \hat{\epsilon}_i = Y_i-(\hat{\alpha}+\hat{\beta} x_i)
+\]
+as required.
+\end{answer}
+\end{parts}
+
+\end{questions}
+\end{exercise}

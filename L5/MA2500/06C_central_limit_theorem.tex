@@ -1,0 +1,277 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Central limit theorem}\label{sec:clt}
+
+We will need the following definition of the exponential function $e^x$. This is one of several equivalent definitions.
+\begin{definition}[The compound interest formula]\label{def:compound_interest_formula}
+The exponential function can be defined by
+\[
+e^x = \lim_{n\to\infty}\left(1+\frac{x}{n}\right)^{n}.
+\]
+\end{definition}
+
+%\begin{lemma}\label{def:compound_interest_formula}
+%For any constant $c\in\R$,
+%\[
+%\left(1+\frac{c}{n}\right)^n\to e^c \quad\text{as}\quad n\to\infty.
+%\]
+%\end{lemma}
+%\begin{proof}
+%By the binomial theorem,
+%\begin{align*}
+%\left(1+\frac{c}{n}\right)^n
+%	& = \sum_{k=1}^n \binom{n}{k}\left(\frac{c}{n}\right)^k \\
+%	& = \sum_{k=1}^n \frac{n!}{(n-k)!k!}\left(\frac{c^k}{n^k}\right) \\
+%	& = \sum_{k=1}^n \frac{c^k}{k!}\left(\frac{n(n-1)\ldots(n-k+1)}{n^k}\right) \\
+%	& = \sum_{k=1}^n \frac{c^k}{k!}\left[1\left(1-\frac{1}{n}\right)\left(1-\frac{2}{n}\right)\cdots\left(1-\frac{k+1}{n}\right)\right] \\
+%	& \to \sum_{k=1}^{\infty} \frac{c^k}{k!} = e^c \quad\text{as}\quad n\to\infty.
+%\end{align*}
+%\end{proof}
+
+%-----------------------------
+\subsection{The Poisson limit theorem}
+
+The Poisson limit theorem asserts that the $\text{Binomial}(n,p)$ distribution can be approximated by the $\text{Poisson}(np)$ distribution when $n$ is large and $p$ is small.
+
+% theorem
+\begin{theorem}[Poisson limit theorem]
+If $X_n\sim\text{Binomial}(n,\lambda/n)$ then the distribution of $X_n$ converges to the $\text{Poisson}(\lambda)$ distribution as $n\to\infty$.
+\end{theorem}
+
+% proof
+\begin{proof}
+By the inversion theorem for CFs, it is enough to show that the CF of $X_n$ converges to the CF of the $\text{Poisson}(\lambda)$ distribution as $n\to\infty$. 
+
+\bigskip
+Recall that
+\bit
+\it the CF of the $\text{Binomial}(n,p)$ distribution is $\phi(t)=(1-p+pe^{it})^n$, and
+\it the CF of the $\text{Poisson}(\lambda)$ distribution is $\phi(t)=e^{\lambda(e^{it}-1)}$.
+\eit
+The CF of $X_n\sim\text{Binomial}(n,\lambda/n)$ is therefore
+\[
+\phi_{X_n}(t) 
+	= \expe(e^{itX_n}) 
+	= \left(1-\frac{\lambda}{n} + \frac{\lambda}{n}e^{it}\right)^n
+	= \left[1 + \frac{\lambda(e^{it}-1)}{n}\right]^n
+\]
+By definition~\ref{def:compound_interest_formula},
+\[
+\phi_{X_n}(t) \to e^{\lambda(e^{it}-1)}\quad\text{as}\quad n\to\infty.
+\]
+This is the CF of the $\text{Poisson}(\lambda)$ distribution, and the result follows by the inversion theorem for CFs.
+\end{proof}
+
+%-----------------------------
+%\subsubsection{Taylor approximation}
+Let $X$ be a random variable and let $\phi_X$ be its characteristic function (CF). We can use the series expansion of the exponential function to show that
+\begin{align*}
+\phi_X(t) 
+	= \expe(e^{itX})
+	& = \sum_{k=0}^{\infty} \frac{\expe(X^k)}{k!}(it)^k \\
+	& = 1 + i\expe(X)t - \frac{\expe(X^2)}{2}t^2 -i\frac{\expe(X^3)}{6}t^3 + \ldots
+\end{align*}
+
+%Characteristic functions $\phi(t)$ converge for all $t$, and are therefore equal to their \emph{Taylor series}:
+%\[
+%\phi(t) = \sum_{k=0}^{\infty} \frac{\phi^{(k)}(0)}{k!} t^k 
+%\]
+%where $\phi^{(k)}(0)$ is the $k$th derivative of $\phi(t)$ evaluated at $0$, which reduces to
+%\[
+%\phi(t)	= 1 + i\expe(X)t - \frac{\expe(X^2)}{2}t^2 -i\frac{\expe(X^3)}{6}t^3 + \ldots
+%	\qquad\text{for all $|t|<R$.}
+%\]
+When $t$ is small, $t^2$ is smaller and $t^3$ is smaller still: as $k$ increases the corresponding terms thus contribute less and less to the value of the sum. We can therefore approximate $\phi(t)$ by taking only the first few terms of the sum, and this approximation becomes increasingly accurate as $t$ tends to zero.
+
+\bigskip
+\begin{tabular}{lll}\hline
+Linear (first order)	& $\phi(t) =	1 + i\expe(X)t + o(t)$ 								& as $t\to 0$, \\
+Quadratic (second order)& $\phi(t) =	1 + i\expe(X)t - \frac{1}{2}\expe(X^2)t^2 + o(t^2)$ 	& as $t\to 0$, \\
+Cubic (third order) 	& $\phi(t) =	1 + \expe(X)t + \frac{1}{2}\expe(X^2)t^2 + \frac{1}{6}\expe(X^3)t^3 + o(t^3)$ & as $t\to 0$. \\ \hline
+\end{tabular}
+\bigskip
+
+Here $o(t^k)$ represents a quantity that converges to zero faster than $t^k$ in the sense that $o(t^k)/t^k\to 0$ as $t\to 0$. Such quantities are represented in this way to indicate that they can be safely ignored when $t$ is sufficiently small. A second order approximation will be needed to prove the central limit theorem. 
+
+%-----------------------------
+\subsection{The central limit theorem}
+
+Let $X_1,X_2,\ldots$ be independent and identically distributed random variables and consider the sequence of partial sums
+\[
+S_n = X_1 + X_2 + \ldots + X_n.
+\]
+By independence, $\expe(S_n)=n\mu$ and $\var(S_n)=n\sigma^2$.
+
+By the law of large numbers, $S_n$ is approximately equal to its mean $n\mu$ when $n$ is large. This however does not say much about the \emph{distribution} of $S_n$ when $n$ is large. 
+%\eit
+
+\bigskip
+It turns out that if the $X_i$ have finite mean and variance then \emph{irrespective of the distribution of the $X_i$} the distribution of the standardised sums
+\[
+Z_n = \frac{S_n-\expe(S_n)}{\sqrt{\var(S_n)}} %= \frac{S_n - n\mu}{\sigma\sqrt{n}}
+\qquad\text{or equivalently}\qquad
+Z_n=\frac{1}{\sqrt{n}}\sum_{i=1}^n\left(\frac{X_i-\mu}{\sigma}\right)
+\]
+converges to the standard normal distribution $N(0,1)$ as $n\to\infty$.
+
+% theorem
+\begin{theorem}[Central limit theorem]
+Let $X_1,X_2,\ldots$ be a sequence of independent and identically distributed with common mean $\mu$ and variance $\sigma^2$. If $\mu$ and $\sigma^2$ are both finite, then the distribution of the standardised sums
+%\[
+%Z_n = \frac{S_n - n\mu}{\sigma\sqrt{n}}\qquad\text{where}\qquad S_n=X_1+\ldots+X_n,
+%\]
+\[
+%Z_n=\frac{\sum_{i=1}^n X_i - n\mu}{\sigma\sqrt{n}}
+%\qquad\text{or equivalently}\qquad
+Z_n=\frac{1}{\sqrt{n}}\sum_{i=1}^n\left(\frac{X_i-\mu}{\sigma}\right)
+\]
+converges to the standard normal distribution $\text{N}(0,1)$ as $n\to\infty$.
+\end{theorem}
+
+\begin{proof}
+Let $\displaystyle Y_i = \frac{X_i-\mu}{\sigma}$. Then $\expe(Y_i)=0$ and $\var(Y_i)=1$, and 
+\[
+Z_n  = \frac{1}{\sqrt{n}}\sum_{i=1}^n Y_i 
+\]
+
+\bit
+\it Let $\phi_Y(t)$ denote the common CF of the $Y_i$.
+\it Let $\phi_{Z_n}(t)$ denote the CF of $Z_n$.
+\eit
+By Taylor's theorem, 
+\[
+\phi_Y(t) = \expe(e^{itY}) = \sum_{j=0}^k \frac{\expe(Y^j)}{j!}(it)^j + o((it)^k) \qquad\text{as}\quad t\to 0.
+\]
+
+Taking the first three terms in the Taylor expansion of $\phi_Y(t)$, since $\expe(Y)=0$ and $\expe(Y^2)=1$ we get
+\[
+\phi_Y(t) =  1 - \frac{1}{2}t^2 + o(t^2) \quad\text{as}\quad t\to 0
+\]
+
+By the properties of CFs, 
+\begin{align*}
+\phi_{Z_n}(t)
+	& = \phi_{\frac{1}{\sqrt{n}}(Y_1+Y_2+\ldots+Y_n)}(t) \\
+	& = \phi_{Y_1+Y_2+\ldots+Y_n}\left(\frac{t}{\sqrt{n}}\right) \\
+	& = \left[\phi_Y\left(\frac{t}{\sqrt{n}}\right)\right]^n \\
+	& = \left[1 - \frac{t^2}{2n} + o\left(\frac{t^2}{n}\right)\right]^n \quad\text{as $t\to 0$}\\
+	& \to e^{-\frac{1}{2}t^2} \quad\text{as $n\to\infty$},
+\end{align*}
+where the last step follows by definition~\ref{def:compound_interest_formula}. This is the CF of the $\text{N}(0,1)$ distribution, and the result follows by the inversion theorem for CFs.
+\end{proof}
+
+% example (Erlang)
+\begin{example}
+The \emph{Erlang distribution} with parameters $n\in\N$ and $\lambda>0$ is defined to be the sum of $n$ independent and identically distributed random variables $X_1,X_2,\ldots,X_n$, where each $X_i$ is exponentially distributed with (rate) parameter $\lambda$. Show that if $S_n\sim\text{Erlang}(n,\lambda)$, then the random variable 
+\[
+Z_n=\displaystyle\frac{\lambda S_n-n}{\sqrt{n}}
+\]
+has approximately the standard normal distribution when $n$ is large.
+\end{example}
+
+\begin{solution}
+Let $S_n\sim\text{Erlang}(n,\lambda)$. Then $S_n$ can be written as the sum of $n$ independent and identically distributed random variables $X_i$:
+\[
+S_n = X_1 + X_2 + \ldots + X_n\qquad\text{where}\quad X_i\sim\text{Exponential}(\lambda).
+\]
+Since $X_i\sim\text{Exponential}(\lambda)$ with $\lambda > 0$, we have 
+\[
+\expe(X_i) = \frac{1}{\lambda} <\infty
+\text{\quad and\quad}
+\var(X_i) = \frac{1}{\lambda^2} <\infty.
+\]
+
+Furthermore, by independence we have
+\[
+\expe(S_n)= \sum_{i=1}^n \expe(X_i) = \frac{n}{\lambda}
+\qquad\text{and}\qquad
+\var(S_n) =  \sum_{i=1}^n \var(X_i) = \frac{n}{\lambda^2}.
+\]
+Hence,
+\[
+\frac{S_n - \expe(S_n)}{\sqrt{\var(S_n)}} 
+	= \frac{S_n - n/\lambda}{\sqrt{n/\lambda^2}} 
+	= \frac{\lambda S_n - n}{\sqrt{n}} 
+\]
+By the central limit theorem,
+\[
+\frac{S_n - \expe(S_n)}{\sqrt{\var(S_n)}} \to Z \quad\text{in distribution as $n\to\infty$,}
+\]
+where $Z\sim\text{N}(0,1)$. 
+\end{solution}
+
+\begin{exercise}
+\begin{questions}
+
+\question
+The continuous uniform distribution on $(a,b)$ has the following PDF:
+\[
+f(x) = \begin{cases}
+	\displaystyle\frac{1}{b-a} 	& a < x < b,  \\[2ex]
+	0				& \text{otherwise.}
+\end{cases}
+\]
+Use the central limit theorem to deduce the approximate distribution of the sample mean of $n$ independent observations from this distribution when $n$ is large.
+\begin{answer} 
+The mean is 
+\begin{align*}
+\mu 
+	& = \int_{a}^{b}\frac{x}{b-a}\,dx = \frac{a+b}{2},
+\intertext{and the second moment is}
+\mu_{2}
+	& = \int_{a}^{b}\frac{x^{2}}{b-a}\,dx = \frac{a^{2}+ab+b^{2}}{3}, 
+\intertext{so the variance is}	
+\sigma^{2} 
+	& = \expe(X^{2}) - \expe(X)^{2} = \frac{(b-a)^{2}}{12}
+\end{align*}
+By the central limit theorem, if $X$ is a random variable with mean $\mu$ and variance $\sigma^{2}$, the distribution of the sample mean $\bar{X}$ of a random sample of $n$ independent observations is approximately $N(\mu,\frac{\sigma^{2}}{n})$, the approximation being better for larger $n$. In this case, the approximate distribution of $\bar{X}$ is $N\left(\frac{a+b}{2},\frac{(b-a)^{2}}{12n}\right)$. 
+\end{answer}
+
+
+\question
+The exponential distribution with scale parameter $\theta>0$ has the following PDF:
+\[
+f(x) = \begin{cases}
+	\displaystyle\frac{1}{\theta} e^{-x/\theta} 	& x > 0,  \\[2ex]
+	0					& \text{otherwise.}
+\end{cases}
+\]
+Use the central limit theorem to deduce the approximate distribution of the sample mean of $n$ independent observations from this distribution when $n$ is large.
+\begin{answer} % <<<
+\begin{align*}
+\expe(X) 
+	& = \frac{1}{\theta}\int_{0}^{\infty} x e^{-x/\theta}\,dx = \theta, \\
+\expe(X^2)
+	& = \frac{1}{\theta}\int_{0}^{\infty} x^2 e^{-x/\theta}\,dx  = 2\theta^2 \\
+\var(X)
+	& = \expe(X^2) - \expe(X)^{2} = \theta^2.
+\end{align*}
+
+By the CLT, the distribution of $\bar{X}$ is approximately $\text{N}(\mu,\frac{\sigma^{2}}{n})$, the approximation being better for larger $n$. In this case, the approximate distribution of $\bar{X}$ is $\text{N}\left(\theta,\theta^2/n\right)$. 
+\end{answer}
+
+
+\question
+We perform a sequence of independent Bernoulli trials, each with probability of success $p$, until a fixed number $r$ of successes is obtained. The total number of failures $Y$ (up to the $r$th succes) has the \emph{negative binomial} distribution with parameters $r$ and $p$, so the PMF of $Y$ is
+\[
+\prob(Y=k) = \binom{k+r-1}{k} (1-p)^k p^r,\qquad k=0,1,2,\ldots
+\]
+Using the fact that $Y$ can be written as the sum of $r$ independent geometric random variables, show that this distribution can be approximated by a normal distribution when $r$ is large.
+
+\begin{answer}
+If $Y\sim\text{NB}(r,p)$, we can write
+\[
+Y = X_1 + X_2 + \ldots + X_r\qquad\text{where}\quad X_i\sim\text{Geometric}(p).
+\]
+Let $X\sim\text{Geometric}(p)$. Since $\var(X)<\infty$, it follows by the central limit theorem that 
+\[
+\frac{Y - r\expe(X)}{\sqrt{r\var(X)}} \to \text{N}(0,1) \quad\text{in distribution as }r\to\infty.
+\]
+In fact, since $\expe(X)=(1-p)/p$ and $\var(X)=(1-p)/p^2$, we see that $Y$ can be approximated by the 
+$\displaystyle\text{N}\left(\frac{r(1-p)}{p}, \frac{r(1-p)}{p^2}\right)$ distribution as $r\to\infty$.
+\end{answer}
+
+\end{questions}
+\end{exercise}
+

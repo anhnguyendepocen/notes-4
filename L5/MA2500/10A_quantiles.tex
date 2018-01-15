@@ -1,0 +1,146 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Order statistics}\label{sec:orderstats}
+
+% defn: quantile
+\begin{definition}
+Let $X$ be a continuous random variable and let $F(x)$ denote its CDF. For $p\in[0,1]$, the \emph{$p$th quantile} of the distribution is the value $x_p = F^{-1}(p)$, i.e.\ the value $x_p\in\R$ for which
+\[
+\prob(X\leq x_p) = p \qquad\text{for $p\in[0,1]$.}
+\]
+In particular, 
+\bit
+\it $x_{0.5}$ is the \emph{median} of the distribution,
+\it $x_{0.25}$ is the \emph{lower quartile},
+\it $x_{0.75}$ is the \emph{upper quartile},
+\it $x_{0.75}-x_{0.25}$ is the \emph{inter-quartile range}.
+\eit
+\end{definition}
+
+% remark: location and scale
+\begin{remark}
+As we shall see, the median and inter-quartile range represent \emph{location} and \emph{scale} respectively.
+\end{remark}
+
+\begin{example}
+Find the median and inter-quartile range of the $\text{Exponential}(\lambda)$ distribution, where $\lambda>0$ is a rate parameter. 
+\begin{solution}
+Let $X\sim\text{Exponential}(\lambda)$. Then $F(x) = 1 - e^{-\lambda x}$, so
+\[
+x_p = F^{-1}(p) = -\frac{1}{\lambda}\log(1-p).
+\]
+Thus the median is $\log(2)/\lambda$ and the inter-quartile range is $\log(3)/\lambda$.
+\end{solution}
+\end{example}
+
+%-----------------------------
+\subsection{Order statistics}
+The quantiles of a distribution can be estimated using the \emph{order statistics} of a random sample.
+
+%\begin{definition}
+%Let $X_1,X_2,\ldots,X_n$ be a random sample from an unknown distribution, let $X_{(1)}$ denote the smallest observation, let $X_{(2)}$ denote the second-smallest observation, and so on: 
+%\[
+%X_{(1)} \leq X_{(2)} \leq \ldots \leq X_{(n)}.
+%\]
+%$X_{(1)},X_{(2)},\ldots,X_{(n)}$ are called the \emph{order statistics} of the random sample $X_1,X_2,\ldots,X_n$.
+%\end{definition}
+
+\begin{definition}
+Let $X_1,X_2,\ldots,X_n$ be a random sample from an unknown distribution. The \emph{order statistic of rank $k$} is the $k$th smallest observation in the sample and denoted by $X_{(k)}$.
+\end{definition}
+
+Certain functions of the order statistics $X_{(1)},X_{(2)},\ldots,X_{(n)}$ are important statistics in their own right:
+\bit
+\it $X_{(1)}$ is the \emph{sample minimum}.
+\it $X_{(n)}$ is the \emph{sample maximum}.
+\it $X_{(n)} - X_{(1)}$ is the \emph{sample range}.
+\it 
+The \emph{sample median} is $\begin{cases} X_{(n/2+1/2)} & \quad\text{if $n$ is odd,} \\[2ex] \frac{1}{2}\big[X_{(n/2)}+X_{(n/2+1)}\big] & \quad\text{if $n$ is even.} \end{cases}$
+\it
+The \emph{lower quartile} is the median of $X_{(1)},\ldots,X_{(n/2)}$ if $n$ is even or $X_{(1)},\ldots,X_{(n/2-1/2)}$ if $n$ is odd.
+\it
+The \emph{upper quartile} is the median of $X_{(n/2+1)},\ldots,X_{(n)}$ if $n$ is even or $X_{(n/2+3/2)},\ldots,X_{(n)}$ if $n$ is odd.
+\eit
+
+\begin{remark}
+The \emph{five number summary} is a commonly used set of descriptive statistics consisting of the five most important sample quantiles:
+\begin{center}
+[ sample minimum, lower quartile, median, upper quartile, sample maximum ]
+\end{center}
+These are sometimes illustrated using \emph{box plots}.
+\end{remark}
+
+% thm: distribution of order statistic
+The distribution of $X_{(k)}$ can be expressed in terms of the common CDF of the sample points.
+\begin{theorem}
+Let $X_1,X_2,\ldots,X_n$ be a random sample from an unknown distribution and let $F$ denote their common CDF. Then the CDF of the $k$th order statistic $X_{(k)}$ is 
+\[
+\prob(X_{(k)}\leq x) = \prob(W\geq k) \quad\text{where}\quad W\sim\text{Binomial}\big(n,F(x)\big). 
+\]
+\begin{proof}
+By independence,
+\begin{align*}
+\prob(X_{(k)}\leq x)
+	& = \prob(\text{at least $k$ observations are $\leq x$}) \\
+	& = \prob\big(\text{at least $k$ successes in $n$ Bernoulli trials where P(success)$=F(x)$}\big) \\
+	& = \prob(W\geq k) \quad\text{where}\quad W\sim\text{Binomial}\big(n,F(x)\big). 
+\end{align*}
+\end{proof}
+\end{theorem}
+
+%-----------------------------
+\subsection{Empirical distribution functions}
+
+%%-------------------------------------------------
+%\section{Empirical CDFs}
+
+Let $X$ be a random variable whose distribution is unknown, and let $X_1,X_2,\ldots,X_n$ be a random sample from the distribution of $X$. 
+\begin{definition}\label{def:empirical_cdf}
+The \emph{empirical cumulative distribution function} (ECDF) of $X$ is
+\[
+\hat{F}_X(x) = \frac{1}{n}\sum_{i=1}^n I(X_i\leq x)
+\]
+where $I(X_i\leq x)$ is the indicator variable of the event $\{\omega:X_i(\omega)\leq x\}$.
+\end{definition}
+
+In terms of order statistics, the ECDF can be written as
+\[
+\hat{F}_X(x) = \begin{cases}
+	0	& \text{ for $x < X_{(1)}$,} \\
+	i/n	& \text{ for $X_{(i)} < x \leq X_{(i+1)}$,} \\
+	1	& \text{ for $x \geq X_{(n)}$.}
+\end{cases}
+\]
+
+\begin{remark}
+$\hat{F}_X(x)$ is the proportion of observations that are less than or equal to $x$. By the law of large numbers applied to the indicator variables $I(X_i\leq x)$,
+\[
+\hat{F}_X(x) \to \prob(X\leq x) \quad\text{in probability as the sample size $n\to\infty$ for all $x\in\R$.}
+\]
+\end{remark}
+
+% remark: goodness of fit
+\begin{remark}[Goodness-of-fit]
+Let $F$ be an estimate for the CDF of $X$. We can quanify the so-called \emph{goodness of fit} using a number of test statistics based on the empirical $CDF$ of a random sample taken from the distribution of $X$, some of which are shown in Table~\ref{tab:gof}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{ll} \hline
+%Test & Test statistic \\
+\strut Kolmogorov-Smirnov &
+%$\displaystyle T_n = 
+$\displaystyle \max|\hat{F}(x) - F(x)|$ \\[2ex]
+Cramer-von~Mises &
+%$\displaystyle T_n = 
+$\displaystyle \int_{-\infty}^{\infty} \big[\hat{F}(x) - F(x)\big]^2 f(x)\,dx$ \\[2ex]
+Anderson-Darling &
+%$\displaystyle T_n = 
+$\displaystyle \int_{-\infty}^{\infty} \frac{\big[\hat{F}(x) - F(x)\big]^2}{F(x)\big[1-F(x)]} f(x)\,dx$ \\[2ex] \hline
+\end{tabular}
+\caption{Test statistics for goodness-of-fit.\label{tab:gof}}
+\end{table}
+\end{remark}
+
+
+

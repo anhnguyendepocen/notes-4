@@ -1,0 +1,83 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Appendix}\label{appx:expe}
+
+%-----------------------------
+%\subsection*{Bernoulli's law of large numbers}\label{subsec:}
+
+In the proof of Theorem~\ref{thm:wlln}, we used Chebyshev's inequality to show that
+\[
+\prob(|\bar{X}_n - \mu| \geq \epsilon) \leq \frac{\sigma^2}{n\epsilon^2} \qquad\forall\ \epsilon>0.
+\]
+We say that the \emph{rate} at which $\bar{X}_n\to\mu$ is of order $O(1/n)$ as $n\to\infty$.
+%
+In the proof of the following theorem, we use Bernstein's inequality to show that the sample mean of Bernoulli random variables satisfies
+\[
+\prob\left(|\bar{X}_n - \mu| > \epsilon\right) \leq e^{-\frac{1}{2}n\epsilon^2}  \qquad\forall\ \epsilon>0.
+\]
+In this case, the rate at which $\bar{X}_n\to\mu$ as $n\to\infty$ is said to be \emph{exponentially fast}. 
+
+% theorem
+\begin{theorem}[Bernoulli's Law of Large Numbers]\label{thm:bernoulli_lln}
+Let $X_1,X_2,\ldots$ be independent, with each $X_i\sim\text{Bernoulli}(p)$, and let $\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i$ be the sample mean of the first $n$ variables in the sequence.
+Then for every $\epsilon > 0$, 
+\[
+\prob(|\bar{X}_n - p| > \epsilon) \to 0 \text{\quad as\quad} n\to\infty.
+\]
+\end{theorem}
+
+% proof
+\begin{proof}
+Let $\epsilon>0$ and define $S_n=\sum_{i=1}^n X_i$. Then
+\[
+\prob\left(\bar{X}_n - p > \epsilon\right)
+	= \prob\big[S_n > n(p+\epsilon)\big]
+\]
+
+%\bit
+%\it Recall Bernstein's inequality: $\prob(X>a) \leq e^{-ta}\expe(e^{tX})$ for all $t>0$.
+%\eit
+
+Applying Bernstein's inequality (Theorem~\ref{thm:bernstein}) to the random variable $S_n$ with $a = n(p+\epsilon)$,
+\begin{align*}
+\prob\big[S_n > n(p+\epsilon)\big]
+	& \leq e^{-tn(p+\epsilon)}\expe(e^{tS_n}) \\
+	& = e^{-tn(p+\epsilon)}\big[1-p+pe^t\big]^n \\
+	& = e^{-tn\epsilon}\big[ e^{-tp}(1-p+pe^t) \big]^n \\
+	& = e^{-tn\epsilon}\big[ (1-p)e^{-tp} + pe^{t(1-p)} \big]^n
+\end{align*}
+
+Using the inequality $e^x \leq x + e^{x^2}$, which holds for all $x\in\R$, % (see exercises),
+\begin{align*}
+(1-p)e^{-tp} + pe^{t(1-p)}  
+	& \leq (1-p)\big[-tp + e^{t^2p^2}\big] + p\big[t(1-p) + e^{t^2(1-p)^2}\big] \\
+	& = (1-p)e^{t^2p^2} + pe^{t^2(1-p)^2} \\
+	& \leq (1-p)e^{t^2} + pe^{t^2} \\
+	& = e^{t^2}.
+\end{align*}
+Hence, for all $t>0$,
+\[
+\prob\left(\bar{X}_n -p > \epsilon\right) = \prob\big[S_n > n(p+\epsilon)\big] \leq e^{-tn\epsilon}e^{t^2n} = e^{tn(t-\epsilon)}.
+\]
+\bit
+\it This inequality is valid for all $t>0$. 
+\it We choose $t$ so that the right-hand side is made as small as possible. 
+\it Because $e^x$ is an increasing function, this corresponds to the minimum value of the exponent. 
+\it We differentiate the exponent $tn(t-\epsilon)$ with respect to $t$ and set this equal to zero.
+\eit
+
+This yields the value $t = \frac{1}{2}\epsilon$, so
+\[
+\prob\left(\bar{X}_n -p > \epsilon\right) = \prob\big[S_n > n(p+\epsilon)\big] \leq e^{-\frac{1}{4}n\epsilon^2}.
+\]
+A similar argument shows that 
+\[
+\prob\left(\bar{X}_n -p < -\epsilon\right) = \prob\big[S_n < n(p-\epsilon)\big] \leq e^{-\frac{1}{4}n\epsilon^2},
+\]
+Thus we have
+\[
+\prob\left(|\bar{X}_n - p| > \epsilon\right) \leq e^{-\frac{1}{2}n\epsilon^2} \to 0 \text{\quad as $n\to\infty$,}
+\]
+as required.
+\end{proof}

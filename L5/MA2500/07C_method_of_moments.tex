@@ -1,0 +1,128 @@
+% !TEX root = main.tex
+
+%----------------------------------------------------------------------
+\section{The method of moments}
+%----------------------------------------------------------------------
+Perhaps the simplest estimators are based on the \emph{method of moments}.
+
+\bigskip
+Let $X$ be a random variable, let $f(x;\mathbf{\theta})$ be its PMF/PDF and consider its $k$th moment:
+\[\begin{array}{lll}
+\expe(X^k) & = \displaystyle\sum_{i=1}^{\infty} x_i^k f(x_i;\mathbf{\theta}) \qquad	& \text{(discrete case),} \\[3ex]
+\expe(X^k) & = \displaystyle\int_{-\infty}^{\infty} x^k f(x;\mathbf{\theta})\,dx		& \text{(continuous case)}.
+\end{array}\]
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the distribution of $X$. To estimate $k$ parameters $\mathbf{\theta} = (\theta_1,\theta_2,\ldots,\theta_k)$, we equate the expressions for the first $k$ moments with the first $k$ empirical moments, then solve the resulting system of equations with respect to $\theta_1,\theta_2,\ldots,\theta_k$. The number of equations must be equal to the number of unknown parameters we wish to estimate: these are known as the \emph{moment equations}.
+\[
+\expe(X) = \frac{1}{n}\sum_{i=1}^n X_i,
+\quad
+\expe(X^2) = \frac{1}{n}\sum_{i=1}^n X_i^2,
+\quad\ldots,\quad
+\expe(X^k) = \frac{1}{n}\sum_{i=1}^n X_i^k.
+\]
+%
+%\ben
+%\it % single parameter
+%To estimate a scalar parameter $\theta$ using the \emph{method of moments}, we equate the first theoretical moment with the first empirical moment (i.e.\ the sample mean), then solve this with respect to $\theta$:
+%\[
+%\expe(X;\theta) = \frac{1}{n}\sum_{i=1}^n X_i.% \equiv \bar{X}.
+%\]
+%\it % two parameters
+%To estimate two parameters $\mathbf{\theta} = (\theta_1,\theta_2)$, we equate the first two theoretical moments with the first two empirical moments, then solve this system of two equations with respect to $\theta_1$ and $\theta_2$:
+%\[
+%\expe(X;\mathbf{\theta}) = \frac{1}{n}\sum_{i=1}^n X_i
+%\qquad\text{and}\qquad
+%\expe(X^2;\mathbf{\theta}) = \frac{1}{n}\sum_{i=1}^n X_i^2,
+%\]
+%\it % k parameters
+%To estimate $k$ parameters $\mathbf{\theta} = (\theta_1,\theta_2,\ldots,\theta_k)$, we equate the first $k$ theoretical moments with the first $k$ empirical moments, then solve the resulting system of equations with respect to $\theta_1,\theta_2,\ldots,\theta_k$. The number of equations must be equal to the number of unknown parameters we wish to estimate.
+%%\it In fact, we can equate the theoretical and empirical expected values of \emph{any} functions of $X$:
+%%\begin{align*}
+%%\expe\big[g_1(X);\mathbf{\theta}\big] & = \frac{1}{n}\sum_{i=1}^n g_1(X_i), \\
+%%\expe\big[g_2(X);\mathbf{\theta}\big] & = \frac{1}{n}\sum_{i=1}^n g_2(X_i), \quad\text{etc.}
+%%\end{align*}
+%\een
+
+% example: uniform
+\begin{example}
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the continuous $\text{Uniform}(0,\theta)$ distribution, where $\theta>0$ is unknown. Find an estimator of $\theta$ using the method of moments.
+\begin{solution}
+Let $X\sim\text{Uniform}(0,\theta)$. In this case, $\expe(X) = \theta/2$ so the first moment equation is
+\[
+\frac{1}{2}\theta = \frac{1}{n}\sum_{i=1}^n X_i.
+\]
+Solving for $\theta$ we obtain $\hat{\theta}_{\text{\scriptsize{MME}}} = \displaystyle\frac{2}{n}\sum_{i=1}^n X_i$.
+\end{solution}
+\end{example}
+
+% example: normal
+\begin{example}
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $N(\mu,\sigma^2)$ distribution. Find estimators of $\mu$ and $\sigma^2$ using the method of moments.
+\end{example}
+
+\begin{solution}
+Let $X\sim N(\mu,\sigma^2)$ and let $\theta=(\mu,\sigma^2)$ be the parameter vector. Equating the first and second moments with the empirical first and second moments,
+\[
+\expe(X)	= \frac{1}{n}\sum_{i=1}^n X_i
+\qquad\text{and}\qquad
+\expe(X^2)	= \frac{1}{n}\sum_{i=1}^n X_i^2.
+\]
+The theoretical moments are $\expe(X) = \mu$ and $\expe(X^2) = \sigma^2 + \mu^2$. Solving the resulting equations for $\mu$ and $\sigma^2$, we obtain %the following MMEs of $\mu$ and $\sigma^2$:
+\[
+\hat{\mu}_{\text{\scriptsize{MME}}}	= \Xbar
+\qquad\text{and}\qquad
+\hat{\sigma}^2_{\text{\scriptsize{MME}}}	
+%= \frac{1}{n}\sum_{i=1}^n X_i^2 - \bar{X}^2 
+= \frac{1}{n}\sum_{i=1}^n (X_i-\bar{X})^2.
+\]
+%\begin{align*}
+%\hat{\mu}			& = \Xbar, \\
+%\hat{\sigma}^2	& = \frac{1}{n}\sum_{i=1}^n X_i^2 - \bar{X}^2 = \frac{1}{n}\sum_{i=1}^n (X_i-\bar{X})^2.
+%\end{align*}
+\bit
+\it The MME of $\mu$ is the \emph{sample mean}.
+\it The MME of $\sigma^2$ is the \emph{empirical mean squared deviation from the sample mean}. 
+\eit
+Note that the latter is \emph{not} the sample variance.
+\end{solution}
+
+%----------------------------------------------------------------------
+\begin{exercise}
+\begin{questions}
+
+% MME of Bernoulli distribution
+\question
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $\text{Bernoulli}(\theta)$ distribution. Find an estimator of $\theta$ using the method of moments.
+\begin{answer}
+The first moment of the $\text{Bernoulli}(\theta)$ distribution is $\theta$. 
+Equating this to the first empirical moment (i.e.\ the sample mean), 
+\[
+\hat{\theta}_{\text{\scriptsize{MME}}} = \frac{1}{n}\sum_{i=1}^n X_i.
+\]
+The MME of $\theta$ is thus the proportion of successes observed in $n$ trials.
+\end{answer}
+
+% MME of exponential distribution
+\question
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $\text{Exponential}(\lambda)$ distribution, where $\lambda>0$ is an unknown rate parameter. Find an estimator of $\lambda$ using the method of moments. 
+\begin{answer}
+Let $X\sim\text{Exponential}(\lambda)$. Then $\expe(X) = 1/\lambda$, so the first moment equation is 
+\[
+\frac{1}{\lambda} = \bar{X}.
+\]
+Solving for $\lambda$, we obtain $\hat{\lambda}_{\text{\scriptsize{MME}}} = \bar{X}^{-1}$.
+\end{answer}
+
+% MME of Poisson distribution
+\question
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $\text{Poisson}(\lambda)$ distribution, where $\lambda>0$ is unknown. Find an estimator of $\lambda$ using the method of moments.
+\begin{answer}
+Let $X\sim\text{Poisson}(\lambda)$. The expected value of $X$ is $\expe(X)=\lambda$, so the first moment equation is simply 
+\[
+\lambda = \bar{X}.
+\]
+Solving for $\lambda$, we obtain $\hat{\lambda}_{\text{\scriptsize{MME}}} = \bar{X}$.
+\end{answer}
+\end{questions}
+\end{exercise}
+%----------------------------------------------------------------------
+

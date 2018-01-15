@@ -1,0 +1,131 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Laws of large numbers}\label{sec:lln}
+
+%-----------------------------
+\subsection{Convergence of random variables}
+
+Recall that a sequence of real numbers $x_1,x_2,\ldots$ \emph{converges} to the limit $x$ as $n\to\infty$ if for all $\epsilon>0$, there exists some $N>0$ with $|x_n - x|<\epsilon$ for all $n > N$. This means that after a certain point in the sequence, all subsequent points are contained within an arbitrarily small neighbourhood of $x$.
+
+What does it mean to say that a sequence of random variable $X_1,X_2,\ldots$  converges to the random variable $X$? 
+
+This is a sequence of \emph{functions} rather than a sequence of real numbers. If $X_n(\omega)\to X(\omega)$ for all outcomes $\omega$ in the underlying sample space, we say that $X_n$ converges \emph{pointwise} to $X$. This is rather restrictive: a more useful notion of convergence might be that $X_n(\omega)\to X(\omega)$ over a set of probability measure one (so that outcomes for which the sequence does not converge occur with probability zero).
+
+There are several notions of convergence for sequences of random variables.
+\begin{definition}
+Let $X_1,X_2,\ldots$ and $X$ be random variables. We say that
+\ben
+\it % a.s.
+$X_n\to X$ \emph{almost surely} if $\prob(X_n\to X \text{ as } n\to\infty) = 1$,
+\it % mean square
+$X_n\to X$ \emph{in mean square} if $\expe(|X_n - X|^2) \to 0$ as $n\to\infty$,
+\it % prob
+$X_n\to X$ \emph{in probability} if for all $\epsilon > 0$, $\prob(|X_n-X|\geq\epsilon) \to 0$ as $n\to\infty$,
+\it % dist
+$X_n\to X$ \emph{in distribution} if $F_n(x)\to F(x)$ as $n\to\infty$ for every point $x$ at which $F$ is continuous.
+\een
+\end{definition}
+
+Some of these notions of convergence are stronger than others. This is summarised in the following theorem (which we shall not prove).
+% theorem
+\begin{theorem}
+\ben
+\it Convergence almost surely implies convergence in probability.
+\it Convergence in mean square implies convergence in probability.
+\it Convergence in probability implies convergence in distribution.
+\een
+\end{theorem}
+
+%-----------------------------
+\subsection{Laws of large numbers}
+Given a set of observations $X_1,X_2,\ldots,X_n$ from the distribution of $X$, a \emph{law of large numbers} asserts that their sample mean $\bar{X}$ converges in some sense to the expectation $\expe(X)$ of the distribution as the number of observations $n$ increases to infinity.
+
+\begin{theorem}[The weak law of large numbers]\label{thm:wlln}
+Let $X_1,X_2,\ldots$ be a sequence of independent and identically distributed (i.i.d.) random variables, whose common distribution has finite mean $\mu$ and finite variance. Then
+\[
+\frac{1}{n}\sum_{i=1}^n X_i \to \mu \text{\quad in probability as\ } n\to\infty.
+\]
+\end{theorem}
+\begin{proof}
+Let $\sigma^2$ denote the variance of $X$.
+\bit
+\it 
+By the linearity of expectation,
+$\displaystyle\expe\left(\frac{1}{n}\sum_{i=1}^n X_i\right)	= \frac{1}{n}\sum_{i=1}^n \expe(X_i)= \mu.$
+\it
+Because the $X_i$ are independent,
+$\displaystyle\var\left(\frac{1}{n}\sum_{i=1}^n X_i\right)	= \frac{1}{n^2}\sum_{i=1}^n \var(X_i) = \frac{\sigma^2}{n}.$
+\it
+Applying Chebyshev's inequality,
+$\displaystyle\prob\left(\left|\frac{1}{n}\sum_{i=1}^n X_i - \mu\right| \geq \epsilon\right) \leq \frac{\sigma^2}{n\epsilon^2} \qquad\text{for all $\epsilon>0$.}$
+\eit
+Thus, because $\sigma^2$ is finite, it follows that $\displaystyle\frac{1}{n}\sum_{i=1}^n X_i\to\mu$ in probability as $n\to\infty$.
+\normalsize
+\end{proof}
+
+%\begin{remark}
+%The \emph{strong} law of large numbers (not proved) asserts that $\bar{X}\to\mu$ almost everywhere as $n\to\infty$. Similar results hold for convergence in mean square and convergence in distribution.
+%\end{remark}
+
+\begin{remark}[Frequentist model]
+Consider a random experiment with a finite sample space, and suppose that the experiment is repeated $n$ times under the same conditions. Let $A$ be some random event, and let $X_i$ be the indicator variable of the event that $A$ occurs on the $i$th trial. The random variables $X_i$ are identically distributed, and their common expectation is $\prob(A)$. Because the $X_i$ are indicator variables, their sample mean corresponds to the \emph{relative frequency} of event $A$ over these $n$ repetitions. By the law of large numbers,
+\[
+\frac{1}{n}\sum_{i=1}^n X_i \to \prob(A) \quad\text{(in some sense) as $n\to\infty$.}
+\]
+This shows that the frequentist model, in which probability is defined to be the limit of relative frequency as the number of repetitions increases to infinity, is a reasonable one.
+\end{remark}
+
+\begin{exercise}
+\begin{questions}
+
+\question
+Let $X_1,X_2,\ldots$ be a sequence of i.i.d. random variables having finite mean $\mu$ and finite variance. Show that
+\[
+\frac{1}{n}\sum_{i=1}^n X_i \to \mu \quad\text{in mean square as } n\to\infty.
+\]
+\begin{answer}
+By independence,
+\[
+\expe\left[\left(\frac{1}{n}\sum_{i=1}^n X_i - \mu\right)^2\right] 
+	= \var\left(\frac{1}{n}\sum_{i=1}^n X_i\right) = \frac{\sigma^2}{n}\to 0 \text{ as } n\to\infty.
+\]
+\end{answer}
+
+\question
+Let $X_1,X_2,\ldots$ be a sequence of i.i.d. random variables with common mean $\mu<\infty$. Show that the MGF of their sample mean converges to the MGF of the constant random variable $\mu$, and hence that
+\[
+\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i \to \mu \text{\quad in distribution as\quad} n\to\infty.
+\]
+Note that in contrast to Theorem~\ref{thm:wlln}, this result does \emph{not} require that the $X_i$ have bounded variance. The price we pay for this relaxation is to accept a weaker type of convergence.
+
+\begin{answer}
+By the inversion theorem for MGFs, we need only show that the MGF of $\bar{X}_n$ converges to the MGF of the constant $\mu$ as $n\to\infty$. 
+\bit
+\it Let $M_X$ denote the common MGF of the $X_i$.
+\it Let $M_{\bar{X}_n}$ denote the MGF of $\bar{X}_n$.
+\eit
+Using the properties of MGFs,
+\begin{align*}
+M_{\bar{X}_n}(t) 
+	& = M_{\frac{1}{n}(X_1+X_2+\ldots+X_n)}(t) \\
+	& = M_{(X_1+X_2+\ldots+X_n)}\left(\frac{t}{n}\right) \\
+	& = \left[M_X\left(\frac{t}{n}\right)\right]^n
+\end{align*}
+By Theorem~\ref{thm:taylor_mgf} (with $k=1$), 
+\[
+M_X(t) = 1 + \mu t + o(t)\quad\text{as}\quad t\to 0,
+\]
+so
+\[
+M_{\bar{X}_n}(t) 
+	= \left[M_X\left(\frac{t}{n}\right)\right]^n
+	= \left[1 + \frac{\mu t}{n} + o\left(\frac{t}{n}\right)\right]^n
+	\to e^{\mu t} \quad\text{as}\quad n\to\infty.
+\]
+where the last step follows by the fact that $e^x = \lim_{n\to\infty}(1+x/n)^n$. This is the MGF of the constant $\mu$, and the result follows by the inversion theorem for MGFs.
+\end{answer}
+
+\end{questions}
+\end{exercise}
+

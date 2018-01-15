@@ -1,0 +1,322 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Correlation}\label{sec:correlation}
+
+%-----------------------------
+\subsection{Product moments}
+%Let $X$ and $Y$ be random variables on the same probability space.
+
+\begin{definition}\label{def:prod_rvs}
+The \emph{product} of $X$ and $Y$ is the random variable
+\[
+\begin{array}{rlcl}
+XY : 	& \Omega & \to 		& \R \\
+		& \omega & \mapsto	& X(\omega)Y(\omega).
+\end{array}
+\]
+\end{definition}
+
+\begin{definition}
+\ben
+\it % << discrete
+If $X$ and $Y$ are jointly discrete, the \emph{product moment} of $X$ and $Y$ is
+\[
+\expe(XY) = \sum_{i=1}^{\infty}\sum_{j=1}^{\infty} x_iy_j\, f_{X,Y}(x_i,y_j)
+\]
+whenever this sum exists.
+\it % << cts
+If $X$ and $Y$ are jointly continuous, the \emph{product moment} of $X$ and $Y$ is
+\[
+\expe(XY) = \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} xy\, f_{X,Y}(x,y)\,dx\,dy
+\]
+whenever this integral exists.
+\een
+\end{definition}
+%
+
+%-----------------------------
+\subsection{Covariance}
+The covariance of $X$ and $Y$ is the product moment of the \emph{centred} variables $X-\expe(X)$ and $Y-\expe(Y)$.
+
+\begin{definition}\label{def:covariance}
+The \emph{covariance} of $X$ and $Y$ is 
+\[
+\cov(X,Y) = \expe\big(\big[X-\expe(X)\big]\big[Y-\expe(Y)\big]\big).
+\]
+\end{definition}
+
+\begin{remark}
+Note that $\cov(X,Y)=\cov(Y,X)$ and $\cov(X,X)=\var(X)$.
+\end{remark}
+
+In the same way that $\var(X)=\expe(X^2)-\expe(X)^2$ we have the following convenient expression for $\cov(X,Y)$.
+\begin{lemma}\label{lem:covariance-formula}
+%\[
+$\cov(X,Y) = \expe(XY) - \expe(X)\expe(Y)$.
+%\]
+\end{lemma}
+\begin{proof}
+Expand the product in Definition~\ref{def:covariance} then apply the linearity of expectation.
+\end{proof}
+
+\begin{lemma}\label{lem:var_of_sum}
+For random variables $X_1,X_2,\ldots,X_n$,
+\[
+\var\left(\sum_{i=1}^n X_i\right) = \sum_{i=1}^n\sum_{j=1}^n \cov(X_i,X_j) 
+%= \sum_{i=1}^n \var(X_i) + 2\sum_{i=1}^{n}\sum_{j=i+1}^n \cov(X_i,X_j).
+\]
+\end{lemma}
+\begin{proof}
+Let $Y=\sum_{i=1}^n X_i$. Then 
+\begin{align*}
+\var(Y) 
+	= \expe(Y^2)-\expe(Y)^2
+	& = \expe\left[\left(\sum_{i=1}^n X_i\right)^2\right] - \left[\expe\left(\sum_{i=1}^n X_i\right)\right]^2 \\
+	& = \expe\left[\sum_{i=1}^n \sum_{j=1}^n X_iX_j\right] - \left[\sum_{i=1}^n \expe(X_i)\right]^2 \\
+	& = \sum_{i=1}^n\sum_{j=1}^n \expe(X_iX_j) - \sum_{i=1}^n\sum_{j=1}^n \expe(X_i)\expe(X_j) \\
+	& = \sum_{i=1}^n\sum_{j=1}^n \cov(X_i,X_j)
+\end{align*}
+\end{proof}
+
+\begin{exercise}\label{exe:covar_bilinear}
+Show that covariance is a \emph{bilinear} operator, in the sense that
+\[
+\cov(aX_1+bX_2,cY_1+dY_2) = ac\cov(X_1,Y_1) + ad\cov(X_1,Y_2) + bc\cov(X_2,Y_1) + cd\cov(X_2,Y_2).
+\]
+\end{exercise}
+
+%-----------------------------
+\subsection{Correlation}
+
+\begin{definition} 
+$X$ and $Y$ are said to be \emph{correlated} if $\cov(X,Y)\neq 0$ or equivalently if
+\[
+\expe(XY)\neq\expe(X)\expe(Y),
+\]
+otherwise they are said to be \emph{uncorrelated}.
+\end{definition}
+
+% lem: independent => correlated
+\begin{lemma}\label{lem:indept_implies_uncorrelated}
+If $X$ and $Y$ are independent, they are uncorrelated.
+\end{lemma}
+\begin{proof}
+Let $X$ and $Y$ be jointly continuous (the discrete case is similar).
+\par
+Because $X$ and $Y$ are independent, $f_{X,Y}(x,y)=f_X(x)f_Y(y)$ for all $x,y\in\R$. Hence
+\begin{align*}
+\expe(XY) 
+	& = \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} xy\, f_{X,Y}(x,y)\,dx\,dy \\
+	& = \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} xy\, f_X(x)f_Y(y)\,dx\,dy \text{\quad(by independence),}\\
+	& = \left(\int_{-\infty}^{\infty}x\,f_X(x)\,dx\right)\left(\int_{-\infty}^{\infty}y\,f_Y(y)\,dy\right) \\
+	& = \expe(X)\expe(Y).
+\end{align*}
+\end{proof}
+
+% variance of sum = sum of variances
+\begin{lemma}\label{lem:var_of_indept_sum}
+If $X_1,X_2,\ldots,X_n$ are pairwise uncorrelated,
+\[
+\var\left(\sum_{i=1}^n X_i\right) = \sum_{i=1}^n\var(X_i).
+\]
+\end{lemma}
+\begin{proof}
+Because the $X_i$ are pairwise uncorrelated, $\cov(X_i,X_j)=0$ whenever $i\neq j$, so by Lemma~\ref{lem:var_of_sum},
+\[
+\var\left(\sum_{i=1}^n X_i\right) = \sum_{i=1}^n\cov(X_i,X_i) = \sum_{i=1}^n\var(X_i).
+\]
+\end{proof}
+
+% example: negative binomial
+\begin{example}
+Let $X_1,\ldots,X_r$ be independent with each $X_i\sim\text{Geometric}(p)$, the distribution of the number of failures before the first success in a sequence of independent Bernoulli trials where the probability of success is $p$. Find the mean and variance of $Y = \sum_{i=1}^r X_i$.
+\begin{solution}
+Since $X_i\sim\text{Geometric}(p)$, we know that 
+\[
+\expe(X_i)=\frac{1-p}{p} \quad\text{and}\quad \var(X_i)=\frac{1-p}{p^2}.
+\]
+By the linearity of expectation,
+\[
+\expe(Y) = \expe(X_1)+\expe(X_2)+\ldots+\expe(X_r) = \frac{r(1-p)}{p}
+\]
+and because the $X_i$ are independent,
+\[
+\var(Y) = \var(X_1)+\var(X_2)+\ldots+\var(X_r) = \frac{r(1-p)}{p^2}
+\]
+In this case $Y$ has the so-called \emph{negative binomial} distribution with parameters $r$ and $p$. This is the distribution of the number of failures before the $r$th success in a sequence of independent Bernoulli trials in which the probability of success is $p$.
+\end{solution}
+\end{example}
+
+%-----------------------------
+\subsection{Correlation coefficient}
+The correlation coefficient is the product moment of the \emph{standardized} variables $\displaystyle\frac{X-\expe(X)}{\sqrt{\var(X)}}$ and $\displaystyle\frac{Y-\expe(Y)}{\sqrt{\var(Y)}}$.
+
+\begin{definition}\label{def:correlation_coefficient}
+The \emph{correlation coefficient} of $X$ and $Y$ is 
+\[
+\rho(X,Y) = \expe\left[\left(\frac{X-\expe(X)}{\sqrt{\var(X)}}\right)\left(\frac{Y-\expe(Y)}{\sqrt{\var(Y)}}\right)\right]
+\]
+\end{definition}
+
+By the linearity of expectation, we have the following convenient expression for $\rho(X,Y)$.
+\begin{lemma}
+The correlation coefficient of $X$ and $Y$ can be written as
+\[
+\rho(X,Y) = \frac{\cov(X,Y)}{\sqrt{\var(X)\cdot\var(Y)}}
+\]
+\end{lemma}
+\begin{proof}
+Follows easily from Lemma~\ref{lem:covariance-formula}.
+\end{proof}
+
+Note that $\rho(X,Y)=0$ whenever $X$ and $Y$ are uncorrelated. In fact the correlation coefficient satisfies the inequality $|\rho(X,Y)|\leq 1$ and thus provides a \emph{standardized} measure of the (linear) dependence between $X$ and $Y$. To prove this we need the following result from mathematical analysis.% called the \emph{Cauchy-Schwarz inequality}. 
+
+%First we need the following technical result (which we shall not prove).
+%% lemma
+%\begin{lemma}\label{lem:pos_rv_expe_zero}
+%If $X\geq 0$ and $\expe(X)=0$ then $\prob(X=0)=1$.
+%\end{lemma}
+%\begin{proof}
+%Proof by contradiction: let $X\geq 0$ with $\expe(X)=0$, and suppose that $\prob(X>0)>0$. 
+%\bit
+%\it Because the CDF $\prob(X\leq x)$ is right-continuous, there exists $\epsilon>0$ such that $\prob(X>\epsilon)>0$. 
+%\it This implies that $X\geq \epsilon I(X>\epsilon)$.
+%\it Taking the expected value of both sides, $\expe(X)\geq \epsilon\,\prob(X>\epsilon) > 0$ (by monotonicity). 
+%\eit
+%This is a contradiction, so we conclude that $\prob(X>0)=0$.
+%\end{proof}
+
+% thm: cauchy-schwarz
+\begin{theorem}[Cauchy-Schwarz inequality for random variables]
+For any two random variables $X$ and $Y$,
+\[
+\expe(XY)^2 \leq \expe(X^2)\expe(Y^2)
+\]
+with equality if and only if $\prob(Y=aX)=1$ for some $a\in\R$.
+\end{theorem}
+
+
+\begin{theorem}\label{thm:bounds_on_rho}
+The correlation coefficient satisfies the inequality 
+\[
+|\rho(X,Y)|\leq 1,
+\]
+with equality if and only if $\prob(Y=aX+b)=1$ for some $a,b\in\R$.
+\end{theorem}
+\begin{proof}
+Apply the Cauchy-Schwarz inequality to $X-\expe X$ and $Y-\expe Y$:
+\begin{align*}
+\cov(X,Y)^2 
+	& =		\expe\big((X-\expe X)(Y-\expe Y)\big) \\
+	& \leq 	\expe\big((X-\expe X)^2\big)\expe\big((Y-\expe Y)^2\big) \\
+	& = 	\var(X)\var(Y),
+\end{align*}
+with equality if and only if there exists $a\in\R$ such that
+\[
+\prob\big[Y-\expe Y = a(X-\expe X)] = 1.
+\]
+Hence,
+\[	
+|\rho(X,Y)| = \left|\frac{\cov(X,Y)}{\sqrt{\var(X)\var(Y)}}\right| \leq 1
+\]
+with equality if and only if $\prob(Y = aX + b) = 1$,  where $b = \expe Y - a\expe X$.
+\end{proof}
+
+%----------------------------------------------------------------------
+\begin{exercise}
+\begin{questions}
+%----------------------------------------
+%==========================================================================
+\question
+Let $X$ and $Y$ be two random variables having the same distribution but which are not necessarily independent. Show that
+$
+\cov(X+Y,X-Y)=0
+$
+provided that their distribution has finite mean and variance.
+
+\begin{answer}
+Perhaps the simplest method is the following: let $U=X+Y$ and $V=X-Y$. Then 
+\begin{align*}
+\cov(X+Y,X-Y) 
+	& = \expe(UV) - \expe(U)\expe(V) \\
+	& = \expe\big[(X+Y)(X-Y)\big] - \expe(X+Y)\expe(X-Y) \\
+	& = \expe(X^2 - Y^2) - \big[\expe(X)+\expe(Y)\big]\big[\expe(X)-\expe(Y)\big]	\qquad\text{(by the linearity of expectation)} \\
+	& = \expe(X^2) - \expe(Y^2) - \expe(X)^2 +\expe(X)\expe(Y) - \expe(Y)\expe(X) + \expe(Y)^2 \quad\text{(by linearity again)} \\
+	& = \big[\expe(X^2) - \expe(X)^2\big] - \big[\expe(Y^2) - \expe(Y)^2\big] \\
+	& = \var(X) - \var(Y).
+\end{align*}
+Since $X$ and $Y$ have the same distribution, their variances must be equal, so $\cov(X+Y,X-Y)=0$.
+\end{answer}
+
+
+
+%==========================================================================
+\question
+Consider a fair six-sided die whose faces show the numbers $-2,0,0,1,3,4$. The die is independently rolled four times. Let $X$ be the average of the four numbers that appear, and let $Y$ be the product of these four numbers. Compute $\expe(X)$, $\expe(X^2)$, $\expe(Y)$ and $\cov(X,Y)$.
+\begin{answer}
+Let $X_1,X_2,X_3,X_4$ be independent discrete random variables on the set $\{-2,0,0,1,3,4\}$. Each $X_i$ is identically distributed according to the following PMF:
+\[\begin{array}{|c|ccccc|}\hline
+k			& -2		& 0		& 1		& 3		& 4 	\\ \hline
+\prob(X_i=k)		& 1/6	& 1/3	& 1/6	& 1/6 	& 1/6	\\ \hline
+\end{array}\]
+Hence for $i=1,2,3,4$,
+\begin{align*}
+\expe(X_i)		& = \frac{1}{6}(-2+0+0+1+3+4) = 1, \\
+\expe(X_i^2)	& = \frac{1}{6}(4+0+0+1+9+16) = \frac{30}{6} = 5, \\
+\var(X_i)		& = \expe(X_i^2)-\expe(X_i)^2 = 4.
+\end{align*}
+
+Let $X=\frac{1}{4}(X_1+X_2+X_3+X_4)$. Then
+\[
+\expe(X) 	= \frac{1}{4}\big(\expe(X_1)+\ldots+\expe(X_4)\big) = 1
+\]
+By independence,
+\[
+\var(X) 	= \frac{1}{16}\big(\var(X_1)+\ldots+\var(X_4)\big) = 1 
+\]
+so $\expe(X^2)	= \var(X) + \expe(X)^2 = 2$.
+
+and $Y=X_1 X_2 X_3 X_4$. By independence,
+\begin{align*}
+\expe(Y) 
+	& = \expe(X_1 X_2 X_3 X_4) \\
+	& = \expe(X_1)\expe(X_2)\expe(X_3)\expe(X_4) \\
+	& = 1 \\
+\end{align*}
+and because the $X_i$ are identically distributed,
+\begin{align*}
+\expe(XY) 
+	& = \frac{1}{4}\expe\big(\expe(X_1+X_2+X_3+X_4)X_1X_2X_3X_4\big) \\
+	& = \expe(X_1^2)\expe(X_2)\expe(X_3)\expe(X_4) \\
+	& = \expe(X_1^2) = 5 \\
+\end{align*}
+so $\cov(XY) = \expe(XY) - \expe(X)\expe(Y) = 4$.
+\end{answer} 
+
+%==========================================================================
+\question
+A fair die is rolled twice. Let $U$ denote the number obtained on the first roll, let $V$ denote the number obtained on the second roll, let $X=U+V$ denote their sum and let $Y=U-V$ denote their difference. Compute the mean and variance of $X$ and $Y$, and compute $\expe(XY)$. Check whether $X$ and $Y$ are uncorrelated. Check whether $X$ and $Y$ are independent.
+\begin{answer}
+Let $U,V\sim\text{Uniform}\{1,2,3,4,5,6\}$ be independent (and identically distributed) random variables, and define $X=U+V$ and $Y=U-V$. 
+\begin{align*}
+\expe(X)	& = \expe(U) + \expe(V) = 7 \\
+\expe(Y)	& = \expe(U) - \expe(V) = 0 \\
+\intertext{By independence,}
+\var(X)		& = \var(U) + \var(V) = 35/6 \\
+\var(Y)		& = \var(U) + \var(V) = 35/6 \\
+\intertext{Because $U$ and $V$ are identically distributed, and}
+XY 			& = (U+V)(U-V) = U^2 - V^2 \\
+\intertext{it follows that}
+\expe(XY)	& = \expe(U^2) - \expe(V^2) = 0 \\
+\intertext{$X$ and $Y$ are uncorrelated, since}
+\cov(X,Y)	& = \expe(XY) - \expe(X)\expe(Y) =0 \\
+\intertext{However $X$ and $Y$ are not independent, because (for example)}
+\prob(Y=0)		& \neq \prob(Y=0|X=12)=1
+\end{align*}
+\end{answer} 
+
+%----------------------------------------
+\end{questions}
+\end{exercise}
+%----------------------------------------------------------------------

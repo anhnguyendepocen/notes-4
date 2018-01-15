@@ -1,0 +1,57 @@
+% prime_factors/main.tex
+
+% uncomment the following for Welsh version (English is default)
+\PassOptionsToPackage{cy}{cambi}
+
+% comment/uncomment the following line to show/hide answers
+\PassOptionsToPackage{noanswers}{camnotes}
+
+% document class
+\documentclass{article}
+
+\usepackage{camnotes}
+\usepackage{cambi}
+
+% packages
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{caption}
+
+% layout
+\usepackage[a4paper,margin=30mm]{geometry}
+\setlength{\parskip}{2ex}
+\setlength{\parindent}{0ex}
+
+% fonts
+\renewcommand{\familydefault}{\sfdefault}
+
+% theorems
+\usepackage[framed]{ntheorem}
+\theoremstyle{break}
+\theorembodyfont{\upshape}
+\theoremseparator{\smallskip}
+\newtheorem{example}{\examplename}[section]
+\newtheorem{exercise}{\exercisename}[section]
+
+% document info
+\title{\en Prime Factors\cy Ffactorau Cysefin}
+\author{BBC Bitesize}
+
+% new commands
+\setcounter{tocdepth}{1}
+%----------------------------------------
+\begin{document}
+\maketitle
+\tableofcontents
+
+\input{01_prime_factors_and_decomposition}
+\input{02_lowest_common_multiple}
+\input{03_highest_common_factor}
+\input{04_finding_LCM_and_HCF_from_prime_factors}
+\input{05_prime_factors_multiple_choice_test}
+
+\end{document}
+%----------------------------------------
+
+

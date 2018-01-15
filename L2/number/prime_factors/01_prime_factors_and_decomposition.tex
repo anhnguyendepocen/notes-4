@@ -1,0 +1,167 @@
+% !TEX root = prime_factors.tex
+
+\section{\en Prime factors and decomposition \cy Ffactorau cysefin a dadelfeniad}
+\label{sec:prime-factors-and-decomposition}
+\en
+You have most likely heard the term factor before. 
+A factor is a number that goes into another. 
+The factors of 10 for example are 1, 2, 5 and 10.
+\cy
+Mae'n debyg dy fod wedi clywed y term ffactor o'r blaen. 
+Ffactor yw rhif sy'n mynd i mewn i rif arall. 
+Ffactorau 10, er enghraifft, yw 1, 2, 5 a 10.
+
+\en
+Prime numbers are a special set of numbers that only have two factors: themselves and 1.
+\cy
+Mae rhifau cysefin yn set arbennig o rifau sydd \^{a} dau ffactor yn unig: nhw eu hunain ac 1.
+\en
+An example of a prime number is 13 as it only has two factors: 13 and 1, whereas 9 is not a prime number as it has three factors: 9, 3 and 1.
+\cy
+Un enghraifft o rif cysefin yw 13 gan mai dim ond dau ffactor sydd ganddo: 13 ac 1, ond nid yw 9 yn rhif cysefin gan fod ganddo dri ffactor: €“9, 3 ac 1.
+\en
+The first 10 prime numbers are: 2, 3, 5, 7, 11, 13, 17, 19, 23 and 29.
+\cy
+Y 10 rhif cysefin cyntaf yw: 2, 3, 5, 7, 11, 13, 17, 19, 23 a 29.
+
+\en
+It is interesting to note that 2 is the only even prime number. 
+The number 1 is not prime as it only has a single factor (1 anditself).
+As we previously mentioned prime numbers must have two factors exactly.
+\cy
+Mae'n ddiddorol nodi mai 2 yw'r unig eilrif sy'n rhif cysefin. 
+Nid yw'r rhif 1 yn rhif cysefin gan mai dim ond un ffactor sydd ganddo (1 ei hun), ac fel y sonion ni'n gynharach, rhaid i rifau cysefin gael dau ffactor yn union.
+
+%----------------------------------------
+\subsection{\en Expressing numbers in prime factor form. \cy Mynegi rhifau ar ffurf ffactorau cysefin.}
+\en
+Every whole number (with only one exception, the number 1) can be expressed as a product of prime numbers.
+\cy
+Gallwn fynegi pob rhif cyfan (ac eithrio un : y rhif 1) fel lluoswm o rifau cysefin.
+\bi
+
+\begin{example}
+\begin{itemize}
+\item $8 = 2 \times 2 \times 2 = 2^3$
+\item $9 = 3 \times 3 = 3^2$
+\item $10 = 2 \times 5$
+\item $39 = 3 \times 13$
+\end{itemize}
+\end{example}
+
+\en
+The process of breaking a number down into its prime factors is sometimes called prime factor decomposition.
+
+\cy
+Weithiau, y term a ddefnyddir am y broses o dorri rhif i lawr i'w ffactorau cysefin yw dadelfeniad ffactorau cysefin.
+
+
+\begin{example}
+\en Express 300 in prime factor form.
+\cy Mynega 300 ar ffurf ffactorau cysefin.
+\bi
+\begin{solution}
+\en
+First we start with the lowest prime number, 2. Because 2 is a factor of 300, we make a note of the '2' and then divide 300 by 2, leaving 150. 
+\cy
+Yn gyntaf, rydyn ni'n cychwyn gyda'r rhif cysefin lleiaf, sef 2. Gan fod 2 yn ffactor o 300, rydyn ni'n cofnodi'r â€˜2' ac yna rhannu 300 \^{a} 2, gan adael 150.
+\en
+We can use a table to make this easier to see:
+\cy
+Gallwn ddefnyddio tabl i ddangos hyn yn well:
+
+\begin{center}
+\begin{tabular}{cc}
+\hline
+{\en Number \cy Rhif} & {\en Prime Factors \cy Ffactorau Cysefin} \\
+\hline
+300 & 2 \\
+150 & \\
+\hline
+\end{tabular}
+\end{center}
+
+\eng{Now we can divide by 2 again, leaving 75:}
+\cym{Nawr gallwn rannu \^{a} 2 eto, gan adael 75:}
+
+\begin{center}
+\begin{tabular}{cc}
+\hline
+{\en Number \cy Rhif} & {\en Prime Factors \cy Ffactorau Cysefin} \\
+\hline
+300 & 2 \\
+150 & 2 \\
+75 & \\
+\hline
+\end{tabular}
+\end{center}
+
+\en We can no longer divide by 2, as 2 is not a factor of 75. We now try to divide by the next largest prime number which is 3:
+\cy Ni allwn rannu ymhellach gyda 2 gan nad yw'n ffactor o 75. Rydyn ni nawr yn ceisio rhannu gyda'r rhif cysefin mwyaf nesaf, sef 3:
+
+\begin{center}
+\begin{tabular}{cc}
+\hline
+{\en Number \cy Rhif} & {\en Prime Factors \cy Ffactorau Cysefin} \\
+\hline
+300 & 2 \\
+150 & 2 \\
+ 75 & 3 \\
+ 25 & \\
+\hline
+\end{tabular}
+\end{center}
+
+\en We can no longer divide by 3, as 3 is not a factor of 25. We must again look for a larger prime number to use. The next prime number in the list is 5:
+
+\cym{Ni allwn rannu ymhellach \^{a} 3, gan nad yw'n ffactor o 25. Rhaid i ni edrych eto am rif cysefin mwy i'w ddefnyddio. Y rhif cysefin nesaf ar y rhestr yw 5:}
+
+\begin{center}
+\begin{tabular}{cc}
+\hline
+{\en Number \cy Rhif} & {\en Prime Factors \cy Ffactorau Cysefin} \\
+\hline
+300 & 2 \\
+150 & 2 \\
+ 75 & 3 \\
+ 25 & 5 \\
+  5 & \\
+\hline
+\end{tabular}
+\end{center}
+
+\eng{Finally we can divide by 5 again, leaving 1:}
+\cym{Yn olaf, gallwn rannu gyda \^{a} 5 eto, gan adael 1:}
+
+\begin{center}
+\begin{tabular}{cc}
+\hline
+{\en Number \cy Rhif} & {\en Prime Factors \cy Ffactorau Cysefin} \\
+\hline
+300 & 2 \\
+150 & 2 \\
+ 75 & 3 \\
+ 25 & 5 \\
+  5 & 5 \\
+  1 & \\
+\hline
+\end{tabular}
+\end{center}
+
+\en When we have a 1 in the left-hand column, we have finished the process.
+\cy Pan mae gennyn ni 1 yn y golofn chwith, mae'r broses wedi dod i ben.
+
+\en From the table we can see that 
+\cy O'r tabl, gallwn weld bod
+\bi
+\[
+300 = 2 \times 2 \times 3 \times 5 \times 5 = 2^2 \times 3 \times 5^2.
+\]
+
+\en You can check this by doing the multiplication on a calculator.
+\cy Gallet wirio hyn drwy luosi'r rhifau ar dy gyfrifiannell.
+
+\end{solution}
+\end{example}
+
+

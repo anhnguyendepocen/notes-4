@@ -1,0 +1,113 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{The likelihood ratio test}\label{sec:slrt}
+
+\begin{definition}
+The \emph{likelihood ratio} statistic $\lambda:D\to\R$ for testing $H_0:\theta\in\Theta_0$ against $H_1:\theta\in\Theta_1$ is defined by
+\[
+\lambda(\mathbf{x}) = \frac{\max\{L(\theta;\mathbf{x}):\theta\in\Theta_0\}}{\max\{L(\theta;\mathbf{x}):\theta\in\Theta_1\}} 
+\]
+\end{definition}
+
+% simple case
+If $H_0$ and $H_1$ are both simple hypotheses, say $H_0:\theta=\theta_0$ and $H_1:\theta=\theta_1$, the likelihood ratio reduces to
+\[
+\lambda(\mathbf{x}) = \frac{L(\theta_0;\mathbf{x})}{L(\theta_1;\mathbf{x})}
+\]
+
+If $\lambda(\mathbf{x})$ is small then $L(\theta_1;\mathbf{x})$ is large relative to $L(\theta_0;\mathbf{x})$ which indicates that $\theta_1$ is more likely than $\theta_0$ of being the true parameter value, and as a result we might be inclined to reject $H_0$. 
+
+% definition: likelihood ratio test
+\begin{definition}
+The \emph{likelihood ratio test} (LRT) of $H_0:\theta\in\Theta_0$ against $H_1:\theta\in\Theta_1$ is defined by the critical region
+\[
+C = \left\{\mathbf{x}:\lambda(\mathbf{x}) \leq k\right\}
+\]
+where $k$ is chosen according to the required size of the test.
+\end{definition}
+
+If $H_0$ and $H_1$ are both simple hypotheses, this is sometimes called the \emph{simple likelihood ratio test} (SLRT).
+
+% example
+\begin{example}
+Let $X_1,\ldots,X_n$ be a random sample from the $\text{Exponential}(\theta)$ distribution, where $\theta>0$ is an unknown rate parameter. Derive an explicit form for the critical region of the likelihood ratio test for testing the simple hypothesis $H_0:\theta=\theta_0$ against the simple alternative $H_1:\theta=\theta_1$, where $\theta_1 > \theta_0$.
+\begin{solution}
+The PDF is $f(x;\theta) = \theta e^{-\theta x}$ so the likelihood function is
+\[
+L(\theta;\mathbf{x}) = \prod_{i=1}^n \theta e^{-\theta x_i} = \theta^n \exp\left(-\theta\sum_{i=1}^n x_i\right).
+\]
+Hence the likelihood ratio is
+\[
+\lambda(\mathbf{x})
+	= \frac{L(\theta_0;\mathbf{x})}{L(\theta_1;\mathbf{x})} 
+	= \frac{\theta_0^n \exp\left(-\theta_0\sum_{i=1}^n x_i\right)}{\theta_1^n \exp\left(-\theta_1\sum_{i=1}^n x_i\right)}
+	= \left(\frac{\theta_0}{\theta_1}\right)^n \exp\left(-(\theta_0-\theta_1)\sum_{i=1}^n x_i\right).
+\]
+The critical region for the SLRT is therefore
+\begin{align*}
+C = \{\mathbf{x}:\lambda(\mathbf{x}) \leq k\} 
+	& = \left\{\mathbf{x}:\left(\frac{\theta_0}{\theta_1}\right)^n\exp\left(-(\theta_0-\theta_1)\sum_{i=1}^n x_i\right) \leq k\right\} \\
+	& = \left\{\mathbf{x}: n\log\left(\frac{\theta_0}{\theta_1}\right) - (\theta_0-\theta_1)\sum_{i=1}^n x_i \leq \log k \right\} \\
+%	& = \left\{\mathbf{x}: \sum_{i=1}^n x_i \leq \frac{\log k - n\log(\theta_0/\theta_1)}{\theta_0-\theta_1} \right\}\\
+	& = \left\{\mathbf{x}: \sum_{i=1}^n x_i \leq \frac{\log k + n\log(\theta_1/\theta_0)}{\theta_1-\theta_0} \right\}\\
+	& = \left\{\mathbf{x}: \sum_{i=1}^n x_i \leq k' \right\} \quad\text{or alternatively}\quad \left\{\mathbf{x}: \frac{1}{n}\sum_{i=1}^n x_i \leq k'' \right\}
+\end{align*}
+where we have used the fact that $\theta_1 > \theta_0$. The critical value $k'$ (or $k''$) is then chosen according to the required size of the test.
+\end{solution}
+\end{example}
+
+
+% example
+\begin{example}
+Let $X_1,\ldots,X_n$ be a random sample from the distribution of $X$, whose PDF is given by
+\[
+f(x;\theta) = \begin{cases}
+	\theta x^{\theta-1}	& 0\leq x\leq 1 \\
+	0					& \text{otherwise,}
+\end{cases}
+\]
+where $\theta\geq 1$ is an unknown scalar parameter. Construct a likelihood ratio test of the null hypothesis $H_0:\theta=1$ against the alternative $H_1:\theta>1$.
+\begin{solution}
+The PDF is $f(x;\theta) = \theta e^{-\theta x}$ so the likelihood function is
+\[
+L(\theta;\mathbf{x}) 
+	= \textstyle\prod_{i=1}^n \theta x_i^{\theta-1} 
+	= \theta^n\left(\prod_{i=1}^n x_i\right)^{\theta-1}.
+\]
+The likelihood ratio is
+\[
+\lambda(\mathbf{x})
+	= \frac{L(1;\mathbf{x})}{L(\theta;\mathbf{x})} 
+	= \frac{1}{\theta^n\big(\prod_{i=1}^n x_i\big)^{\theta-1}}
+	= \theta^{-n}\left(\prod_{i=1}^n x_i\right)^{1-\theta}.
+\]
+The critical region is 
+\begin{align*}
+C = \{\mathbf{x}:\lambda(\mathbf{x}) \leq k\} 
+	= \left\{\mathbf{x}:\theta^{-n}\left(\prod_{i=1}^n x_i\right)^{1-\theta} \leq k\right\}
+	& = \left\{\mathbf{x}: -n\log\theta + (1-\theta)\sum_{i=1}^n \log x_i \leq \log k \right\} \\
+	& = \left\{\mathbf{x}: (1-\theta)\sum_{i=1}^n\log x_i \leq \log k + n\log\theta\right\}\\
+	& = \left\{\mathbf{x}: -\sum_{i=1}^n \log x_i \leq -\frac{\log k + n\log\theta}{1-\theta}\right\} \\
+\end{align*}
+Thus a likelihood ratio test of $H_0:\theta=1$ against $H_1:\theta>1$ is given by the critical region
+\[
+C = \{\mathbf{x}: T(\mathbf{x}) \leq k'\} \qquad\text{where}\quad T(\mathbf{x}) = -\sum_{i=1}^n \log x_i,
+\]
+and $k'>0$ is chosen according to the required size of the test.
+%\bigskip
+%\textbf{Remarks}
+%\bit
+%\it The null hypothesis $H_0:\theta=1$ corresponds to $X\sim\text{Uniform}[0,1]$.
+%\it As $\theta$ increases away from $1$, the probability mass moves away from $x=0$ and towards $x=1$.
+%\it Observations that are close to $1$ yield small positive values of $-\log x_i$.
+%\it Observations that are close to $0$ yield large positive values of $-\log x_i$.
+%\eit
+%Small values of $T(\mathbf{x}) = -\sum_{i=1}^n \log x_i$ therefore indicate that many observations are close to $1$, leading us to reject the claim that $X\sim\text{Uniform}[0,1]$. Compare this test to a test based on the sample mean of the $X_i$:
+%\[
+%C' = \left\{\mathbf{x}: \frac{1}{n}\sum_{i=1}^n x_i \geq k''\right\}
+%\]
+%A preponderance of observations close to $1$ will lead us to reject $H_0$. However the LRT is a more sensitive test: $-\log(x)$ \emph{amplifies} the contribution of observations that are close to zero, and \emph{diminishes} the contribution of observations that are close to $1$.
+\end{solution}
+\end{example}
+

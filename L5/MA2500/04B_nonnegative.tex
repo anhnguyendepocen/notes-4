@@ -1,0 +1,82 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Non-negative variables}\label{sec:expe}
+
+Next we define the expectation for random variables that take only non-negative values. 
+
+\begin{definition}[Expectation of non-negative random variables]\label{def:expe_non-negative}
+\ben
+\it 
+The expectation of a non-negative \emph{discrete} random variable $X$ is
+\[
+\expe(X) = \sum_{i=1}^{\infty} x_i f(x_i),
+\]
+where $f$ is the PMF of $X$ and $\{x_1,x_2,\ldots\}$ is the range of $X$.
+\it 
+The expectation of a non-negative \emph{continuous} random variable $X$ is
+\[
+\expe(X) = \int_{-\infty}^{\infty} xf(x)\,dx,
+\]
+where $f$ is the PDF of $X$.
+\een
+\end{definition}
+
+Non-negative random variables can have \emph{infinite expectation}.
+
+\begin{example} % discrete, infinite
+A long line of athletes $k=0,1,2,\ldots$ make throws of a javelin to distances $D_0,D_1,D_2,\ldots$ respectively. Assume that the distances are independent and have the same distribution, and that the probability of any two throws being exactly the same distance is equal to zero. Let $X$ be the number of throws until the initial distance $D_0$ is surpassed for the first time. Find the PMF of $X$, and show that $\expe(X)$ is infinite.
+\begin{solution}
+First we need to find the PMF of $X$:
+\bit
+\it $X$ is a discrete random variable, taking values in the set $\{1,2,\ldots\}$.
+\it The event $\{X>k\}$ means that out of the first $k+1$ throws, the initial throw was the furthest.
+\it Because the distances $D_0,D_1,\ldots,D_k$ have the same distribution, each has the same probability of being the largest, so $\displaystyle\prob(X>k)=\frac{1}{k+1}$.
+\eit
+Hence, the PMF of $X$ is 
+\[
+\prob(X=k) = \prob(X>k-1) - \prob(X>k) = \frac{1}{k} - \frac{1}{k+1} = \frac{1}{k(k+1)},
+\]
+and its expected value is therefore
+\[
+\expe(X)
+	= \sum_{k=1}^\infty k\,\prob(X=k)
+	= \sum_{k=1}^\infty \frac{1}{k+1} 
+	= \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \ldots
+	= \infty.
+\]
+\end{solution}
+\end{example}
+
+\begin{example}[Pareto distrubtion] % continuous, infinite (pareto)
+Let $X$ be a continuous random variable with the following PDF:
+\[
+f(x) = \begin{cases}
+	1/x^2		& \text{for}\quad x > 1, \\
+	0			& \text{otherwise.} 
+\end{cases}
+\]
+Show that $\expe(X)$ is infinite.
+\begin{solution}
+$X$ is non-negative, so 
+\[
+\expe(X) 
+	= \int_{0}^{\infty} x f(x)\,dx
+	= \int_{1}^{\infty} \frac{1}{x}\,dx
+	= \infty.
+\]
+To be explicit:
+\[
+\int_{1}^{\infty} \frac{1}{x}\,dx
+	= \lim_{n\to\infty} \int_{1}^{n} \frac{1}{x}\,dx
+	= \lim_{n\to\infty} \big[\log(x)\big]_{1}^{n}
+	= \lim_{n\to\infty} \big[\log(n) - \log(1)\big]
+	= \lim_{n\to\infty} \log(n)
+	= \infty.
+\]
+\end{solution}
+\end{example}
+
+
+
+

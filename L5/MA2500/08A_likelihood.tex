@@ -1,0 +1,111 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Likelihood}\label{sec:likelihood}
+
+Let $f(x;\theta)$ denote the PMF/PDF of a random variable $X$. We have so far considered $f(x;\theta)$ to be a function of $x$ and $\theta$ as a fixed parameter. We now change the emphasis and regard $x$ as a fixed observation and $\theta$ as a variable parameter. To underline this new emphasis we refer to $f(x;\theta)$ as the \emph{likelihood function} of $\theta$.
+
+\bigskip
+Let $\mathbf{X}=(X_1,X_2,\ldots,X_n)$ be a random sample from the distribution of $X$, let $\mathbf{x}=(x_1,x_2,\ldots,x_n)$ be a realisation of the sample and let $\Theta$ denote the parameter space.
+
+\begin{definition}
+Given $\mathbf{X}=\mathbf{x}$, the \emph{likelihood function} $L:\Theta\to [0,\infty)$ is
+\[
+L(\theta;\mathbf{x}) = \displaystyle\prod_{i=1}^n f(x_i;\theta).
+\]
+\end{definition}
+
+Note that the right-hand side is just the joint PMF/PDF of the random sample. Until now we have interpreted this as the probability that the observed sample is $\mathbf{x}$ with $\theta$ a fixed parameter. For statistical inference, we instead consider the likelihood $L(\theta;\mathbf{x})$ that $\theta$ is the true parameter value given the fixed observations $\mathbf{x}$: such observations are often referred to as \emph{data}. 
+
+\bigskip
+The value of $\theta$ which maximises the likelihood function provides an estimator of the true parameter value, subject to the following regularity conditions.
+
+\begin{condition}\label{cond:regularity1}
+%Let $\theta_0$ be the true value of the unknown parameter $\theta$. Our statistical model $\mathcal{M}=\{f(x;\theta):\theta\in\Theta\}$ is assumed to satisfy the following conditions.
+Our statistical model $\mathcal{M}=\{f(x;\theta):\theta\in\Theta\}$ satisfies the following conditions.
+\ben
+%\it[C.1] The PDFs are distinct, i.e. $\theta\neq\theta' \implies f(x;\theta)\neq f(x;\theta')$.
+%\it[C.2] The PDFs have common support for all $\theta\in\Theta$.
+%\it[C.3] The true value of $\theta$ is an interior point of the parameter space $\Theta$.
+\it PDFs are distinct, i.e. $\theta\neq\theta' \implies f(x;\theta)\neq f(x;\theta')$.
+\it PDFs have a common support for all $\theta\in\Theta$.
+\it The true value of $\theta$ is an interior point of the parameter space $\Theta$.
+\een
+\end{condition}
+We shall not consider these conditions in detail.
+
+%We also need Jensen's inequality and the notion of convex functions.
+% defn: convex function
+%\begin{definition}
+%A function $g:\R\to\R$ is said to be \emph{strictly convex} if 
+%\[
+%g\big[\lambda x_1 + (1-\lambda)x_2\big] < \lambda g(x_i) + (1-\lambda)g(x_2)
+%\quad\text{for all $x_1\neq x_2$ and all $\lambda\in (0,1)$.}
+%\]
+
+%\ben
+%\it \emph{convex} if 
+%\[
+%g\big[\lambda x_1 + (1-\lambda)x_2\big] \leq \lambda g(x_i) + (1-\lambda)g(x_2) \quad\text{for all $x_1,x_2\in\R$ and $\lambda\in [0,1]$.}
+%\]
+%\it \emph{strictly convex} if 
+%\[
+%g\big[\lambda x_1 + (1-\lambda)x_2\big] < \lambda g(x_i) + (1-\lambda)g(x_2) \quad\text{for all $x_1\neq x_2$ and $\lambda\in (0,1)$.}
+%\]
+%\ben
+%\it \emph{convex} if $g\big[\lambda x_1 + (1-\lambda)x_2\big] \leq \lambda g(x_i) + (1-\lambda)g(x_2)$ for all $x_1,x_2\in\R$ and $\lambda\in [0,1]$.
+%\it \emph{strictly convex} if $g\big[\lambda x_1 + (1-\lambda)x_2\big] < \lambda g(x_i) + (1-\lambda)g(x_2)$ for all $x_1\neq x_2$ and $\lambda\in (0,1)$.
+%\een
+%\end{definition}
+%
+%% lemma: Jensen
+%\begin{lemma}[Jensen's inequality]
+%If $g:\R\to\R$ is a convex function then $g\big[\expe(X)\big] \leq \expe\big[g(X)\big]$.
+%\end{lemma}
+%
+%The following theorem shows that $L(\theta)$ is maximised at the true value of $\theta$ as $n\to\infty$.
+%
+%% thm: mle
+%\begin{theorem}\label{thm:mle}
+%Let $\theta_0$ be the true value of the unknown parameter $\theta$. Under conditions C.1 and C.2,
+%\[
+%\lim_{n\to\infty} \prob_{\theta_0}\big[L(\theta_0,\mathbf{X})>L(\theta,\mathbf{X})\big] = 1 
+%\quad\text{for all $\theta\neq\theta_0$.}
+%\]
+%where $\prob_{\theta_0}$ is the probability measure on $\R^n$ induced by the random sample.
+%\end{theorem}
+%\begin{proof}
+%Taking logs, the inequality $L(\theta_0,\mathbf{X})-L(\theta,\mathbf{X})$ is equivalent to
+%\[
+%\frac{1}{n}\sum_{i=1}^n\log\left(\frac{f(X_i;\theta)}{f(X_i;\theta_0)}\right) < 0. 
+%\]
+%By the law of large numbers applied to the random variable $\log\big[f(X;\theta)/f(X,\theta_0)\big]$, 
+%\[
+%\frac{1}{n}\sum_{i=1}^n\log\left(\frac{f(X_i;\theta)}{f(X_i;\theta_0)}\right)
+%\to \expe_{\theta_0}\log\left(\frac{f(X_i;\theta)}{f(X_i;\theta_0)}\right)
+%\quad\text{in probability as $n\to\infty$.}
+%\]
+%Furthermore, because $-\log(x)$ is strictly convex, by Jensen's inequality we have
+%\[
+%\expe_{\theta_0}\log\left(\frac{f(X_i;\theta)}{f(X_i;\theta_0)}\right)
+%\leq\log\expe_{\theta_0}\left(\frac{f(X_i;\theta)}{f(X_i;\theta_0)}\right)
+%\]
+%and because the PDFs $f(x;\theta)$ have a common support,
+%\[
+%\expe_{\theta_0}\left(\frac{f(X_i;\theta)}{f(X_i;\theta_0)}\right)
+%	= \int \frac{f(x;\theta)}{f(x;\theta_0)}f(x;\theta_0)\,dx
+%	= \int f(x;\theta)\,dx
+%	= 1.
+%\]
+%Finally, because $\log 1 = 0$ the result follows.
+%\end{proof}
+%
+%Theorem~\ref{thm:mle} shows that a good estimator of $\theta_0$ is one which maximises the likelihood function.
+%
+%%-----------------------------
+%\subsection{The score function}
+%The first derivative of the log-likelihood function is called the \emph{score function}.
+%\begin{definition}
+%\end{definition}
+
+

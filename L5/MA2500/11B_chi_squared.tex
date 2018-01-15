@@ -1,0 +1,127 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Sums of squares}\label{sec:chi-squared}
+
+Let $X\sim N(\mu,\sigma^2)$ where $\mu$ is unknown, and let $X_1,X_2,\ldots,X_n$ be a random sample from the distribution of $X$. The usual test statistic for deciding between $H_0:\mu=\mu_0$ and a suitable alternative is the standardised sum
+\[
+Z = \sum_{i=1}^n\left(\frac{X_i-\mu_0}{\sigma}\right)\ \sim N(0,1)\text{ under $H_0$.}
+\]
+
+Another test statistic is provided the standardized \emph{sum-of-squares},
+\[
+T = \sum_{i=1}^n\left(\frac{X_i-\mu_0}{\sigma}\right)^2\ \sim\chi^2_n \text{ under $H_0$.}
+\]
+where $\chi^2_n$ is the \emph{chi-squared distribution} with $n$ degrees of freedom.
+\begin{remark}
+If $\sigma^2$ is unknown we replace it by the sample variance $s^2$, in which case $T\sim\chi^2_{n-1}$.
+\end{remark}
+%-----------------------------
+\subsection{The $\chi^2$ distribution}
+
+\begin{definition}\label{defn:chisquared_dist}
+The $\chi^2_{n}$ distribution is defined by the PDF
+\[
+f(x) = \begin{cases}
+	\displaystyle\frac{1}{\Gamma(n/2)2^{n/2}}\,x^{n/2-1} e^{-x/2} & \text{for $x>0$}, \\
+	0																	& \text{otherwise,}
+\end{cases}
+\]
+where the parameter $n$ is called the \emph{degrees of freedom}.
+\end{definition}
+The $\chi^2_{n}$ distribution is a special case of the $\Gamma(k,\theta)$ distribution, where $k=n/2$ and $\theta=2$ is a scale parameter. In particular, $\expe(X) = n$ and $\var(X)=2n$.
+%
+The following theorem (which we shall not prove) asserts that the sum-of-squares of $n$ independent standard normal variables has the $\chi^2_n$-distribution.
+\begin{theorem}
+If $Z_1,Z_2,\ldots,Z_n$ are independent standard normal variables then $\displaystyle\sum_{i=1}^n Z_i^2\sim\chi^2_n$.
+\end{theorem}
+
+\begin{example}
+A quality control supervisor at a paint factory knows that the exact amount each tin contains will vary due to certain uncontrollable factors that affect the amount of fill. The mean fill is important, but equally important is the variation of each fill. If the variance $\sigma^2$ of the fill is large, some tins will contain too much paint, and others too little. A regulatory agency specifies that the variance of the amount of fill in $250ml$ tins should be less than $3ml$. To determine whether or not the process is meeting this specification, the supervisor randomly selects 10 tins and measures the contents of each tin. The mean fill over the sample is found to be $250.78ml$, and the sample variance is $s^2 = 1.03$. Do the data indicate that the factory is operating within the regulatory limits?
+\begin{solution}
+We wish to test the null hypothesis $H_0:\sigma^2 = 3$ against the alternative $H_1:\sigma^2 < 3$. We assume that the distribution of the fill amounts is approximately normal, and consider the test statistic 
+\[
+T = \sum_{i=1}^{n} \left(\frac{X_i-\bar{X}}{\sigma}\right)^2 = \frac{(n-1)s^2}{\sigma^2},
+\]
+where $s^2$ is the sample variance of the fill amounts. Taking $n=10$, the distribution of our test statistic under the null hypothesis $H_0:\sigma^2 = 3$ is
+\[
+T \sim \chi^2_9.
+\]
+\bit
+\it From tables, the critical value for a lower-tailed test at $\alpha=0.05$ is $T_{0.95} = 3.326$.
+\it The observed value of the test statistic (under the null hypothesis) is
+\[
+T = \frac{(n-1)s^2}{\sigma^2} = \frac{9\times 1.03}{3} = 3.09.
+\]
+\eit 
+The test statistic lies in the rejection region, so the supervisor can reject $H_0:\sigma^2=3$ and conclude that the variance of the fill amounts is less than $3$. The supervisor can be confident that the factory is operating within the desired limits of variability. 
+\end{solution}
+\end{example}
+
+%-----------------------------
+\subsection{The $F$ distribution}
+\begin{definition}
+Let $T_1$ and $T_2$ be independent random variables with $T_1\sim\chi^2_m$ and $T_2\sim\chi^2_n$. The distribution of the ratio
+\[
+F = \frac{T_1/m}{T_2/n}.
+\]
+is called the \emph{$F$-distribution with $m$ and $n$ degrees of freedom}, and denoted by $F\sim F_{m,n}$.
+\end{definition}
+
+\begin{example}
+A researcher wants to compare the metabolic rates of mice subjected to different drugs. The weight of the mice may affect their metabolic rates, so the researcher wishes to obtain mice that are relatively homogeneous with respect to weight. Five hundred mice will be needed to complete the study. Currently, 16 mice from supplier 1 and another 13 mice from supplier 2 are available for comparison. The researcher weighs these mice and finds that the sample standard deviations are $s_1=0.2021$ and $s_2=0.0982$ respectively. Is there sufficient evidence to indicate a significant difference in the variance of the weight of mice obtained from the two suppliers at the $\alpha=0.1$ level?
+\begin{solution}
+Let $\sigma^2_1$ and $\sigma^2_2$ be the population variances for mice from Supplier 1 and Supplier 2 respectively. The null hypothesis is $H_0:\sigma^2_1=\sigma^2_2$, and our test statistic is the ratio of the sample variances,
+\[
+F = \frac{s^2_1}{s^2_2}
+\qquad\text{where}\quad 
+\frac{(m-1)s^2_1}{\sigma_1}\sim\chi^2_{m-1}
+\quad\text{and}\quad 
+\frac{(n-1)s^2_2}{\sigma_2}\sim\chi^2_{n-1}.
+\]
+with $m=16$ and $n=13$. Under $H_0:\sigma^2_1=\sigma^2_2$ we have that $F\sim F_{15,12}$.
+\bit
+\it We reject $H_0$ if the observed $F$-ratio exceeds the tabulated value $F_{1-\alpha/2}=F_{0.95} = 2.616$.
+\it The observed value is $F=(0.2021)^2/(0.0982)^2=4.236$.
+\eit
+The observed value lies in the rejection region, so we reject the null hypothesis and conclude that the weights of mice from supplier 2 tend to be more homogeneous that the weights of mice from supplier 1.
+
+\bigskip
+Note: $F_{0.975} = 3.277$, $F_{0.99} = 4.155$,  $F_{0.995} = 4.721$. Thus we would reject $H_0$ at $\alpha=0.05$ and $\alpha=0.02$, but retain $H_0$ at $\alpha=0.01$.
+\end{solution}
+\end{example}
+
+%-----------------------------
+\subsection{The non-central $\chi^2$ distribution}
+
+\begin{definition}
+Let $X_1,X_2,\ldots,X_n$ be independent random variables with $X_i\sim N(\mu_i,1)$. The distribution of the sum-of-squares
+\[
+W=\sum_{i=1}^n X_i^2
+\]
+is called the \emph{non-central chi-squared distribution}, with $n$ degrees of freedom and non-centrality parameter 
+\[
+\lambda = \sum_{i=1}^n \mu_i^2.
+\]
+\end{definition}
+We write this as $W\sim\chi^2_n(\lambda)$, in which case
+\[
+\expe(W)=n+\lambda \quad\text{and}\quad \var(W)=2(n+2\lambda).
+\]
+When $\lambda=0$, all $\mu_i$ must be zero and the $\chi^2_n(\lambda)$ distribution reduces to the ordinary $\chi^2_n$ distribution. Any non-zero mean $\mu_i$ increases the value of $\lambda$ and hence increases $\expe(W)$ and $\var(W)$ compared to those of the ordinary $\chi^2_n$ distribution. 
+
+
+%%--------------------------------------------------
+%\subsubsection*{Sums of squares}
+%
+%Let $X\sim N(\mu,\sigma^2)$. If $\mu$ is unknown but $\sigma^2$ is known, a test statistic for $H_0:\mu=\mu_0$ against a suitable alternative is the standardized \emph{sum-of-squares},
+%\[
+%T = \sum_{i=1}^n\left(\frac{X_i-\mu_0}{\sigma}\right)^2\ \sim\chi^2_n \text{ under $H_0$.}
+%\]
+%
+%\bit
+%\it If $\sigma^2$ is also unknown we replace it by the sample variance $s^2$, in which case $T\sim\chi^2_{n-1}$.
+%\it If $\mu\neq\mu_0$, then $T\sim\chi^2_n(\lambda)$ where $\lambda= n(\mu-\mu_0)^2$.
+%\eit
+
+
