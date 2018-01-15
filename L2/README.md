@@ -1,3 +1,3 @@
-# Level 5 (Year 2)
+# Level 5
 
 - [MA2500](MA2500) Foundations of Probability and Statistics
