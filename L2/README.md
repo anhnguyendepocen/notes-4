@@ -1,4 +1,10 @@
 # Level 2 (GCSE)
 
-# Numbers
-- [Prime Factors](numbers/prime_factors)
+## Number
+- [Prime Factors](number/prime_factors)
+
+## Algebra
+
+## Geometry
+
+## Statistics
