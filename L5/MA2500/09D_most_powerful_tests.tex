@@ -1,0 +1,294 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Most powerful tests}\label{sec:most_powerful_tests}
+
+\begin{definition}
+Let $C_1$ and $C_2$ be two critical regions of size $\alpha$ for testing $H_0:\theta\in\Theta_0$ against $H_1:\theta\in\Theta_1$ and consider the power functions $\gamma_1(\theta)$ and $\gamma_2(\theta)$ of the associated tests, 
+\[
+\gamma_1(\theta) = \prob_{\theta}(X\in C_1) \quad\text{and}\quad \gamma_2(\theta) = \prob_{\theta}(X\in C_2) \quad\text{for $\theta\in\Theta_1$.}
+\]
+If $\gamma_1(\theta) > \gamma_2(\theta)$ for all $\theta\in\Theta_1$, we say that $C_1$ is a \emph{more powerful test} than $C_2$. 
+\end{definition}
+
+\begin{definition}
+Let $C$ be a critical region of size $\alpha$ for testing $H_0:\theta\in\Theta_0$ against $H_1:\theta\in\Theta_1$. Then the associated test is called a \emph{most powerful test} of size $\alpha$ if for every subset $A\subset D$ of size $\alpha$,
+\[
+\prob_{\theta}(\mathbf{X}\in C) \geq \prob_{\theta}(\mathbf{X}\in A) \quad\text{for all $\theta\in\Theta_1$.}
+\]
+This means that the test is at least as powerful as any other test of size $\alpha$.
+\end{definition}
+
+%-----------------------------
+\subsection{The Neyman-Pearson lemma}
+
+\begin{theorem}[The Neyman-Pearson lemma]
+The likelihood ratio test is a most powerful test of a simple null hypothesis against a simple alternative.
+\end{theorem}
+\begin{proof}
+Let $H_0:\theta=\theta_0$ and  $H_1:\theta=\theta_1$. The SLRT is given by the critical region
+\[
+C = \left\{\mathbf{x}:\lambda(\mathbf{x}) \leq k\right\}
+\quad\text{where}\quad
+\lambda(\mathbf{x}) = \frac{L(\theta_0;\mathbf{x})}{L(\theta_1;\mathbf{x})}
+\]
+Let $A$ be another critical region of size $\alpha$. We need to show that $\prob_{\theta_1}(C) \geq \prob_{\theta_1}(A)$.
+
+\bit
+\it If $\mathbf{x}\in C\setminus A$, then $\lambda(\mathbf{x})\leq k$, so $L(\theta_1;\mathbf{x}) \geq \displaystyle\frac{1}{k}L(\theta_0;\mathbf{x})$, or equivalently  $f(\mathbf{x};\theta_1) \geq \displaystyle\frac{1}{k}f(\mathbf{x};\theta_0)$
+\it If $\mathbf{x}\in A\setminus C$, then $\lambda(\mathbf{x})> k$, so $L(\theta_1;\mathbf{x}) \leq \displaystyle\frac{1}{k}L(\theta_0;\mathbf{x})$, or equivalently $f(\mathbf{x};\theta_1) \leq \displaystyle\frac{1}{k}f(\mathbf{x};\theta_0)$
+\eit
+
+Hence, for continuous distributions (the discrete case is similar),
+\begin{align*}
+\prob_{\theta_1}(C) - \prob_{\theta_1}(A)
+	& = \int_{C} L(\theta_1;\mathbf{x})\,d\mathbf{x} - \int_{A} L(\theta_1;\mathbf{x})\,d\mathbf{x} \\
+	& = \int_{C\setminus A} L(\theta_1;\mathbf{x})\,d\mathbf{x} - \int_{A\setminus C} L(\theta_1;\mathbf{x})\,d\mathbf{x} \\
+	& \geq \frac{1}{k}\left(\int_{C\setminus A} L(\theta_0;\mathbf{x})\,dx - \int_{A\setminus C} L(\theta_0;\mathbf{x})\,dx\right) \\
+	& = \frac{1}{k}\left(\int_{C} L(\theta_0;\mathbf{x})\,dx - \int_{A} L(\theta_0;\mathbf{x})\,dx\right) \\
+	& = \frac{1}{k}(\alpha-\alpha) \\
+	& = 0.
+\end{align*}
+
+Thus $\prob_{\theta_1}(C) \geq \prob_{\theta_1}(A)$ and because this holds for any critical region $A$ of size $\alpha$, we conclude that the SLRT is a most powerful test of $H_0:\theta=\theta_0$ against $H_1:\theta=\theta_1$.
+\end{proof}
+
+
+% example: SLRT for Poisson
+\begin{example}%[SLRT for the mean of a Poisson distribution]
+Let $X_1,\ldots,X_n$ be a random sample from the $\text{Poisson}(\theta)$ distribution. Find a most powerful test of the simple hypothesis $H_0:\theta=2$ against the simple alternative $H_1:\theta = 1/2$.
+\end{example}
+
+\begin{solution}
+The PMF of a $\text{Poisson}(\theta)$ random variable is
+\[
+f(x) = \begin{cases}
+\displaystyle\frac{\theta^{x} e^{-\theta}}{x!}		& x=0,1,2,\ldots \\
+0														& \text{otherwise.}
+\end{cases}
+\]
+
+The likelihood function is
+\[
+L(\theta;\mathbf{x}) = \frac{\theta^{\sum_i x_i } e^{-n\theta}}{\prod_{i=1}^n x_i!}.
+\]
+
+For the null value $\theta_0=2$ and the alternative value $\theta_1=1/2$, 
+\[
+L(\theta_0;\mathbf{x}) = \frac{2^{\sum_i x_i} e^{-2n}}{\prod_{i=1}^n x_i!} 
+\text{\quad and\quad}
+L(\theta_1;\mathbf{x}) = \frac{(1/2)^{\sum_i x_i} e^{-n/2}}{\prod_{i=1}^n x_i!} 
+\]
+so the likelihood ratio is
+\[
+\lambda(\mathbf{x})
+	= \frac{L(\theta_0|\mathbf{x})}{L(\theta_1|\mathbf{x})} 
+	= \frac{2^{\sum_i x_i} e^{-2n}}{(1/2)^{\sum_i x_i} e^{-n/2}}
+	= 4^{\sum_i x_i} e^{-3n/2}.
+\]
+By the Neyman-Pearson lemma, a most powerful test is given by the critical region
+\[
+C = \{\mathbf{x}:\lambda(\mathbf{x})\leq k\} = \{\mathbf{x}:4^{\sum_i x_i} e^{-3n/2}\leq k\}
+\]
+where $k$ is chosen according to the required size of the test.
+%
+To clarify the decision rule, note that
+\begin{align*}
+C 
+	& = \left\{\mathbf{x}: \sum_{i=1}^n x_i\log 4 - \frac{3n}{2} \leq \log k\right\} 
+	= \left\{\mathbf{x}: \sum_{i=1}^n x_i \leq \frac{3n/2 + \log k}{\log 4}\right\} 
+	= \left\{\mathbf{x}: \sum_{i=1}^n x_i \leq k'\right\}
+\end{align*}
+where $k'$ is chosen according to the required size of the test.
+\end{solution}
+
+\begin{example}
+Let $X_1,X_2,\ldots,X_{10}$ be a random sample from the $\text{Bernoulli}(\theta)$ distribution, where $\theta$ is unknown. The null hypothesis $H_0:\theta=1/2$ is rejected in favour of the alternative $H_1:\theta < 1/2$ whenever the sum of the observations satisfies $\sum_{i=1}^{10}X_i \leq 2$. 
+\ben
+\it Find the size of the test.
+\it Find the power of the test at $\theta=1/4$ and the power of the test at $\theta=1/5$.
+\it Show that this is a most powerful test of $H_0:\theta=1/2$ against the simple alternative $H_1:\theta=1/4$.
+\een
+\begin{solution}
+\ben
+\it % <<<<
+Let $S = \sum_{i=1}^{10}X_i \leq 2$. From tables,
+\[
+\alpha = \prob\big[S\leq 2 \text{ when } S\sim\text{Binomial}(10,1/2)\big] = 0.0547.% \text{\quad (from tables).}
+\]
+\it % <<<<
+From tables,
+\begin{align*}
+\gamma(1/4) & = \prob\big[S\leq 2 \text{ when } S\sim\text{Binomial}(10,1/4)\big] = 0.5256. \\
+\gamma(1/5) & = \prob\big[S\leq 2 \text{ when } S\sim\text{Binomial}(10,1/5)\big] = 0.6778.
+\end{align*}
+\it % <<<<
+Likelihood function:
+\[
+L(\theta;\mathbf{x}) = \prod_{i=1}^{10}f(x_i;\theta) = \prod_{i=1}^{10}\theta^{x_i}(1-\theta)^{1-x_i}
+\]
+Likelihood ratio:
+\[
+\lambda(\mathbf{x}) 
+	= \frac{L(1/2;\mathbf{x})}{L(1/4;\mathbf{x})}
+	= \frac{\prod_{i=1}^{10}(1/2)^{x_i}(1/2)^{1-x_i}}{\prod_{i=1}^{10}(1/4)^{x_i}(3/4)^{1-x_i}}
+%	= \frac{(1/2)^{10}}{(1/3)^{\sum_i x_i}(3/4)^{10}}
+	= 3^{\sum_i x_i}(2/3)^{10}.
+\]
+Simple likelihood ratio test: 
+\begin{align*}
+C 
+	& = \{\mathbf{x}:\lambda(\mathbf{x})\leq k\} \\
+%	& = \{\mathbf{x}:3^{\sum_i x_i}(2/3)^{10}\leq k\} \\
+	& = \big\{\mathbf{x}:\sum_i x_i \leq (\log k + 10\log(3/2))/\log 3 \big\} \\
+	& = \{\mathbf{x}:\sum_i x_i \leq k' \}
+\end{align*}	
+where $k'$ is chosen appropriately. By the Neyman-Pearson lemma, this is a most powerful test of $H_0:\theta=1/2$ against $H_1:\theta=1/4$.
+\een
+\end{solution}
+\end{example}
+
+
+%==========================================================================
+\begin{exercise}
+\begin{questions}
+\question  % 8.1.5
+Let $\mathbf{X}=(X_1,X_2,\ldots,X_n)$ be a random sample from a distribution whose PDF is $f(x;\theta) = \theta x^{\theta-1}$ for $0 < x < 1$, and zero otherwise.
+%\[
+%f(x;\theta) = \begin{cases}
+%\theta x^{\theta-1}	& 0 < x < 1, \\
+%0					& \text{otherwise.}
+%\end{cases}
+%\]
+Show that a most powerful test of $H_0:\theta=1$ against $H_1:\theta=2$ is given by the critical region
+\[
+C = \left\{\mathbf{x}: \displaystyle\prod_{i=1}^n x_i \geq c\right\}.
+\]
+%\[
+%C = \left\{\mathbf{x}: T(\mathbf{x})\geq c\right\}\quad\text{where } T(\mathbf{x})=\displaystyle\prod_{i=1}^n x_i.
+%\]
+%defines a most powerful test of $H_0:\theta=1$ against $H_1:\theta=2$.
+\begin{answer}
+The likelihood function is 
+\[
+L(\theta|\mathbf{x}) 
+	= \prod_{i=1}^{n} f(x_i;\theta)
+	= \prod_{i=1}^{n} \theta x^{\theta-1}
+	= \theta^n\prod_{i=1}^{n} x_i^{\theta-1}.
+\]
+In particular, $L(1|\mathbf{x})=1$ and $L(2|\mathbf{x})=2^n\prod_{i=1}^{n} x_i$, so the likelihood ratio for testing $H_0$ against $H_1$ is given by
+\[
+\lambda(\mathbf{x})
+	= \frac{L(1|\mathbf{x})}{L(2|\mathbf{x})}
+	= \frac{1}{2^n\prod_{i=1}^{n} x_i}.
+\]
+By the Neymann-Pearson lemma, a most powerful test is given by
+\[
+C 	= \{\mathbf{x}:\lambda(\mathbf{x})\leq k\}
+	= \left\{\mathbf{x}:\frac{1}{2^n\prod_{i=1}^{n} x_i} \leq k\right\}
+	= \left\{\mathbf{x}:\prod_{i=1}^{n} x_i \geq \frac{1}{k2^n}\right\}.
+\]
+Hence a most powerful test is given by a set of the form $C = \big\{\mathbf{x}: \prod_{i=1}^n x_i \geq c\big\}$, where $c$ is chosen to fix the size of the test.
+\end{answer}
+
+
+
+%==========================================================================
+\question  % 8.1.7
+Let $\mathbf{X}=(X_1,X_2,\ldots,X_n)$ be a random sample from the $N(\theta,100)$ distribution, and let
+\[
+C = \left\{\mathbf{x}:\frac{1}{n}\sum_{i=1}^n x_i \geq k\right\}
+\] 
+where $k$ is a constant.
+\ben
+\it % (i)
+Show that $C$ defines a most powerful test of $H_0:\theta=75$ against $H_1:\theta=78$. 
+\item % (ii)
+Find values for $n$ and $k$ such that $\prob_{H_0}\left(\frac{1}{n}\sum_{i=1}^n X_i\geq k\right)=0.05$ and $\prob_{H_1}\left(\frac{1}{n}\sum_{i=1}^n X_i\geq k\right)=0.90$, approximately.
+\een
+
+\begin{answer}
+\ben
+\it % << (i)
+The density function is $f(x;\theta,\sigma^2) = \displaystyle\frac{1}{\sigma\sqrt{2\pi}}\exp\left(-\frac{1}{2\sigma^2}(x-\theta)^2\right)$. 
+
+The likelihood ratio for $H_0:\theta=\theta_0$ against $H_1:\theta=\theta_1$ is therefore
+\begin{align*}
+\lambda(\mathbf{x})
+	& = \frac{L(\theta_0;\mathbf{x})}{L(\theta_1;\mathbf{x})} \\
+	& = \frac{\exp\left(-\frac{1}{2\sigma^2}\sum_i (x_i-\theta_0)^2\right)}{\exp\left(-\frac{1}{2\sigma^2}\sum_i(x_i-\theta_1)^2\right)} \\
+	& = \exp\left(-\frac{1}{2\sigma^2}\sum_i\big[(x_i-\theta_0)^2 -(x_i-\theta_1)^2\big]\right) \\
+	& = \exp\left(-\frac{1}{2\sigma^2}\big[-2(\theta_0-\theta_1)\sum_i x_i + n(\theta_0^2-\theta_1^2)\big]\right) \\
+%	& = \exp\left(-\frac{1}{2\sigma^2}\big[-2n(\theta_0-\theta_1)\bar{x} + n(\theta_0^2-\theta_1^2)\big]\right) \\
+\end{align*}	
+
+By the Neyman-Pearson lemma, a most powerful test is given by 
+\begin{align*}
+\{\mathbf{x}:\lambda(\mathbf{x})\leq k\}
+	& = \left\{\mathbf{x}:\exp\left(-\frac{1}{2\sigma^2}\big[-2(\theta_0-\theta_1)\sum_i x_i + n(\theta_0^2-\theta_1^2)\big]\right)\leq k\right\} \\
+	& = \left\{\mathbf{x}\,:\,\frac{1}{n}\sum_i x_i \geq \frac{1}{2}(\theta_0+\theta_1) - \frac{\sigma^2\log k}{n(\theta_0-\theta_1)}\right\}
+\end{align*}
+where we have used the fact that $\theta_0 < \theta_1$.
+
+\bigskip
+Thus if $\theta_0<\theta_1$, the set $\displaystyle C=\left\{\mathbf{x}\,:\,\frac{1}{n}\sum_i x_i\geq k\right\}$ defines a most powerful test of $H_0:\theta=\theta_0$ against $H_1:\theta=\theta_1$.
+
+\it % << (i)
+Under $H_0:\theta=75$, each $X_i\sim N(75,100)$ so the sample mean is $\bar{X}\sim N(75,100/n)$. For a test of size $\alpha=0.05$, the critical value $c$ must be the $95$th percentile of the $N(75,100/n)$ distribution, so $c = 75 + 1.645(10/\sqrt{n})$ where $1.645$ is the $95$th percentile of the standard normal distribution $N(0,1)$.
+
+Under $H_1:\theta=78$, each $X_i\sim N(78,100)$ so the sample mean is $\bar{X}\sim N(78,100/n)$. For a test of $\gamma = 0.9$, the critical value $c$ must be the $10$th percentile of the $N(78,100/n)$ distribution, so $c = 78 - 1.280(10/\sqrt{n})$ where $-1.280$ is the $10$th percentile of the standard normal distribution $N(0,1)$.
+
+Equating these expressions for $c$, we obtain $\sqrt{n} = 10(1.645+1.280)/(78-75) = 9.75$ and therefore $n=95.0625$, which means that we need a sample size $n=96$ to ensure that the significance level does not exceed 0.05. Substituting for $\sqrt{n}$ in one of the above expression then yields the critical value $c = 76.6872$, which defines the critical region 
+\[
+\displaystyle C=\left\{\mathbf{x}\,:\,\frac{1}{n}\sum_i x_i\geq 76.6872\right\}.
+\]
+As shown above, this defines a most powerful test of $H_0:\theta=75$ against $H_1:\theta=78$.
+\een
+\end{answer}
+
+%==========================================================================
+\question  % 8.1.4
+Let $X_1,X_2,\ldots,X_{10}$ be a random sample from the $N(0,\sigma^2)$ distribution where $\sigma^2$ is unknown. 
+\ben
+\it Find a most powerful test of size $\alpha=0.05$ for testing $H_0:\sigma^2=1$ against $H_1:\sigma^2=2$. 
+\it Is this also a most powerful test of $H_0:\sigma^2=1$ against $H_1:\sigma^2=4$?
+\it Is this a most powerful test of $H_0:\sigma^2=1$ against the composite alternative $H_1:\sigma^2>1$?
+\een
+
+\begin{answer}
+\ben
+\it % << (i)
+The density function is $f(x,\sigma^2) = \displaystyle\frac{1}{\sqrt{2\pi\sigma^2}}e^{-x^2/2\sigma^2}$, the likelihood function is 
+\[
+L(\sigma^2;\mathbf{x}) 
+	= \prod_{i=1}^{10} f(x_i,\sigma^2)
+	= \left(\frac{1}{2\pi\sigma^2}\right)^{5}\exp\left(-\frac{1}{2\sigma^2}\sum_i x_i^2\right)
+\]
+and the likelihood ratio for $H_0:\sigma^2=1$ against $H_1:\sigma^2=2$ is therefore
+\[
+\lambda(\mathbf{x})
+	= \frac{L(1;\mathbf{x})}{L(2;\mathbf{x})}
+	= 2^{5} \exp\left(-\frac{1}{4}\sum_i x_i^2\right).
+\]
+Let $\mathbf{X}=(X_1,X_2,\ldots,X_{10})$ denote the random sample. By the Neymann-Pearson lemma, a best critical region for the test is
+\begin{align*}
+C 	= \{\mathbf{x}:\lambda(\mathbf{x})\leq k\} 
+	& = \left\{\mathbf{x}:2^{5} \exp\left(-\frac{1}{4}\sum_{i=1}^{10} x_i^2\right) \leq k\right\} \\
+	& = \left\{\mathbf{x}:\sum_{i=1}^{10} x_i^2 \geq 4\log\left(\frac{k}{2^{5}}\right)\right\} \\
+	& = \left\{\mathbf{x}:\sum_{i=1}^{10} x_i^2 \geq k'\right\} \\
+\end{align*}
+where $k'$ is chosen to ensure that $\prob(\mathbf{X}\in C;H_0)=0.05$. 
+\it % << (ii)
+Under the null hypothesis we have $X_i\sim N(0,1)$, so the sum-of-squares $\sum_{i=1}^{10} X_i^2$ has chi-squared distribution with $10$ degrees-of-freedom. From tables, the critical value at $\alpha=0.05$ for this distribution is $18.307$, so the critical region is given by 
+\[
+C = \left\{\mathbf{x}\,:\,\sum_{i=1}^{10} x_i^2 \geq 18.307\right\} 
+\]
+This is also a most powerful test of $H_0:\sigma^2=1$ against $H_1:\sigma^2=4$. 
+\it
+The argument of part (b) holds for any simple alternative hypthesis $H_1:\sigma^2=\sigma^2_1$ provided $\sigma^2_1 > 1$. This is therefore a \emph{uniformly most powerful test} of size $\alpha$ for testing $H_0:\sigma^2=1$ against every simple alternative in the composite hypothesis $H_1:\sigma^2>1$.
+\een
+\end{answer}
+
+
+\end{questions}
+\end{exercise}

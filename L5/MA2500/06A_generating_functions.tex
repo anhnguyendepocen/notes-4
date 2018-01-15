@@ -1,0 +1,744 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Generating functions}\label{sec:gen_funs}
+
+%Generating functions are power series used to represent sequences of real numbers. It is often easier to work with generating functions than with the original sequences.
+%
+%% definition
+%\begin{definition}
+%The \emph{generating function} of a sequence $a_0,a_1,a_2,$ of real numbers is the function
+%\[
+%G(t) = \sum_{k=0}^{\infty} a_k t^k,
+%\]
+%which is defined for every $t\in\R$ for which the sum converges.
+%\end{definition}
+%
+%The sequence can be reconstructed from $G(t)$ by setting 
+%\[
+%\displaystyle a_n = \frac{1}{n!} G^{(n)}(0),
+%\]
+%where $G^{(n)}(t)$ is $n$th derivative of $G(t)$. In particular,
+%\[
+%G(0) = a_0,\quad G'(0) = a_1,\quad G''(0) = a_2,\quad \text{and so on.}
+%\]
+%
+%
+A \emph{power series} is an infinite series of the form
+\[
+G(t) = \sum_{k=0}^{\infty} a_k t^k.
+\]
+%If $G(t)<\infty$ we say that the power series \emph{converges} at $t$; otherwise we say it \emph{diverges} at $t$. If $G(t)$ converges at some $t\neq 0$ (it clearly converges at $t=0$) then there exists a positive number $R>0$ such that $G(t)$ converges for $|t|<R$ and diverges for $|t|>R$. This number is called the \emph{radius of convergence} of $G$.
+
+Power series can be used to represent sequences of real numbers $a_0,a_1,a_2,\ldots$, in which case they are often called \emph{generating functions}. The terms of the sequence can be recovered by repeatedly differentiating the power series and evaluating these derivatives at $t=0$:
+\[
+G(0) = a_0,\quad G'(0) = a_1,\quad G''(0) = 2a_2,\quad G'''(0) = 6a_3\quad\text{and so on.}
+\]
+In this way, the power series \emph{generates} the sequence.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PGFS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Probability generating functions}
+
+Generating functions allow probability distributions to be represented as functions of a single variable. 
+
+% definition
+\begin{definition}
+Let $X$ be a discrete random variable taking values in the range $\{0,1,2,\ldots\}$ and let $f_X$ denote its PMF. The \emph{probability generating function} (PGF) of $X$ is the generating function of its PMF,
+\[
+G_X(t) = \expe(t^X) = \sum_{k=0}^{\infty} f_X(k) t^k.
+\]
+\end{definition}
+
+\begin{remark}
+Because $f$ is a PMF, $G(t)$ converges for all $|t|\leq 1$ with $G(0) = 0$ and $G(1)=\sum_{k=0}^{\infty} f(k) = 1$.
+\end{remark}
+
+As the following theorem shows, probability generating functions turn \emph{sums} of independent random variables into \emph{products} of independent random variables:
+% theorem
+\begin{theorem}\label{thm:PGF_sum_of_independent}
+If $X$ and $Y$ are independent then $G_{X+Y}(t) = G_X(t)G_Y(t)$.
+\end{theorem}
+\begin{proof}
+If $X$ and $Y$ are independent, then $t^X$ and $t^Y$ are also independent, so 
+\[
+G_{X+Y}(t) = \expe(t^{X+Y}) = \expe(t^X t^Y) = \expe(t^X)\expe(t^Y) = G_X(t)G_Y(t).
+\]
+\end{proof}
+
+\begin{exercise}
+If $Y = a + bX$, show that $G_Y(t) = t^a G_X(t^b)$.
+\begin{answer}
+\[
+G_Y(t) = \expe\big(t^{a+bX}\big) = t^a \expe\big((t^b)^X\big) = t^a G_X(t^b).
+\]
+\end{answer}
+\end{exercise}
+
+% corollary
+\begin{corollary}\label{cor:PGF_sum_of_independent}
+If $X_1,X_2,\ldots,X_n$ are independent random variables taking values in the non-negative integers, the PGF of their sum is equal to the product of their individual PGFs,
+\[
+G_{X_1+X_2+\ldots+X_n}(t) = G_{X_1}(t)G_{X_2}(t)\cdots G_{X_n}(t).
+\]
+\end{corollary}
+
+The PGFs of some fundamental discrete distributions on $\{0,1,2,\ldots\}$ are shown in Table~\ref{tab:pmf_pgf}.
+\begin{table}[ht]
+\[\begin{array}{lclcll}
+								& & \text{PMF} 					& & \text{PGF}					& \\ \hline
+X\sim\text{Bernoulli}(p)		& & p^k(1-p)^{1-k} 				& & 1 - p + pt			& \\[1ex]
+X\sim\text{Binomial}(n,p)		& & \displaystyle\binom{n}{k}p^k(1-p)^{n-k} 	& & (1 - p + pt)^n		& \\[2ex]
+X\sim\text{Geometric}(p)		& & (1-p)^{k}p 					& & \displaystyle\frac{p}{1-(1-p)t}	& \text{for $|t|<(1-p)^{-1}$}	\\[2ex]
+X\sim\text{Poisson}(\lambda)	& & \lambda^k e^{-\lambda}/k! 	& & e^{\lambda(t-1)} \\ \hline
+\end{array}\]
+\caption{The PGFs of some fundamental discrete distributions.\label{tab:pmf_pgf}}
+\end{table}
+
+\begin{exercise}
+For each of the distributions shown in Table~\ref{tab:pmf_pgf} derive the expressions for their PGFs from the corresponding PMFs.
+\begin{answer}
+\ben
+% bernoulli
+\it If $X\sim\text{Bernoulli}(p)$, then $\prob(X=0)=1-p$, $\prob(X=1)=p$ and $\prob(X=k)=0$ for all $k\geq 2$ so
+\[
+G_X(t)	= \sum_{k=0}^\infty f_X(k) t^k 
+		= (1-p)t^0 + pt^1 
+		= 1 - p + pt.
+\]
+% binomial
+\it If $X\sim\text{Binomial}(n,p)$, it can be written as $X=X_1+X_2+\ldots+X_n$ where each $X_i$ is independent with $X_i\sim\text{Bernoulli}(p)$. Thus by Corollary~\ref{cor:PGF_sum_of_independent},
+\[
+G_X(t)	= G_{X_1+X_2+\ldots+X_n}(t) 
+		= G_{X_1}(t)G_{X_2}(t)\cdots G_{X_n}(t) 
+		= (1 - p + pt)^n.
+\]
+% geometric
+\it If $X\sim\text{Geometric}(p)$, then $\prob(X=k) = (1-p)^k p \text{ for } k=0,1,2,\ldots$, so 
+\[
+G_X(t)	= \sum_{k=0}^\infty f_X(k) t^k
+		= \sum_{k=0}^\infty (1-p)^k p t^k 
+		= p\sum_{k=0}^\infty \big[(1-p)t\big]^k 
+		= \frac{p}{1-(1-p)t} \quad\text{ for all } |t|<\frac{1}{1-p}.
+\]
+where we have used the fact that $\displaystyle\sum_{k=0}^{\infty} r^k = \frac{1}{1-r}$ for $|r|<1$.
+% poisson
+\it If $X\sim\text{Poisson}(\lambda)$, then $\prob(X=k) = \lambda^k e^{-\lambda}/x!$ so
+\[
+G_X(t)	= \sum_{k=0}^\infty f_X(k) t^k
+		= \sum_{k=0}^{\infty}\left(\frac{\lambda^k e^{-\lambda}}{k!}\right)t^k
+		= e^{-\lambda}\sum_{i=1}^\infty \frac{(\lambda t)^k}{k!}
+		= e^{-\lambda}e^{\lambda t}
+		= e^{\lambda(t-1)}.
+\]
+\een
+\end{answer}
+\end{exercise}
+
+%-----------------------------
+\subsection{Moments}
+
+The moments of a distribution can be recoverd by repeatedly computing the derivatives of its PGF and evaluating the resulting expressions at $t=1$.
+% theorem (factorial moments)
+\begin{theorem}
+Let $G_X^{(n)}(t)$ denote the $n$th derivative of $G_X(t)$. Then
+\[
+G_X^{(n)}(1) = \expe\big[X(X-1)\ldots(X-n+1)\big].
+\]
+These are called the \emph{factorial moments} of $X$.
+\begin{proof}
+Take $t < 1$, and compute the $n$th derivative of $G$ to obtain
+\begin{align*}
+G^{(n)}(t) 
+	& = \frac{d^n}{dt^n}\left[\sum_{k=0}^{\infty} t^{k} f_X(k)\right] \\
+	& = \sum_{k=0}^{\infty} \left[\frac{d^n}{dt^n} t^{k}\right] f_X(k) \\
+	& = \sum_{k=0}^{\infty} k(k-1)\cdots(k-n+1)t^{k-n} f_X(k) \\
+	& = \expe\big[X(X-1)\cdots(X-n+1)t^{X-n} \big]
+\end{align*}
+Thus $G^{(n)}(1) = \expe\big[X(X-1)\cdots(X-n+1)\big]$, as required.
+\end{proof}
+\end{theorem}
+
+% exercise (mean and variance)
+\begin{exercise}
+Show that $\expe(X) = G'_X(1)$ and $\var(X) = G''_X(1) + G'_X(1) - G'_X(1)^2$.
+\begin{answer}
+\begin{align*}
+\var(X)
+	& = \expe(X^2) - \expe(X)^2 \\
+	& = \expe\big[X(X-1) + X\big] - \expe(X)^2 \\
+	& = \expe\big[X(X-1)\big] + \expe(X) - \expe(X)^2 \\
+	& = G''_X(1) + G'_X(1) - G'_X(1)^2.
+\end{align*}
+\end{answer}
+\end{exercise}
+
+%-----------------------------
+\subsubsection{Sums with a random number of terms}
+
+% theorem
+\begin{theorem}\label{thm:GF-NofX}
+Let $X_1,X_2,\ldots$ be independent and identically distributed random variables and let $G_X(t)$ denote their common PGF. Let $N$ be another random variable taking values in the non-negative integers and independent of the $X_i$, and let $G_N(t)$ denote its PGF. Then the PGF of the sum $S_N=X_1+X_2+\ldots+X_N$ is 
+\[
+G_{S_N}(t) = G_N\big[G_X(t)\big].
+\]
+and its expectation satisfies $\expe(S_N) = \expe(N)\expe(X)$. (This is known as Wald's identity.)
+\end{theorem}
+
+\begin{proof}
+\begin{align*}
+G_{S_N}(t) = \expe(t^{S_N}) 
+	& = \expe\big(\expe(t^{S_N}\,|\,N)\big) \text{\quad(law of total expectation)}\\
+	& = \sum_{n=0}^{\infty}\expe(t^{S_N}\,|\,N=n)\prob(N=n) \\
+	& = \sum_{n=0}^{\infty}\expe(t^{S_n})\prob(N=n) \\
+	& = \sum_{n=0}^{\infty}\expe(t^{X_1+X_2+\ldots+X_n}\,|\,N=n)\prob(N=n) \\
+	& = \sum_{n=0}^{\infty}\expe(t^{X_1})\expe(t^{X_2})\cdots\expe(t^{X_n})\prob(N=n) \quad\text{(by independence)}\\
+	& = \sum_{n=0}^{\infty}G_X(t)^n\prob(N=n) \\
+	& = G_N\big[G_X(t)\big].
+\end{align*}
+To find $\expe(S_N)$, we find $G_{S_N}(t)$ then evaluate its first derivative at $t=1$.
+\[
+\frac{d}{dt}\big[G_{S_N}(t)\big]
+	= \frac{d}{dt}\big[G_N\big(G_X(t)\big)\big] 
+	= \frac{dG_N(u)}{du}\times\frac{du}{dt}
+	\quad\text{where $u=G_X(t)$.}
+\]
+Setting $t=1$ so that $u=G_X(1)=1$,
+\[
+\expe(S_N) = G'_{S_N}(1) = \big[G'_N(1)\big]\big[G'_X(1)\big] = \expe(N)\expe(X).
+\]
+\end{proof}
+
+% example: compound distribution
+\begin{example}
+A hen lays $N$ eggs where $N$ has Poisson distribution with parameter $\lambda$. If each egg hatches independently with probability $p$ show that the total number of chicks has Poisson distribution with parameter $\lambda p$.
+\end{example}
+\begin{solution}
+Let $S_N = X_1+X_2+\ldots+X_N$ denote the total number of chicks. Each $X_i$ has $\text{Bernoulli}(p)$ distribution; let $G_X(t)$ denote their common generatig function. Then
+\[
+G_X(t) = 1 - p + pt \qquad\text{and}\qquad G_N(t) = e^{\lambda(t-1)},
+\]
+so by Theorem~\ref{thm:GF-NofX}, 
+\[
+G_{S_N}(t) = G_N\big[G_X(t)\big] = e^{\lambda(-p+pt)} = e^{\lambda p(t-1)}
+\]
+which we recognise as the PGF of the $\text{Poisson}(\lambda p)$ distribution. Note that by Corollary~\ref{cor:GF-NofX}, the expected number of chicks is $\expe(S_N) = \expe(N)\expe(X) = \lambda p$, which is the expected value of the $\text{Poisson}(\lambda p)$ distribution.
+\end{solution}
+
+\begin{exercise}
+\begin{questions}
+\question
+Let $X\sim\text{Binomial}(m,p)$ and $Y\sim\text{Binomial}(n,p)$ be independent. Show that $X+Y\sim\text{Binomial}(m+n,p)$.
+\begin{answer}
+The PGFs of $X$ and $Y$ are
+\[
+G_X(t) = (1-p+pt)^m
+\quad\text{and}\quad
+G_Y(t) = (1-p+pt)^n
+\]
+Using the properties of PGFs,
+\[
+G_{X+Y}(t) = G_X(t)G_Y(t) = (1-p+pt)^m (1-p+pt)^n = (1-p+pt)^{m+n},
+\]
+which we recognise as the PGF of the $\text{Binomial}(m+n,p)$ distribution.
+\end{answer}
+
+\question
+Let $X\sim\text{Poisson}(\lambda)$ and $Y\sim\text{Poisson}(\mu)$ be independent. Show that $X+Y\sim\text{Poisson}(\lambda+\mu)$.
+\begin{answer}
+The PGFs of $X$ and $Y$ are respectively $G_X(t)= e^{\lambda(t-1)}$ and $G_Y(t) = e^{\mu(t-1)}$, so the PGF of $Z=X+Y$ is 
+\[
+G_Z(t) = G_X(t)G_Y(t) = e^{(\lambda+\mu)(t-1)}.
+\]
+We recognise this as the PGF of a $\text{Poisson}(\lambda+\mu)$ random variable, so by the inversion theorem for PGFs, $Z\sim\text{Poisson}(\lambda+\mu)$.
+\end{answer}
+
+\question % GS 5.2.4
+Let $X\sim\text{Binomial}(n,p)$. Using the PGF of $X$, show that 
+\[
+\expe\left(\frac{1}{1+X}\right) = \frac{1-(1-p)^{n+1}}{(n+1)p}.
+\]
+
+\begin{answer}
+Let $G(t)$ be the PGF of $X$. Then $G(t)=\expe(t^X) = (q+pt)^n$ where $q=1-p$. 
+
+Now
+\[
+\int_0^1 t^x\,dt = \left[\frac{t^{1+x}}{1+x}\right]_0^1 = \frac{1}{1+x},
+\]
+so
+\[
+\expe\left(\frac{1}{1+X}\right) 
+	= \expe\left(\int_0^1 t^X \,dt\right)
+	= \int_0^1 \expe(t^X)\,dt 
+	= \int_0^1 (q+pt)^n\,dt
+	= \frac{1-q^{n+1}}{(n+1)p}
+\]
+\end{answer}
+
+\end{questions}
+\end{exercise}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MGFS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Moment generating functions}
+
+% definition
+\begin{definition}
+The \emph{moment generating function} (MGF) of a random variable $X$ is the function 
+\[
+\begin{array}{rccl}
+M_X:	& \R	& \to		& [0,\infty] \\
+		& t		& \mapsto	& \expe(e^{tX})
+\end{array}
+\]
+\end{definition}
+
+Becaaus $e^{tX}$ is non-negative, its expectation is well-defined and $\expe(e^{tX})\geq 0$. It may however be that $\expe(e^{tX})$ is infinite, which limits the usefulness of MGFs in some cases.
+
+\begin{theorem}
+If $X$ takes only non-negative integer values then $M_X(t) = G_X(e^t)$ where $G_X$ is the PGF of $X$.
+\end{theorem}
+\begin{proof}
+\[
+M_X(t) = \expe(e^{tX}) = \expe\big[(e^t)^X\big] = G_X(e^t),
+\]
+\end{proof}
+
+% example: discrete (easy)
+\begin{example}
+The MGFs of some fundamental discrete distributions on $\{0,1,2,\ldots\}$ can be computed as follows:
+\[
+\begin{array}{llll}
+X\sim\text{Bernoulli}(p):\quad	& G_X(t) = 1 - p + pt\quad	&\quad\Rightarrow\quad & M_X(t) =  1 - p + pe^t		\\[2ex]
+X\sim\text{Binomial}(n,p):		& G_X(t) = (1-p+pt)^n			&\quad\Rightarrow\quad & M_X(t) = (1 - p + pe^t)^n	\\[2ex]
+X\sim\text{Poisson}(\lambda):	& G_X(t) = e^{\lambda(t-1)}	&\quad\Rightarrow\quad & M_X(t) = e^{\lambda(e^t-1)}	\\ 
+\end{array}
+\]
+\end{example}
+
+
+% theorem
+\begin{theorem}[Properties of MGFs]\label{thm:props_mgfs}
+\ben
+\it If $X$ and $Y$ are independent, then $M_{X+Y}(t) = M_X(t)M_Y(t)$.
+\it If $Y = a + bX$, then $M_Y(t) = e^{at} M_X(bt)$
+\een
+\begin{proof}
+\ben
+\it By independence, 
+\[
+M_{X+Y}(t) = \expe(e^{t(X+Y)}) = \expe(e^{tX}e^{tY}) = \expe(e^{tX})\expe(e^{tY}) = M_X(t)M_Y(t).
+\]
+\it For $Y=a+bX$, 
+\[
+M_Y(t) = \expe\big(e^{t(a+bX)}\big) = e^{at}\expe\big(e^{btX}\big) = e^{at}M_X(bt).
+\]
+\een
+\end{proof}
+\end{theorem}
+
+\begin{corollary}\label{cor:mgfs_for_sums}
+If $X_1,X_2,\ldots,X_n$ are independent random variables, 
+\[
+M_{X_1+X_2+\ldots+X_n}(t) = M_{X_1}(t)M_{X_2}(t)\cdots M_{X_n}(t).
+\]
+\begin{proof}
+If $X_1,X_2,\ldots,X_n$ are independent, $e^{tX_1},e^{tX_2},\ldots,e^{tX_n}$ are also independent, so
+\begin{align*}
+M_{X_1+X_2+\ldots+X_n}(t)
+	& = \expe(e^{t(X_1+x_2+\ldots+X_n)}) \\
+	& = \expe(e^{tX_1})\expe(e^{tX_2})\ldots\expe(e^{tX_n}) \quad\text{(by independence)}\\
+	& = M_{X_1}(t)M_{X_2}(t)\cdots M_{X_n}(t)
+\end{align*}	
+\end{proof}
+\end{corollary}
+
+%
+%
+%\begin{example}
+%Find the MGFs of the $\text{Bernoulli}(p)$ and $\text{Binomial}(n,p)$ distributions.
+%\begin{solution}
+%\bit
+%\it
+%For $X\sim\text{Bernoulli}(p)$, $\prob(X=0)=1-p$ and $\prob(X=1)=p$ (and zero otherwise) so
+%\[
+%M_X(t)	= \expe(e^{tX}) = (1-p)e^0 + pe^t = 1 - p + pe^t.
+%\]
+%\it
+%If $X\sim\text{Binomial}(n,p)$ it can be written as $X=X_1+X_2+\ldots+X_n$, where each $X_i$ is independent with $X_i\sim\text{Bernoulli}(p)$. Thus by Corollary~\ref{cor:mgfs_for_sums},
+%\[
+%M_X(t)	= M_{X_1+X_2+\ldots+X_n}(t) 
+%		= M_{X_1}(t)M_{X_2}(t)\cdots M_{X_n}(t) 
+%		= (1 - p + pe^t)^n.
+%\]
+%\eit
+%\end{solution}
+%\end{example}
+%
+%The MGFs of some discrete distributions are shown in Table~\ref{tab:mgfs}.
+%\begin{table}[ht]
+%\[\begin{array}{lclcll}
+%Distribution					& & \text{PMF} 					& & \text{MGF}					& \\ \hline
+%X\sim\text{Bernoulli}(p)		& & p^k(1-p)^{1-k} 				& & 1 - p + pe^t			& \\[1ex]
+%%X\sim\text{Binomial}(n,p)		& & \displaystyle\binom{n}{k}p^k(1-p)^{n-k} 	& & (1 - p + pe^t)^n		& \\[2ex]
+%X\sim\text{Geometric}(p)		& & (1-p)^{k}p 					& & \displaystyle\frac{p}{1-(1-p)e^t}	& \text{for $|t|<(1-p)^{-1}$}	\\[2ex]
+%X\sim\text{Poisson}(\lambda)	& & \lambda^k e^{-\lambda}/k! 	& & e^{\lambda(e^t-1)} \\ \hline
+%\end{array}\]
+%\caption{MGFs of some discrete distributions\label{tab:mgfs}}
+%\end{table}
+
+% example
+\begin{example}[Normal distribution]\label{exa:mgf_normal}
+By first considering the MGF of the $N(0,1)$ distribution, show that the MGF of the $N(\mu,\sigma^2)$ distribution is given by
+\[
+M_X(t) = \exp\left(\mu t + \frac{1}{2}\sigma^2t^2\right).
+\]
+\end{example}
+
+\begin{solution}
+Let $Z\sim N(0,1)$ be a standard normal variable; this has PDF
+\[
+f_Z(z) = \frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}z^2}\qquad (z\in\R).
+\]
+Its MGF is therefore given by
+\[
+M_Z(t) = \expe(e^{tZ})
+	 = \int_{-\infty}^{\infty} e^{tz} f_Z(z)\,dz 
+	 = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} e^{tz-\frac{1}{2}z^2}\,dz 
+\]
+The exponent $tz-\frac{1}{2}z^2$ can be written as $\frac{1}{2}t^2 -\frac{1}{2}(z-t)^2$, so
+\begin{align*}
+M_Z(t)
+	& = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} e^{\frac{1}{2}t^2} e^{-\frac{1}{2}(z-t)^2}\,dz \\
+	& = e^{\frac{1}{2}t^2} \left(\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} e^{-\frac{1}{2}(z-t)^2}\,dz\right) 
+	= e^{\frac{1}{2}t^2}.
+\end{align*}
+
+Let $X=\mu+\sigma Z$. Then $X\sim N(\mu,\sigma^2)$ and by the properties of MGFs,
+\[
+M_X(t) = e^{\mu t}M_Z(\sigma t) = e^{\mu t}e^{\frac{1}{2}\sigma^2t^2}= e^{\mu t + \frac{1}{2}\sigma^2t^2},
+\]
+as required.
+\end{solution}
+
+\begin{exercise}
+\begin{questions}
+
+\question
+Let $X\sim\text{Geometric}(p)$ be the distribution of the number of failures before the first success in a sequence of independent Bernoulli trials in which the probability of success is $p$. Show that $M_X(t) = p/\big[1-(1-p)e^t\big]$ for $|t|<-\log(1-p)$.
+\begin{answer}
+For $X\sim\text{Geometric}(p)$, $\prob(X=k) = (1-p)^k p \text{ for } k=0,1,2,\ldots$, so 
+\[
+M_X(t)	= \sum_{k=1}^\infty e^{tk}\prob(X=k)
+		= \sum_{k=1}^\infty (1-p)^k p e^{tk}
+		= p\sum_{k=1}^\infty \big[(1-p)e^t\big]^k 
+		= \frac{pe^t}{1-(1-p)e^t} \quad\text{ for all } t < -\log(1-p).
+\]
+where we have used the fact that $\sum_{k=0}^{\infty} r^k = \frac{1}{1-r}$ for $|r|<1$.
+\end{answer}
+
+\question
+Let $X\sim\text{Poisson}(\lambda)$. Show that $M_X(t) = e^{\lambda(e^t-1)}$.
+\begin{answer}
+For $X\sim\text{Poisson}(\lambda)$, $\prob(X=k) = \lambda^k e^{-\lambda}/x!$ so
+\[
+M_X(t)	= \sum_{k=0}^\infty e^{tk}\prob(X=k)
+		= \sum_{k=0}^{\infty}\left(\frac{\lambda^k e^{-\lambda}}{k!}\right)e^{tk}
+		= e^{-\lambda}\sum_{i=1}^\infty \frac{(\lambda e^t)^k}{k!}
+		= e^{-\lambda}e^{\lambda e^t}
+		= e^{\lambda(e^t-1)}.
+\]
+\end{answer}
+\end{questions}
+\end{exercise}
+
+%-----------------------------
+%\subsubsection{Moments}
+
+% theorem
+\begin{theorem}\label{thm:taylor_mgf}
+If $M_X(t)$ converges in some neighbourhood of $0$ then
+\[
+M_X(t) = \sum_{k=0}^{\infty} \frac{\expe(X^k)}{k!} t^k.
+\]
+\begin{proof}
+Using the series expansion of $e^{tX}$ and the linearity of expectation,
+\[
+M_X(t) 
+	= \expe(e^{tX}) 
+	= \expe\left(\sum_{k=0}^{\infty} \frac{(tX)^k}{k!}\right)
+	= \sum_{k=0}^{\infty} \frac{\expe(X^k)}{k!} t^k
+\]
+\end{proof}
+\end{theorem}
+
+The moments of a distribution can be recovered from its MGF by repeated differentiation.
+
+\begin{corollary}
+Let $X$ be a random variable and let $M_X(t)$ be its MGF. Then 
+\[
+\expe(X^k) = M_X^{(k)}(0)
+\]
+where $M_X^{(k)}(0)$ is the $k$th derivative of $M_X(t)$ evaluated at $t=0$. 
+\end{corollary}
+
+% example: exponential
+\begin{example}[Exponential distribution]
+Let $X\sim\text{Exponential}(\lambda)$ where $\lambda>0$ is a rate parameter. 
+\ben
+\it Show that $M_X(t)=\displaystyle\frac{\lambda}{\lambda-t}$.
+\it Use $M_X(t)$ to find the mean and variance of $X$.
+\een
+\end{example}
+
+\begin{solution}
+\ben
+\it % << (i)
+The PDF of $X$ is $f(x)=\lambda e^{-\lambda x}$ for $x>0$ (and zero otherwise), so
+\begin{align*}
+M_X(t) 
+	= \int_0^\infty e^{tx} f(x)\,dx 
+	= \lambda \int_0^\infty e^{tx} e^{-\lambda x}\,dx 
+	& = \lambda \int_0^\infty e^{-(\lambda-t)x}\,dx \\
+	& = \frac{-\lambda}{\lambda-t} \left[e^{-(\lambda-t)x}\right]_0^\infty
+	= \frac{\lambda}{\lambda-t}.
+\end{align*}
+\it % << (ii)
+\bit
+\it $M'(t) = \displaystyle \frac{\lambda}{(\lambda-t)^2}$, which yields $\mu_1 = M'(0)  = \displaystyle\frac{1}{\lambda}$.
+\it $M''(t) = \displaystyle \frac{2\lambda}{(\lambda-t)^3}$ which yields $\mu_2 = M''(0)  = \displaystyle\frac{2}{\lambda^2}$.
+\it Thus $\sigma^2 = \mu_2 - \mu_1^2 = \displaystyle\frac{1}{\lambda^2}$.
+\eit
+\een
+\end{solution}
+
+%%-----------------------------
+%\subsection{Inversion}
+%
+%If the MGF of a random variable converges in some neighbourhood of $0$, the distribution of the random variable is uniquely specified by its MGF. Moreover if another random variable has the same MGF then both random variables have the same distribution. This is encapsulated in the following theorem (which we shall not prove).
+%
+%\begin{theorem}[Inversion theorem for MGFs]
+%\ben
+%\it If $M_X(t)<\infty$ in some neighbourhood of $0$, then $M_X$ uniquely determines the distribution of $X$.
+%\it If $M_X(t) = M_Y(t)$ in some neighbourhood of $0$, then $X$ and $Y$ have the same distribution.
+%\een
+%\end{theorem}
+%
+%Most distributions we encounter are uniquely determined by their MGFs (a notable exception is the \emph{Cauchy distribution}). It is not always easy however to recover a PMF/PDF by explicitly inverting the associated MGF. Instead they are usually inverted by inspection, where we compare the MGF in question with the known MGFs of various standard distributions.
+%
+%\begin{example}
+%Let $X\sim\text{Binomial}(m,p)$ and $Y\sim\text{Binomial}(n,p)$ be independent. Show that $X+Y\sim\text{Binomial}(m+n,p)$,
+%\begin{solution}
+%\begin{align*}
+%M_{X+Y}(t) 	& = M_X(t)M_Y(t) \\
+%			& = (1-p+pe^t)^m (1-p+pe^t)^n \\
+%			& = (1-p+pe^t)^{m+n}.
+%\end{align*}
+%We recognise this as the MGF of the $\text{Binomial}(m+n,p)$ distribution. The result then follows by the inversion theorem for MGFs.
+%\end{solution}
+%\end{example}
+
+%-----------------------------
+\begin{exercise}
+\begin{questions}
+
+\question % gamma
+Let $X\sim\text{Gamma}(\alpha,\beta)$ where $\beta$ is a rate parameter. Find the MGF of $X$ and use this to show that $\expe(X)=\alpha/\beta$ and $\var(X)=\alpha/\beta^2$. 
+\begin{answer}
+Let $X\sim\text{Gamma}(\alpha,\beta)$. The PDF is
+\[
+f(x) =  \frac{\beta^{\alpha}}{\Gamma(\alpha)}\, x^{\alpha-1} e^{-\beta x}
+\quad\text{where}\quad
+\Gamma(\alpha) = \int_0^{\infty} t^{\alpha-1}e^{-t}\,dt
+\]
+for $x>0$, and zero otherwise. The MGF is
+\begin{align*}
+M(t) = \expe(e^{tX})
+	 = \int_{-\infty}^\infty e^{tx} f(x)\,dx 
+	& = \frac{\beta^\alpha}{\Gamma(\alpha)}\int_0^\infty e^{tx} x^{\alpha-1}e^{-\beta x}\,dx \\
+	& = \frac{\beta^\alpha}{\Gamma(\alpha)}\int_0^\infty x^{\alpha-1}e^{-(\beta-1)x}\,dx \\
+	& = \frac{\beta^\alpha}{\Gamma(\alpha)}\frac{1}{(\beta-t)^{\alpha}}\int_0^\infty x^{\alpha-1}e^{-u}\,du \\
+	& = \left(\frac{\beta}{\beta-t}\right)^\alpha.
+\end{align*}
+Elementary calculus yields 
+\[
+M'(t) = \frac{\alpha\beta^\alpha}{(\beta-t)^{\alpha+1}}
+\quad\text{and}\quad
+M''(t) = \frac{\alpha(\alpha+1)\beta^\alpha}{(\beta-t)^{\alpha+2}}. 
+\]
+Evaluating these at $t=0$, we get $\expe(X)	= \alpha/\beta$ and $\expe(X^2)=\alpha(\alpha+1)/\beta^2$, and hence 
+$\var(X)=\alpha(\alpha+1)/\beta^2$ as required.
+\end{answer}
+
+\question % two poisson
+Let $X\sim\text{Poisson}(\lambda)$ and $Y\sim\text{Poisson}(\mu)$ be independent. Show that $X+Y\sim\text{Poisson}(\lambda+\mu)$.
+\begin{answer}
+The PGFs of $X$ and $Y$ are respectively $G_X(t)= e^{\lambda(t-1)}$ and $G_Y(t) = e^{\mu(t-1)}$, so the PGF of $Z=X+Y$ is 
+\[
+G_{X+Y}(t) = G_X(t)G_Y(t) = e^{\lambda(t-1)}e^{\mu(t-1)} = e^{(\lambda+\mu)(t-1)}.
+\]
+which we recognise as the MGF of the $\text{Poisson}(\lambda+\mu)$ distribution. (The result follows by the inversion theorem.)
+\end{answer}
+
+
+\question % two normal
+Let $X\sim N(\mu_1,\sigma_1^2)$ and $Y\sim N(\mu_2,\sigma_2^2)$ be independent. Show that 
+$
+X+Y \sim N(\mu_1+\mu_2,\sigma_1^2+\sigma_2^2).
+$
+\begin{answer}
+Because $X$ and $Y$ are independent, 
+\begin{align*}
+M_{X+Y}(t)	
+	& = M_X(t)M_Y(t) \\
+	& = \big[e^{\mu_1 t + \frac{1}{2}\sigma_1^2t^2}\big]\big[e^{\mu_2 t + \frac{1}{2}\sigma_2^2t^2}\big] \text{(as calculated in Example~\ref{exa:mgf_normal})} \\
+	& = e^{(\mu_1+\mu_2) t + \frac{1}{2}(\sigma_1^2+\sigma_2^2)t^2} \\
+\end{align*}
+We recognise this as the MGF of the normal distribution with mean $\mu_1+\mu_2$ and variance $\sigma_1^2+\sigma_2^2$. By the inversion theorem for MGFs, we conclude that $X+Y \sim N(\mu_1+\mu_2,\sigma_1^2+\sigma_2^2)$.
+\end{answer}
+
+\question % mixture
+Let $X$ and $Y$ be independent random variables and let $Z$ be equal to $X$ with probability $p$, and equal to $Y$ with probability $1-p$. Use the law of total expectation to show that
+\[
+M_Z(t) = pM_X(t) + (1-p)M_Y(t).
+\]
+\begin{answer}
+By the law of total expectation,
+\begin{align*}
+M_Z(t)
+	& = \expe(e^{tZ}) \\
+	& = \expe(e^{tZ}|\text{$X$ chosen})\prob(\text{$X$ chosen}) + \expe(e^{tZ}|\text{$Y$ chosen})\prob(\text{$Y$ chosen})  \\
+	& = \expe(e^{tX})\prob(\text{$X$ chosen}) + \expe(e^{tY})\prob(\text{$Y$ chosen})  \\
+	& = pM_X(t) + (1-p)M_Y(t).
+\end{align*}
+\end{answer}
+
+\end{questions}
+\end{exercise}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CFS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Characteristic functions}
+%----------------------------------------------------------------------
+
+MGFs can be useful but the expectations that define them may be infinite or not even defined (a notable example is the Cauchy distribution). Characteristic functions do not suffer this disadvantage.
+
+% definition
+\begin{definition}
+The \emph{characteristic function} (CF) of a random variable $X$ is the function 
+\[
+\begin{array}{rccl}
+\phi_X:	& \R	& \to		& \C \\
+		& t		& \mapsto	& \expe(e^{itX})
+\end{array}
+\]
+\end{definition}
+
+% fourier
+\begin{remark}
+\bit
+\it $\phi(t) = \expe(\cos tX)+ i\expe(\sin tX)$.
+\it $\phi:\R\to\C$ exists for all $t\in\R$.
+\it $\phi(t) = M(it)$ provided the latter exists.
+\eit
+\end{remark}
+
+%The proof of the next result follows that of Theorem~\ref{thm:props_mgfs}
+%-------------------------
+% theorem
+\begin{theorem}[Properties of characteristic functions]\label{thm:properties_cf}
+\ben
+%\it $\phi(0)=1$ and $|\phi(t)|\leq 1$ for all $t$.
+\it If $X$ and $Y$ are independent then $\phi_{X+Y}(t) = \phi_X(t)\phi_Y(t)$.
+\it If $Y = a + bX$ then $\phi_Y(t) = e^{iat}\phi_X(bt)$
+\een
+\end{theorem}
+
+% proof
+\begin{proof}
+\ben
+\it % << (i)
+$\phi(0)=\expe(e^0)=\expe(1) = 1$, and 
+$\displaystyle |\phi(t)| = \left|\int e^{itx}\,dF(x)\right| \leq \int |e^{itx}|\,dF(x) = 1$.
+\it % << (ii)
+By independence, $\phi_{X+Y}(t) = \expe(e^{it(X+Y)}) = \expe(e^{itX}e^{itY})$, and since 
+\[
+e^{itX} = \cos(tX) + i\sin(tX)\quad\text{and}\quad e^{itY} = \cos(tY) + i\sin(tY),
+\]
+we see that 
+\[
+e^{itX}e^{itY} = \big[\cos(tX)\cos(tY) - \sin(tX)\sin(tY)\big] + i\big[\cos(tX)\sin(tY) + \sin(tX)\cos(tY)\big]
+\]
+Taking the expectation of both sides, and using the fact that $X$ and $Y$ are independent, 
+\begin{align*}
+\phi_{X+Y}(t) 
+	& = \expe\big(\cos(tX)+i\sin(tX)\big)\expe\big(\cos(tY)+i\sin(tY)\big) \\
+	& = \expe(e^{itX})\expe(e^{itY}) \\
+	& = \phi_X(t)\phi_Y(t).
+\end{align*}
+\it % << (ii)
+$\phi_Y(t) 
+	= \expe\big(e^{it(a+bX)}\big) 
+	= \expe\big(e^{iat}e^{i(bt)X}\big) 
+	= e^{iat}\expe(e^{i(bt)X}) 
+	= e^{iat}\phi_X(bt)$.
+\een
+\end{proof}
+
+
+%-----------------------------
+%\subsubsection{Inversion and continuity}
+The next two theorems are needed to prove the central limit theorem.
+
+The \emph{inversion theorem} states that the distribution a random variable is uniquely determined by its CF, and if another random variable has the same CF then they both have the same distribution. 
+
+\begin{theorem}[Inversion theorem for CFs]
+\ben
+\it $\phi_X$ uniquely determines the distribution of $X$.
+\it If $\phi_X(t) = \phi_Y(t)$ in some neighbourhood of $0$ then $X$ and $Y$ have the same distribution.
+\een
+\end{theorem}
+%\proofomitted
+
+It is not always easy to recover a distribution by explicitly inverting the associated CF. Instead they are usually inverted by inspection, where we compare the CF in question with the CFs of various standard distributions.
+
+\begin{example}
+Let $X\sim\text{Binomial}(m,p)$ and $Y\sim\text{Binomial}(n,p)$ be independent. Show that $X+Y\sim\text{Binomial}(m+n,p)$,
+\begin{solution}
+\begin{align*}
+\phi_{X+Y}(t) 	
+	& = M_X(t)M_Y(t) \\
+	& = (1-p+pe^{it})^m (1-p+pe^{it})^n \\
+	& = (1-p+pe^{it})^{m+n}.
+\end{align*}
+We recognise this as the CF of the $\text{Binomial}(m+n,p)$ distribution. The result then follows by the inversion theorem for CFs.
+\end{solution}
+\end{example}
+
+The \emph{continuity theorem} states that a sequence of distributions $F_1,F_2,\ldots$ converges to a limiting distribution $F$ if and only if the corresponding sequence of characteristic functions $\phi_1,\phi_2,\ldots$ converges to the characteristic function of $F$.
+
+%% convergence in distribution
+%\begin{definition}
+%A sequence $F_1,F_2,\ldots$ of CDFs is said to \emph{converge} to $F$, denoted by $F_n\to F$, if $F_n(x)\to F(x)$ as $n\to\infty$ for each point $x$ at which $F$ is continuous. 
+%\end{definition}
+
+% theorem: continuity
+\begin{theorem}[Continuity theorem for CFs]
+Let $F_1,F_2,\ldots$ and $F$ be CDFs and let $\phi_1,\phi_2,\ldots$ and $\phi$ be the corresponding CFs. 
+Then $F_n\to F$ if and only if $\phi_n\to\phi$ as $n\to\infty$.
+%\ben
+%\it If $F_n\to F$ then $\phi_n(t)\to\phi(t)$ for all $t$.
+%\it If $\phi_n(t)\to\phi(t)$ for all $t$ then $F_n\to F$.
+%\een
+\end{theorem}
+%\proofomitted
+
+
+
+

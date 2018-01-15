@@ -1,0 +1,323 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Bias and mean squared error}\label{sec:}
+
+%We now consider various notions of what constitutes a good estimator.
+%\bigskip
+
+%Let $X$ be a random variable and let $F_X(x;\theta)$ denote its CDF, where $\theta\in\Theta$ is an unknown parameter. Let $X_1,X_2,\ldots,X_n$ be a random sample from the distribution of $X$, and let $T(X_1,X_2,\ldots,X_n)$ be an estimator of the unknown parameter $\theta$. Intuitively, we would like the value $T(x_1,x_2,\ldots,x_n)$ to be `close' to $\theta$ for `most' sample realisations $(x_1,x_2,\ldots,x_n)$.
+
+Let $X$ be a random variable and let $F_X(x;\theta)$ denote its CDF where $\theta\in\Theta$ is an unknown parameter. Let $\mathbf{X}=(X_1,X_2,\ldots,X_n)$ be a random sample from the distribution of $X$ and let $T(\mathbf{X})$ be an estimator of $\theta$. Intuitively, we would like the estimate $T(\mathbf{x})$ to be ``close'' to the true value $\theta$ for ``most'' sample realisations $\mathbf{x}\in\R^n$.
+
+%-----------------------------
+\subsection{Bias}
+
+\begin{definition}
+The \emph{bias} of an estimator $T$ is the expected difference between $T(\mathbf{X})$ and the true parameter value $\theta$,
+\[
+\bias(T;\theta) = \expe\big[T(\mathbf{X}) - \theta\big].
+\]
+If $\bias(T;\theta)=0$ for all $\theta\in\Theta$ then $T$ is said to be an \emph{unbiased} estimator of $\theta$.
+\end{definition}
+
+% example: sample variance
+\begin{example}
+Let $\mathbf{X}=(X_1,X_2,\ldots,X_n)$ be a random sample from the $N(\mu,\sigma^2)$ distribution and consider the sample mean estimator of $\sigma^2$ defined by
+\[
+T(\mathbf{X}) = \frac{1}{n}\sum_{i=1}^n (X_i-\bar{X})^2 \quad\text{where}\quad \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i.
+\]
+\ben
+\it Show that $T$ is a biased estimator of $\sigma^2$ and find its bias.
+\it Show how can $T$ be modified to produce an unbiased estimator of $\sigma^2$.
+\een
+\begin{solution}
+\ben
+\it % <<<
+Recall that $\expe(\Xbar) = \mu$ and $\var(\Xbar) = \sigma^2/n$. First,
+\[
+\expe(T)	= \expe\left(\frac{1}{n}\sum_{i=1}^n (X_i-\Xbar)^2\right)
+			= \frac{1}{n}\sum_{i=1}^n \expe(X_i^2) - \expe(\Xbar^2).
+\]
+Since $\expe(X_i^2)	= \var(X_i)+\expe(X_i)^2$ and $\expe(\Xbar^2) = \var(\Xbar)+\expe(\Xbar)^2$, we have
+\[
+\expe(X_i^2) = \sigma^2 + \mu^2 \quad\text{and}\quad \expe(\Xbar^2) = \frac{\sigma^2}{n} + \mu^2.
+\]
+so
+\[
+\expe(T) 
+	= \frac{1}{n}\left[ n(\sigma^2+\mu^2)-n\left(\frac{\sigma^2}{n} + \mu^2\right)\right] 
+	= \left(\frac{n-1}{n}\right)\sigma^2.
+\]
+Thus $T$ is a biased estimator of $\sigma^2$, and its bias is
+\[
+\bias(T;\sigma^2) = \expe(T - \sigma^2) = \expe(T) - \sigma^2 = -\frac{\sigma^2}{n}.
+\]
+We say that $\hat{\sigma}^2$ is a \emph{negatively biased} estimator of $\sigma^2$ (it underestimates the true value).
+\it % <<<
+Let
+\[
+S^2(\mathbf{X}) = \left(\frac{n}{n-1}\right)T(\mathbf{X}) = \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar{X})^2 
+\]
+It is easy to see that $S^2$ is an unbiased estimator of $\sigma^2$. This is called the \emph{sample variance}.
+\een
+\end{solution}
+\end{example}
+
+% exercise: uniform
+\begin{exercise}
+Let $\mathbf{X}=(X_1,X_2,\ldots,X_n)$ be a random sample from the $\text{Uniform}(0,\theta)$ distribution, where $\theta>0$ is unknown. 
+\ben
+\it Find the bias of $T_1(\mathbf{X}) = 2\Xbar$ as an estimator of $\theta$.
+\it Find the bias of $T_2(\mathbf{X}) = \max\{X_1,X_2,\ldots,X_n\}$ as an estimator of $\theta$.
+\it How can $T_2$ be modified to produce an unbiased estimator of $\theta$?
+\een
+\begin{answer}
+\ben
+\it % <<<
+$T_1$ is an \emph{unbiased} estimator of $\theta$ because
+\[
+\bias(T_1)
+	= \expe(T_1 - \theta)
+	= \expe(T_1) - \theta
+	= 2\expe(\Xbar) -\theta
+	= 2(\theta/2) - \theta
+	= 0.
+\]
+\it % <<<
+Because the $X_i$ are independent, the CDF of $T_2$ is
+\[
+\prob(T_2 \leq t) = \left\{\begin{array}{ll}
+	0				& t \leq 0, \\
+	(t/\theta)^n 	& 0 < t < \theta, \\
+	1				& t \geq \theta.
+\end{array}\right.
+\]
+A simple calculation shows that 
+\[
+\displaystyle\expe(T_2) = \left(\frac{n}{n+1}\right)\theta.
+\]
+Hence $T_2$ is a \emph{negatively biased} estimator of $\theta$:
+\[
+\bias(T_2) = \expe(T_2 - \theta) = \left(-\frac{1}{n+1}\right)\theta.
+\]
+\it % <<<
+A \emph{bias correction} can be applied to $T_2$ to give an unbiased estimator $T_3 = \displaystyle\left(\frac{n+1}{n}\right)T_2$.
+\een
+\end{answer}
+\end{exercise}
+%-----------------------------
+\subsection{Mean squared error}
+\bit
+\it The bias of $T$ as an estimator of $\theta$ is the \emph{mean estimation error} $\expe\big[T-\theta\big].$ 
+\it The magnitude of the error can be quantified by the \emph{mean squared estimation error} $\expe\big[(T-\theta)^2\big]$.
+\eit
+
+% definition
+\begin{definition}
+The \emph{mean squared error} of $T$ as an estimator of $\theta$ is
+\[
+\mse(T;\theta) = \expe\big[\big(T(\mathbf{X})-\theta\big)^2\big].
+\]
+\end{definition}
+
+The accuracy of an unbiased estimator can be quantified by its variance. For biased estimators, the MSE also takes the bias into account. The following result is easily proved by writing $T-\theta$ as $[T-\expe(T)]+[\expe(T)-\theta]$ then expanding the square and applying the linearity of expectation.
+% theorem
+\begin{theorem}
+$\mse(T;\theta) = \var(T) + \bias(T;\theta)^2$.
+\end{theorem}
+%\begin{proof}
+%\begin{align*}
+%\mse(T,\theta) = \expe\big[(T-\theta)^2\big]
+%	& = \expe\big[(T-\expe(T) + \expe(T)-\theta)^2\big] \\
+%	& = \expe\big[(T-\expe(T))^2 + 2(T-\expe(T))(\expe(T)-\theta)+ (\expe(T)-\theta)^2 \big] \\
+%	& = \expe\big[(T-\expe(T))^2\big] + 2\expe(T-\expe(T))(\expe(T)-\theta)+ (\expe(T) - \theta)^2  \\
+%	& = \expe\big[(T-\expe(T))^2\big] + \big[\expe(T) - \theta\big]^2 \\
+%	& = \var(T) + \bias(T,\theta)^2.				
+%\end{align*}
+%\end{proof}
+As the following example shows, a biased estimator with small variance is often ``better'' than an unbiased estimator with large variance.
+
+% example
+\begin{example}
+Let $X_1,X_2,\ldots,X_n$ be a random sample from a distribution with mean $\mu$ and variance $\sigma^2$. The sample mean $\bar{X}$ is an unbiased estimator of $\mu$, while the following statistic is a biased estimator of $\mu$:
+\[
+T(X_1,X_2,\ldots,X_n) = \frac{1}{n+1}\sum_{i=1}^n X_i.
+\]
+\ben
+\it Find $\mse(\bar{X};\mu)$ and $\mse(T;\mu)$.
+\it Find a condition involving $\mu$ and $\sigma$ under which $\mse(T;\mu) < \mse(\bar{X};\mu)$.
+\een
+
+\begin{solution}
+\begin{enumerate}
+\item
+\begin{align*}
+\mse(\bar{X};\mu) 
+	= \expe\big[(\bar{X}-\mu)^2\big] 
+	& = \var(\bar{X}) + \expe(\bar{X}-\mu)^2 
+	= \var(\bar{X}) 
+	= \frac{\sigma^2}{n}. \\
+\mse(T;\mu)
+	= \expe\big[(T-\mu)^2\big] 
+	& = \var(T) + \expe(T-\mu)^2 \\
+	& = \var\left(\frac{X_1+X_2+\ldots+X_n}{n+1}\right) + \left(\frac{n}{n+1}\mu - \mu\right)^2 \\
+	& = \frac{n\sigma^2}{(n+1)^2} + \frac{\mu^2}{(n+1)^2}
+\end{align*}
+\item
+Comparing $\mse(T;\mu)$ with $\mse(\bar{X};\mu)$:
+\begin{align*}
+\mse(T;\mu) - \mse(\bar{X};\mu)
+	& = \left(\frac{n\sigma^2}{(n+1)^2} + \frac{\mu^2}{(n+1)^2}\right) - \frac{\sigma^2}{n} \\
+	& = \frac{\mu^2}{(n+1)^2} - \left(\frac{1}{n} - \frac{n}{(n+1)^2}\right)\sigma^2 \\
+	& = \frac{1}{(n+1)^2}\left[\mu^2 - \left(\frac{2n+1}{n}\right)\sigma^2\right].
+\end{align*}
+
+This shows that 
+\[
+\mse(T;\mu) < \mse(\bar{X};\mu) \text{\quad whenever\quad} \mu^2 < \left(\frac{2n+1}{n}\right)\sigma^2.
+\]
+\end{enumerate}
+\end{solution}
+\end{example}
+
+%----------------------------------------
+\begin{exercise}
+\begin{questions}
+
+\question
+Let $X_1, X_2, ...,X_n$ be a random sample of observations from the $\text{Uniform}[\theta,\theta+1]$ distribution, where $\theta$ is an unknown parameter.
+\ben
+\it Show that the sample mean $\bar{X}$ is a biased estimator of $\theta$, and find its bias.
+\it Find the variance and mean squared error of $\bar{X}$.
+\it How can $\bar{X}$ be modified to produce an unbiased estimator of $\theta$?
+\een
+\begin{answer}
+\ben
+\it % <<<
+The sample mean is biased because $\expe(\bar{X}) = \theta +\frac{1}{2} \neq \theta$. The bias is given by
+\[
+\bias(\bar{X}) = \expe(\bar{X}-\theta) = \expe(\bar{X})-\theta = \frac{1}{2}.
+\]
+\it % <<<
+The variance and mean squared error of $\bar{X}$ as an estimator of $\theta$ are
+\begin{align*}
+\var(\bar{X})
+	& = \frac{\var(X)}{n} = \frac{1}{12n}. \\
+\mse(\bar{X})
+	&  = \var(\bar{X}) + \bias(\bar{X})^{2} = \frac{1}{12n} + \frac{1}{4} = \frac{(1+3n)}{12n}.
+\end{align*}
+\it % <<<
+$\bar{X} -\frac{1}{2}$ is an unbiased estimator of ${\theta}$, because $\expe(\bar{X} -\frac{1}{2}) =\expe(\bar{X}) - 1/2 = \theta$. 
+\een
+\end{answer}
+
+\question
+Let $X$ be a continuous random variable with the following PDF, where $\alpha>0$ is known but $\theta>0$ is unknown. 
+\[
+f(x;\theta) = \begin{cases}
+	\displaystyle \frac{\alpha x^{\alpha-1}}{\theta^{\alpha}}	& 0\leq x\leq \theta, \\[2ex]
+	0															& \text{otherwise.}
+\end{cases}
+\]
+A random sample $X_1,X_2,\ldots,X_n$ is taken from the distribution of $X$. An estimator of $\theta$ is provided by
+\[
+T = \max\{X_1,X_2,\ldots,X_n\}.
+\]
+\begin{parts}
+\part % << (1)
+Show that
+\[
+\expe(T) = \displaystyle\left(\frac{n\alpha}{n\alpha+1}\right)\theta
+\quad\text{and}\quad
+\var(T) = \displaystyle\left(\frac{n\alpha}{n\alpha+2}\right)\theta^2-\left(\frac{n\alpha}{n\alpha+1}\right)^2\theta^2.
+\]
+\begin{answer}
+To find $\expe(T)$ and $\var(T)$ we first need to find the distribution of $T$. Let $F_X$ denote the CDF of $X$. 
+\[
+F_X(x;\theta) = \begin{cases}
+	0 & x < 0 \\
+	\displaystyle\left( \frac{x}{\theta } \right) ^{\alpha }  & 0 \leq x \leq \theta \\
+	1 & x > \theta.
+\end{cases}
+\]
+It is easy to show that the CDF of $T=\max\{X_1,X_2,\ldots,X_n\}$ is 
+\[
+F_{T}(v) = \prob(T\leq t) = \big[F_X(t)\big]^{n}.
+\]
+In this case,
+\[
+F_{T}(t;\theta) = 
+\begin{cases}
+	0	& t < 0, \\[1ex]
+	\displaystyle\left( \frac{t}{\theta } \right) ^{n\alpha }  & 0 \leq t \leq \theta, \\[1ex]
+	1	& t > \theta,
+\end{cases}
+\]	
+Hence the PDF of $T$ is
+\[
+f_{T}(t;\theta) = \begin{cases}
+	\displaystyle\frac{n\alpha }{\theta ^{n\alpha } } t^{(n\alpha -1)} & 0 \leq t \leq \theta \\[2ex]
+	0	& \text{otherwise.}
+\end{cases}
+\]	
+The expected value and variance of $T=\max\{X_1,X_2,\ldots,X_n\}$ are computed as follows:
+\begin{align*}
+\expe(T)
+	& = \frac{n\alpha}{\theta^{n\alpha}} \int_{0}^{\theta}  t^{n\alpha }\,dt
+	  = \frac{n\alpha}{\theta^{n\alpha}} \left[\frac{t^{n\alpha +1} }{(n\alpha +1)} \right] _{0}^{\theta }
+	= \frac{n\alpha }{(n\alpha +1)} \theta, \\
+\expe(T^2)
+	& = \int_{0}^{\theta }\frac{n\alpha }{\theta ^{n\alpha } }  t^{(n\alpha +1)}\,dt
+	= \frac{n\alpha }{\theta ^{n\alpha } } \left[ \frac{t^{n\alpha +2} }{n\alpha +2} \right] _{0}^{\theta }
+	= \frac{n\alpha }{(n\alpha +2)} \theta ^{2}, \\
+\var(T)
+	& = \frac{n\alpha }{(n\alpha +2)} \theta ^{2} -\frac{n^{2} \alpha ^{2} }{(n\alpha +1)^{2} } \theta ^{2}.
+\end{align*}	
+\end{answer}
+
+\part % << (2)
+Show that $T$ is a biased estimator of $\theta$.
+\begin{answer}
+$T$ is a biased estimator of ${\theta}$ because
+\[
+\expe(T) = \left(\frac{n\alpha }{n\alpha +1}\right) \theta,
+\]
+so $\expe(T)\neq\theta$. The bias is 
+\[
+\bias(T) 
+	= \expe(T-{\theta})
+	= \expe(T)-{\theta} 
+	= \frac{n\alpha }{(n\alpha +1)} \theta -\theta =\frac{-\theta }{(n\alpha +1)}
+\]
+\end{answer}
+
+\part % << (3)
+Find a multiple of $T$ that yields an unbiased estimator of $\theta$.
+\begin{answer}
+The estimator $\displaystyle\left(\frac{n\alpha +1}{n\alpha}\right)T$ is an unbiased estimator of $\theta$ because
+\[
+\expe\left[\left(\frac{n\alpha +1}{n\alpha}\right)T\right] 
+	= \left(\frac{n\alpha +1}{n\alpha}\right)\expe(T)
+	= \left(\frac{n\alpha +1}{n\alpha}\right)\frac{n\alpha }{(n\alpha +1)} \theta 
+	= \theta.
+\]
+\end{answer}
+
+\part % << (4)
+Find the mean squared error of $T$.
+\begin{answer}
+The mean squared error of $T$ as an estimator of $\theta$ is
+\begin{align*}
+\mse(\hat{\theta }) 
+	& = \var(\hat{\theta }) + \bias(T)^{2} \\
+	& = \frac{n\alpha }{(n\alpha +2)} \theta ^{2} -\frac{n^{2} \alpha ^{2} }{(n\alpha +1)^{2} } \theta ^{2} + \frac{\theta ^{2} }{(n\alpha +1)^{2} } \\
+	& = \frac{2\theta ^{2} }{(n\alpha +2)(n\alpha +1)}
+\end{align*}
+\end{answer}
+
+\end{parts}
+
+\end{questions}
+\end{exercise}
+

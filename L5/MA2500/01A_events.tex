@@ -1,0 +1,178 @@
+% !TEX root = main.tex
+
+\section{Events}\label{sec:events}
+
+A set is a collection of distinct elements. If $\omega$ is an element of the set $A$, we denote this by $\omega\in A$.
+The set containing no elements is called the \emph{empty set} and denoted by $\emptyset$.
+  
+\begin{definition}[Set relations]
+Let $A$ and $B$ be sets.
+\ben
+\it $A$ is a \emph{subset} of $B$ if $\omega\in B$ for every $\omega\in A$. This is denoted by $A\subseteq B$.
+\it $A$ is \emph{equal} to $B$ if $A\subseteq B$ and $B\subseteq A$. This is denoted by $A=B$.
+\it $A$ is a \emph{proper subset} of $B$ if $A\subseteq B$ and $A\neq B$. This is denoted by $A\subset B$.
+\it $A$ and $B$ are \emph{disjoint} (or \emph{mutually exclusive}) if $A\cap B=\emptyset$.
+\een
+\end{definition}
+
+\begin{definition}[Set operations]
+Let $\Omega$ be a set, and let $A$ and $B$ be subsets of $\Omega$.
+\ben
+\it The \emph{complement} of $A$ (relative to $\Omega$) is the set 
+$A^c=\{\omega\in\Omega:\omega\notin A\}$.
+\it The \emph{union} of $A$ and $B$ is the set 
+$A\cup B = \{\omega\in\Omega: \omega\in A \text{ or }\omega\in B\}$.
+\it The \emph{intersection} of $A$ and $B$ is the set
+$A\cap B = \{\omega\in\Omega: \omega\in A \text{ and }\omega\in B\}$.
+\een
+\end{definition}
+
+Table~\ref{tab:sets_and_logic} shows the connection between set theory and logic.
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c||c|c|c|} \hline
+Set Theory 		& 			& Logic			&		& \\ \hline
+Union			& $A\cup B$	& Disjunction 	& OR 	& $\lor$	\\
+Intersection	& $A\cap B$	& Conjunction	& AND 	& $\land$\\
+Complement		& $A^c$		& Negation		& NOT 	& $\lnot$	\\ \hline
+\end{tabular}
+\caption{Correspondence between set operations and logical connectives.\label{tab:sets_and_logic}}
+\end{table}
+
+%\begin{definition}[Set algebra]
+%\ben
+%\it Commutative property.
+%\bit 
+%\it $A\cup B = B\cup A$,
+%\it $A\cap B = B\cap A$.
+%\eit
+%\it Associative property.
+%\bit 
+%\it $(A\cup B)\cup C = A\cup (B\cup C)$,
+%\it $(A\cap B)\cap C = A\cap (B\cap C)$.
+%\eit
+%\it Distributive property.
+%\bit 
+%\it $A\cup (B\cap C) = (A\cup B)\cap(A\cup C)$,
+%\it $A\cap (B\cup C) = (A\cap B)\cup(A\cap C)$.
+%\eit
+%\een
+%\end{definition}
+
+\begin{definition}[Set algebra]
+The union and intersection operations have the following properties.
+\bit
+\it The \emph{commutative} property: $A\cup B = B\cup A$ and $A\cap B = B\cap A$.
+\it The \emph{associative} property: $(A\cup B)\cup C = A\cup (B\cup C)$ and $(A\cap B)\cap C = A\cap (B\cap C)$.
+\it The \emph{distributive} property: $A\cup (B\cap C) = (A\cup B)\cap(A\cup C)$ and $A\cap (B\cup C) = (A\cap B)\cup(A\cap C)$.
+\eit
+Note that a statement such as $A\cup B\cap C$ is ambiguous. 
+\end{definition}
+
+\begin{exercise}
+\begin{questions}
+\question
+The \emph{set difference} $A\setminus B$ is the set containing those elements of $A$ that are not contained in $B$. Express $A\setminus B$ using only the intersection and complementation operations.
+\question
+Prove De Morgan's laws: $(A\cup B)^c = A^c\cap B^c$ and $(A\cap B)^c = A^c\cup B^c$.
+\end{questions}
+\end{exercise}
+
+\subsection{Countable unions and intersections}
+Let $A_1,A_2,\ldots$ be a countable family of sets. The union and intersection of this countable family are defined by
+\begin{align*}
+\medcup_{i=1}^{\infty} A_i 
+	& = \{\omega:\omega\in A_i\text{ for some } i=1,2,\ldots\} \\[2ex]
+\medcap_{i=1}^{\infty} A_i 
+	& = \{\omega:\omega\in A_i\text{ for all } i=1,2,\ldots\}
+\end{align*}
+
+\begin{exercise}
+Show that De Morgan's laws hold for countable unions and intersections:
+\[
+\big(\medcup_{i=1}^{\infty}A_i\big)^c = \medcap_{i=1}^{\infty}A_i^c
+\quad\text{and}\quad
+\big(\medcap_{i=1}^{\infty}A_i\big)^c = \medcup_{i=1}^{\infty}A_i^c.
+\]
+\end{exercise}
+
+
+
+%%-------------------------------------------------
+%\section{Sample spaces}\label{sec:sample_spaces}
+
+\begin{definition}
+\ben
+\it A \emph{random experiment} is any process of observation or measurement whose result is uncertain.
+\it The result of a random experiment is called the \emph{outcome}.
+\it The \emph{sample space} of a random experiment is the set of all possible outcomes.
+\it A \emph{random event} is a subset of the sample space.
+\een
+\end{definition}
+
+Sample spaces can be \emph{finite}, \emph{countably infinite} or \emph{uncountable} sets.
+\begin{example}
+\ben
+\it A coin is tossed $10$ times. The outcome is the total number of heads.
+	\bit
+	\it The sample space is a finite set: $\Omega = \{0,1,2,\ldots,10\}$.
+	\it $A = \{1,3,5,7,9\}$ is the event that the total is odd.
+	\eit
+\it A coin is tossed repeatedly until the first head occurs. The outcome is the number of times the coin is tossed.
+	\bit
+	\it The sample space is a countably infinite set: $\Omega = \{1,2,3,\ldots\}$.
+	\it $A = \{1,3,5,\ldots\}$ is the event that the number is odd.
+	\it $B_n = \{n, n+1,n+2,\ldots\}$ is the event that the coin is tossed at least $n$ times.
+	\eit
+\it A spinning top is spun and comes to rest at a random angle relative to the horizontal axis.
+	\bit
+	\it The sample space is an uncountable set: $\Omega = [0,2\pi)$.
+	\it $A = [0,\pi/2]$ is the event that the angle lies in the positive quadrant.
+	\eit
+\een
+\end{example}
+
+\begin{definition}
+Let $\Omega$ be the sample space of some random experiment and let $A\subseteq\Omega$ be an event. Suppose we perform the experiment and observe the outcome $\omega$. If $\omega\in A$ we say that event \emph{$A$ occurs}, otherwise we say that \emph{$A$ does not occur}.
+\end{definition}
+
+\begin{example}
+A coin is tossed $10$ times. Let the outcome of the experiment be the total number of heads, and let $A$ be the event that the total is odd. 
+\bit
+\it If we observe a total of $5$ heads then $A$ occurs. 
+\it If we observe a total of $6$ heads, $A$ does not occur.
+\eit
+\end{example}
+
+\begin{exercise}
+Let $A$ and $B$ be two random events.
+\ben
+\it Show that if $A$ occurs and $A\subseteq B$ then $B$ also occurs.
+\it Show that if $A$ occurs and $A\cap B=\emptyset$ then $B$ does not occur. 
+\een
+\end{exercise}
+
+% correspondence
+Table~\ref{tab:sets_and_probability} shows the correspondence between terms used in set theory and those used in probability theory.
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|l|} \hline
+Notation 			& Set theory		& Probability theory \\ \hline
+$\Omega$			& Universal set		& Sample space, certain event \\ 
+$\omega\in\Omega$	& Element			& Elementary event, outcome \\
+$A\subseteq\Omega$	& Subset			& Event $A$ \\
+$A\subseteq B$		& Inclusion			& If $A$ occurs, then $B$ occurs \\
+$A^c$				& Complement		& $A$ does not occur \\
+$A\cap B$			& Intersection		& $A$ and $B$ both occur\\ 
+$A\cup B$			& Union				& $A$ or $B$ (or both) occur \\ 
+$A\setminus B$		& Set difference	& $A$ occurs, but $B$ does not \\ 
+$\emptyset$			& Empty set			& Impossible event \\ \hline
+\end{tabular}
+\captionsetup{justification=centering}
+\caption{Set theory and probability theory (Grimmett \& Stirzaker 2001).\label{tab:sets_and_probability}}
+\end{table}
+
+
+
+
+

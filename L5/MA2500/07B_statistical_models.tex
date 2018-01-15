@@ -1,0 +1,147 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Statistical models}\label{sec:statistical_models}
+
+%%-----------------------------
+%%\subsection{Statistics}
+%
+%Let $\mathbf{X}=(X_1,X_2,\ldots,X_n)$ be a random vector.
+%
+%\begin{definition}
+%Any transformation $T:\R^n\to\R$ is called a \emph{statistic}.
+%\end{definition}
+%
+%There are two interpretations:
+%\ben
+%\it 
+%$T(\boldX)$ is a random variable on $(\Omega,\prob)$,
+%\[\begin{array}{rccl}
+%T(\boldX):	& \Omega 	& \to 		& \R \\
+%			& \omega	& \mapsto	& T\big[\boldX(\omega)\big]
+%\end{array}\]
+%\it
+%$T$ is a random variable on $(\R^n,\prob_{\mathbf{X}})$,
+%\[\begin{array}{rccl}
+%T:	& \R^n 		& \to 		& \R \\
+%	& \boldx	& \mapsto	& T(\boldx)
+%\end{array}\]
+%where $\prob_X(B) = \prob(\mathbf{X}\in B)$ is the probability measure induced on subsets of $\R^n$ by $\mathbf{X}$.
+%\een
+%
+%For the latter interpretation to be useful, the distribution of $T$ (over subsets of $\R$) must be determined from the distribution of the random vector (over subsets of $\R^n$).
+
+%-----------------------------
+%\subsection*{Statistical models}
+
+To estimate the underlying distribution $F_X$ from a random sample $X_1,X_2,\ldots,X_n$ of observations from the distribution of $X$, let us assume that $F_X$ belongs to some \emph{parametric family} of distributions.
+%\[
+%\mathcal{M} = \big\{F(x\,;\mathbf{\theta}) : \mathbf{\theta}\in\Theta\big\}
+%\]
+%where $\mathbf{\theta}$ is an unknown vector of parameters and $\Theta$ is the set of all such vectors.
+%
+\begin{definition}
+A \emph{statistical model} is a parametric family of CDFs,
+\[
+\mathcal{M} = \big\{F(x\,;\mathbf{\theta}) : \mathbf{\theta}\in\Theta\big\}
+\]
+where $\mathbf{\theta}$ is a vector of parameters, and $\Theta$ is called the \emph{parameter space}.
+%the set of all such vectors called the 
+%\it $\mathcal{M}$ is called a \emph{statistical model};
+%\it $\Theta$ is called the \emph{parameter space}.
+%\een
+\end{definition}
+
+\begin{example}
+\bit
+\it
+The family of exponential distributions: \par
+\qquad $\mathcal{M} = \big\{F(x;\lambda): \lambda>0\big\}$ where $F(x;\lambda)=1-e^{-\lambda x}$ for $x>0$.
+\it 
+The family of uniform distributions: \par
+\qquad$\mathcal{M} = \big\{F(x;a,b): a<b\big\}$ where $F(x;a,b)=\displaystyle\frac{x-a}{b-a}$ for $a\leq x\leq b$.
+\eit
+\end{example}
+
+%The members of a statistical model $\mathcal{M}$ are indexed by the parameter $\theta$. 
+%Estimating the distribution of $X$ from a random sample of observations amounts to estimating $\theta$.
+
+\begin{remark}
+Let $\mathcal{M}=\big\{F(x\,;\mathbf{\theta}):\mathbf{\theta}\in\Theta\big\}$ be a statistical model and suppose that $F_X\in\mathcal{M}$. Then estimating $F_X$ amounts to estimating the ``true'' value of the parameter $\theta$.
+\end{remark}
+
+\begin{definition}
+%Let $F_X\in\big\{F(x\,;\mathbf{\theta}):\mathbf{\theta}\in\Theta\big\}$.
+\ben
+\it To estimate a particular value for $\theta$ is called \emph{point estimation}.
+\it To estimate a range of values for $\theta$ is called \emph{interval estimation}.  
+\it To assert whether or not $\theta$ lies in some range is called \emph{hypothesis testing}.
+\een
+\end{definition}
+
+
+%-----------------------------
+\subsection{Estimators}
+
+%Let $\mathbf{X}=(X_1,X_2,\ldots,X_n)$ be a random vector.
+
+\begin{definition}
+Let $X$ be a random variable on $\Omega$ and let $\mathbf{X}=(X_1,X_2,\ldots,X_n)$ be a random sample from the distribution of $X$. Any transformation $T:\R^n\to\R$ of $\mathbf{X}$ is called a \emph{sample statistic}.
+\end{definition}
+
+There are two interpretations:
+\ben
+\it 
+$T(\boldX)$ is a random variable on $(\Omega,\prob)$,
+\[\begin{array}{rccl}
+T(\boldX):	& \Omega 	& \to 		& \R \\
+			& \omega	& \mapsto	& T\big[\boldX(\omega)\big]
+\end{array}\]
+\it
+$T$ is a random variable on $(\R^n,\prob_{\mathbf{X}})$,
+\[\begin{array}{rccl}
+T:	& \R^n 		& \to 		& \R \\
+	& \boldx	& \mapsto	& T(\boldx)
+\end{array}\]
+where $\prob_{\mathbf{X}}(B) = \prob(\mathbf{X}\in B)$ is the distribution of $\mathbf{X}$.
+\een
+
+For the latter interpretation to be useful, the distribution of the sample statistic $T$ over subsets of $\R$ must be deduced from the distribution of the random sample $\mathbf{X}$ over subsets of $\R^n$. 
+
+\begin{definition}
+\ben
+%\it $\theta$ is called the \emph{true value} of the parameter.
+\it A statistic $T(\mathbf{X})$ used to estimate an unknown parameter $\theta$ is called an \emph{estimator} of $\theta$.
+%These are commonly denoted by $\hat{\theta}(\mathbf{X})$.
+\it For any particular sample realisation $\mathbf{x}$ the value $T(\boldx)$ is called an \emph{estimate} of $\theta$.
+\een
+Note that estimators of $\theta$ are often denoted by $\hat{\theta}$.
+\end{definition}
+
+\begin{example}\label{exa:estimate_bernoulli}
+A coin has an unknown probability $\theta$ of landing on heads. 
+%\bigskip
+An appropriate statistical model for this experiment is the family of \emph{Bernoulli} distributions:
+\[
+\mathcal{M} = \big\{F(x\,;\theta):0\leq\theta\leq 1\big\}
+\qquad\text{where}\quad
+F(x;\theta) = \begin{cases}
+0				& x < 0, \\
+1-\theta		& 0 \leq x < 1, \\
+1				& x \geq 1. \\
+\end{cases}
+\]
+Let $\mathbf{X}=(X_1,X_2,\ldots,X_n)$ be a random sample from the $\text{Bernoulli}(\theta)$ distribution. An estimator for $\theta$ is provided by the following statistic, called the \emph{sample mean}:
+\[\begin{array}{rccl}
+T:	& \R^n 		& \to 		& \R \\
+	& \boldx	& \mapsto	& \displaystyle\frac{1}{n}\sum_{i=1}^n x_i.
+\end{array}\]
+The distribution of $T$ is determined by the common distribution of the individual observations $X_i$. In this case $X_i\sim\text{Bernoulli}(\theta)$ so %$nT\sim\text{Binomial}(n,\theta)$ and 
+\[
+%\prob(T = k/n) = \binom{n}{k}\theta^{k}(1-\theta)^{n-k}.
+\prob\left(T = \frac{k}{n}\right) = \binom{n}{k}\theta^{k}(1-\theta)^{n-k}
+\qquad\text{for $k=0,1,2,\ldots,n$}.
+\]
+\end{example}
+
+

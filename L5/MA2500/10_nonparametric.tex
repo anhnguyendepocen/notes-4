@@ -1,0 +1,18 @@
+% !TEX root = main.tex
+
+\chapter{Non-parametric methods}\label{chap:nonparametric}
+
+%% intro
+%A typical problem in statistics is to estimate the distribution of a random variable from a set of observations. 
+%
+%\smallskip 
+So far we have assumed that the parametric form of the distribution is known, for example $X\sim\text{Bernoulli}(\theta)$ where $\theta\in[0,1]$ is unknown or $X\sim\text{Poisson}(\theta)$ where $\theta>0$ is unknown. We now look at methods for estimating the distribution of a random variable where the parametric form of the distribution is not known. Such methods are called \emph{non-parametric} or \emph{distribution-free} methods.
+
+\smallskip
+We consider only continuous distributions, so we can assume that the inverse CDF $F^{-1}(u)$ exists for all $u\in[0,1]$ and that the probability of different observations taking the same value is zero.
+
+
+\input{10A_quantiles}
+\input{10B_location_models}
+\input{10C_one_sample_tests}
+

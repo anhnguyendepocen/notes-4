@@ -1,0 +1,111 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Signed variables}\label{sec:}
+
+Random variables that take both positive and negative values are called \emph{signed variables}. 
+
+\begin{definition}
+The \emph{positive part} and \emph{negative part} of a random variable $X$ are
+\begin{align*}
+X^{+}(\omega) 
+	& = \begin{cases} 
+			X(\omega)	& \text{if } X(\omega)\geq 0, \\
+	   		0 		 	& \text{if } X(\omega) < 0, \text{ and}
+	\end{cases} \\[2ex]
+X^{-}(\omega)	
+	& = \begin{cases} 
+			-X(\omega)	& \text{if } X(\omega) < 0, \\
+			0 		 	& \text{if } X(\omega) \geq 0.
+		\end{cases}
+\end{align*}
+respectively. 
+\end{definition}
+
+Note that $X^{+}$ and $X^{-}$ are both non-negative random variables with
+\[
+X = X^{+} - X^{-}
+\qquad\text{and}\qquad
+|X| = X^{+} + X^{-}.
+\]
+
+\begin{definition}[Expectation of signed random variables]
+The \emph{expectation} of a signed random variable $X$ is
+\[
+\expe(X) = \expe(X^{+}) - \expe(X^{-})
+\]
+provided that $\expe(X^{+})$ and $\expe(X^{-})$ are not both infinite.
+\end{definition}
+
+\begin{remark}
+If $\expe(X^{+})$ and $\expe(X^{-})$ are both infinite, the expectation of $X$ is \emph{undefined} because we cannot make sense of the expression ``$\infty - \infty$''. In this case we say that the expectation of $X$ \emph{does not exist}.
+\end{remark}
+
+\begin{example} % discrete, undefined
+Let $X$ be a discrete random variable with the following PMF:
+\[
+f(k) = \begin{cases}
+	\displaystyle\frac{3}{\pi^2 k^2} 	& \text{if }\ k\in\{\pm 1,\pm 2, \ldots\} \\[1ex]
+	0						& \text{otherwise.}
+\end{cases}	
+\]
+Show that $\expe(X)$ is undefined.
+\begin{solution}
+$X$ is a signed random variable, so we must deal with its positive and negative parts separately:
+\[
+X^{+}	= \begin{cases}  X & \text{ if } X \geq 0, \\ 0 & \text{otherwise.}\end{cases}
+\qquad\text{and}\qquad
+X^{-}	= \begin{cases} -X & \text{ if } X <    0, \\ 0 & \text{otherwise.}\end{cases}
+\]
+The expected values of $X^{+}$ and $X^{-}$ are
+\[\begin{array}{lll}
+\expe(X^{+})	
+	& = \displaystyle \sum_{k=1}^{\infty} k \left(\frac{3}{\pi^2 k^2}\right)
+	& = \displaystyle \frac{3}{\pi^2} \sum_{k=1}^{\infty}\frac{1}{k} = \infty \\[2ex]
+\expe(X^{-})	
+	& = \displaystyle \sum_{k=-\infty}^{-1} (-k) \left(\frac{3}{\pi^2 k^2}\right)
+	& = \displaystyle \frac{3}{\pi^2} \sum_{k=1}^{\infty}\frac{1}{k} = \infty \\
+\end{array}\]
+so $\expe(X) = \expe(X^{+}) - \expe(X^{-})$ is undefined.
+\end{solution}
+\end{example}
+
+\begin{example}[Cauchy distribution]% continuous - undefined
+Let $X$ be a continuous random variable having the following PDF,
+\[
+f(x) = \frac{1}{\pi(1+x^2)}\qquad\text{for all $x\in\R$.}
+\]
+Show that $\expe(X)$ is undefined.
+\begin{solution}
+$X$ is a signed variable, so we must deal with its positive and negative parts separately:
+
+\[\begin{array}{lll}
+\expe(X^{+}) 
+	& = \displaystyle\int_0^\infty xf(x)\,dx 
+	& = \displaystyle\frac{1}{\pi}\int_0^\infty \frac{x}{1+x^2}\,dx  \\[2ex]
+\expe(X^{-})	
+	& = \displaystyle\int_{-\infty}^0 (-x)f(x)\,dx
+	& = \displaystyle\frac{1}{\pi}\int_0^{\infty} \frac{x}{1+x^2}\,dx
+\end{array}\]
+Thus $\expe(X) = \expe(X^{+}) - \expe(X^{-})$ is given by
+\begin{align*}
+\expe(X)
+%	& = \expe(X^{+}) - \expe(X^{-}) \\
+	& = \frac{1}{\pi}\left[\int_0^{\infty} \frac{x}{1+x^2}\,dx - \int_0^{\infty} \frac{x}{1+x^2}\,dx\right].
+\end{align*}
+
+At this point, it might be tempting to conclude that $\expe(X)=0$. However if $x>1$ then $x^2 > 1$ and therefore $2x^2 > 1+x^2$, so
+\[
+\frac{x}{1+x^2} > \frac{1}{2x} \qquad\text{for all } x > 1
+\]
+Consequently,
+\[
+\int_{0}^{\infty}\frac{x}{1+x^2}\,dx
+	> \int_{1}^{\infty}\frac{x}{1+x^2}\,dx
+	> \frac{1}{2}\int_{1}^{\infty}\frac{1}{x}\,dx
+	= \infty,
+\]
+so $\expe(X)$ is undefined.
+\end{solution}
+\end{example}
+

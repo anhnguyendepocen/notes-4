@@ -1,0 +1,197 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Large samples}\label{sec:large_samples}
+
+Intuitively we would like an estimator to improve as the sample size increases. The \emph{asymptotic} behaviour of a quantity refers to the way it behaves as another quantity tends to some limit. We now write $T_n$ to represent an estimator defined on a random sample of size $n$ and consider its behaviour as $n\to\infty$.
+
+\begin{definition}
+Let $T_n$ be an esimator of some unknown parameter $\theta\in\Theta$.
+\ben
+\it $T_n$ is said to be \emph{asymptotically unbiased} if %for all $\theta\in\Theta$,
+$\expe(T_n)\to\theta$ as $n\to\infty$ for all $\theta\in\Theta$.
+%\[
+%\expe(T_n)\to \theta \quad\text{as $n\to\infty$}.
+%\]
+\it $T_n$ is said to be \emph{consistent} if %for all $\theta\in\Theta$,
+$T_n\to\theta$ in probability as $n\to\infty$ for all $\theta\in\Theta$.
+%\[
+%T_n\to\theta \quad\text{in probability as $n\to\infty$.}
+%\]
+\it $T_n$ is said to be \emph{asymptotically normal} if the distribution of $\sqrt{n}(T_n-\theta)$ converges to a normal distribution as $n\to\infty$ for all $\theta\in\Theta$.
+%\[
+%\sqrt{n}(T_n-\theta)\to Z\quad\text{in distribution as $n\to\infty$, where $Z\sim N(\mu,\sigma^2)$.}
+%\]
+\een
+\end{definition}
+
+\begin{lemma}
+If $T_n$ is an unbiased estimator of $\theta$ and $\var(T_n)\to 0$ as $n\to\infty$ then $T_n$ is a consistent estimator of $\theta$.
+\end{lemma}
+\begin{proof}
+This follows by Chebyshev's inequality: for all $\epsilon>0$,
+\[
+\prob(|T_n-\expe(T_n)|> \epsilon) \leq \frac{\var(T_n)}{\epsilon^2}.
+\]
+Since $T_n$ is unbiased, $\expe(T_n)=\theta$ so $\prob(|T_n - \theta|>\epsilon)\to 0$ as $n\to\infty$, as required.
+\end{proof}
+
+\begin{example}
+The reading on a voltmeter connected to a test circuit is a random variable $X$ that has a uniform distribution over the interval $(\theta,\theta+1)$, where $\theta$ is unknown. Let $X_1, X_2, ...,X_n$ be a random sample of observations from the voltmeter. Show that
+\[
+T_n = \frac{1}{n}\sum_{i=1}^n\left( X_i - \frac{1}{2}\right)
+\]
+is a consistent estimator for $\theta$.
+\begin{solution}
+First we note that $T_n$ is unbiased, because $\expe(X_i)=\theta+1/2$ so
+\[
+\expe(T_n) = \frac{1}{n}\sum_{i=1}^n \expe(X_i) - \frac{1}{2} = \theta.
+\]
+To show that $T_n$ is consistent we therefore only need to show that its variance tends to zero as $n\to\infty$:
+\[
+\var\left(\bar{X}- \frac{1}{2}\right) 
+	= \var(\bar{X}) 
+	= \frac{\var{X}}{n} 
+	= \frac{1}{12n} \to 0 \quad\text{as}\quad n\to\infty.
+\]
+\end{solution}
+\end{example}
+
+
+%----------------------------------------------------------------------
+\begin{exercise}
+\begin{questions}
+%----------------------------------------
+
+%==========================================================================
+\question
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $\text{Uniform}(0,\theta)$ distribution. Show that 
+\[
+T_n = \max\{X_1,X_2,\ldots,X_n\}
+\]
+is an asymptotically unbiased estimator of $\theta$.
+\begin{answer}
+The PDF of $T_n= \max\{X_1,X_2,\ldots,X_n\}$ is
+\[
+f(t;\theta)	= \frac{nt^{n-1}}{\theta^n} \quad\text{for\quad $0<t<\theta$\quad (zero otherwise).}
+\]
+
+The expected value of $T_n$ is
+\[
+\expe(T_n) 
+	= \int_{0}^{\theta }t\frac{nt^{n-1} }{\theta ^{n} }\,dv 
+	= \frac{n}{(n+1)\theta ^{n} } \left[ t^{n+1} \right] _{0}^{\theta } 
+	= \frac{n\theta }{n +1} 
+	= \left(1-\frac{1}{n+1}\right)\theta.
+\]
+The bias of $T_n$ is
+\[
+\bias(T_n) = \expe(T_n-\theta) = -\frac{\theta}{n+1} \to 0 \text{ as }n\to\infty.
+\]
+and because this holds for all $\theta>0$ it follows that $T_n$ is an asymptotically unbiased estimator for $\theta$.
+\end{answer}
+
+%==========================================================================
+\question
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $\text{Bernoulli}(\theta)$ distribution. Show that the sample mean 
+\[
+\displaystyle T_n = \frac{1}{n}\sum_{i=1}^n X_i
+\]
+is a consistent estimator of $\theta$.
+
+\begin{answer}
+This follows by the weak law of large numbers. 
+\par
+In more detail, because $\expe(T_n)=\theta$ and $\var(T_n) = \displaystyle\frac{\theta(1-\theta)}{n}$, it follows by Chebyshev's inequality that
+\[
+\prob(|T_n-\theta|>\epsilon) \leq \frac{\theta(1-\theta)}{n\epsilon^2}.
+\]
+Since $\theta\in[0,1]$ is bounded, we have for every $\epsilon >0$ that
+\[
+\prob(|T_n-\theta|>\epsilon)\rightarrow 0 \text{ as } n\rightarrow\infty.
+\]
+Thus $T_n\to\theta$ in probability as $n\to\infty$. This holds for all $\theta\in[0,1]$, so $T_n$ is a consistent estimator of $\theta$.
+\end{answer}
+
+%==========================================================================
+\question
+Let $X$ be a random variable with finite mean $\mu$ and finite variance $\sigma^2$. Let $X_1,X_2,\ldots,X_n$ be a random sample from the distribution of $X$ and consider the sample mean estimators of $\mu$ and $\sigma^2$,
+\[
+\Xbar_n = \frac{1}{n}\sum_{i=1}^n X_i
+\quad\text{and}\quad
+\hat{\sigma}^2_n = \frac{1}{n}\sum_{i=1}^n (X_i-\Xbar_n)^2.
+\]
+\begin{parts}
+\part 
+Show that $\hat{\sigma}^2_n$ is an asymptotically unbiased estimator of $\sigma^2$.
+\begin{answer}
+As we have seen,
+\[
+\expe(\hat{\sigma}^2_n) = \left(\frac{n-1}{n}\right)\sigma^2
+\quad\text{and}\quad
+\bias(\hat{\sigma}^2_n) = -\frac{\sigma^2}{n}.
+\]
+Hence $\bias(\hat{\sigma}^2_n)\to 0$ as $n\to\infty$, and because this holds for all $\sigma^2>0$ we have that $\hat{\sigma}^2_n$ is an asymptotically unbiased estimator for $\sigma^2$.
+\end{answer}
+
+\part 
+Show that $\Xbar_n$ is a consistent and asymptotically normal estimator of $\mu$.
+\begin{answer}
+Because $\sigma^2$ is finite, by the law of large numbers we have $\Xbar_n\to\mu$ in probability as $n\to\infty$, and by the central limit theorem,
+\[
+\sqrt{n}(\Xbar_n-\mu) \to N(0,\sigma^2) \text{\quad in distribution as $n\to\infty$.}
+\]
+These hold for all $\mu\in\R$, so we have shown that $\Xbar_n$ is a consistent and asymptotically normal estimator for $\mu$.
+\end{answer}
+
+\part 
+If $\expe(X^4)<\infty$ show that $\hat{\sigma}^2_n$ is a consistent and asymptotically normal estimator of $\sigma^2$.
+\begin{answer}
+For $\hat{\sigma}^2_n$ we write $X_i-\bar{X}_n = (X_i-\mu) - (\Xbar_n-\mu)$, from which we obtain
+\[
+\hat{\sigma}^2_n 
+	= \frac{1}{n}\sum_{i=1}^n (X_i-\mu)^2 + (\Xbar_n-\mu)^2
+\]
+
+For the first term we have $\expe\big[(X_i-\mu)^2\big] = \sigma^2$ and $\var\big[(X_i-\mu)^2\big] = \mu_4 - \sigma^4$ where $\mu_4=\expe(X^4)$.
+By hypothesis these are both finite, so by the law of large numbers applied to the random variables $(X_i-\mu)^2$, 
+\[
+\frac{1}{n}\sum_{i=1}^n (X_i-\mu)^2 \to \sigma^2 \quad\text{in probability as $n\to\infty$.}
+\]
+For the second term, by Markov's inequality and the fact that $\expe(\Xbar_n)=\mu$ and $\var(\Xbar_n)=\sigma^2/n$,
+\begin{align*}
+\prob((\Xbar_n-\mu)^2>\epsilon)
+	\leq 	\frac{\expe\big[(\Xbar_n-\mu)^2\big]}{\epsilon} 
+	=		\frac{\var(\Xbar_n)}{\epsilon}
+	=		\frac{\sigma^2}{n\epsilon}.
+\end{align*}
+Hence $(\Xbar_n-\mu)^2\to 0$ in probability as $n\to\infty$, and thus we have shown that $\hat{\sigma}^2_n\to\sigma^2$ in probability as $n\to\infty$. Since this holds for every $\sigma^2>0$ we conclude that $\hat{\sigma}^2_n$ is a consistent estimator for $\sigma^2$.
+
+To show that $\hat{\sigma}^2_n$ is asymptotically normal, let us write
+\[
+\sqrt{n}(\hat{\sigma}^2_n -\sigma^2)
+	= \sqrt{n}\left(\frac{1}{n}\sum_{i=1}^n(X_i-\mu)^2 -\sigma^2\right) - \sqrt{n}(\Xbar_n-\mu)^2
+\]
+As above, we can use Markov's inequality to show that the second term converges to zero in probability as $n\to\infty$: 
+\begin{align*}
+\prob(\sqrt{n}(\Xbar_n-\mu)^2>\epsilon)
+	\leq 	\frac{\expe\big[\sqrt{n}(\Xbar_n-\mu)^2\big]}{\epsilon} 
+	=		\frac{\sqrt{n}\var(\Xbar_n)}{\epsilon}
+	=		\frac{\sigma^2}{\sqrt{n}\epsilon}
+	\to 0 \quad\text{as $n\to\infty$.}
+\end{align*}
+
+For the first term, we have $\expe\big[(X_i-\mu)^2\big]=\sigma^2$ and $\var\big[(X_i-\mu)^2\big]=\mu_4-\sigma^4$, both of which are finite, so by the central limit theorem applied to the random variables $(X_i-\mu)^2$
+\[
+\sqrt{n}(\hat{\sigma}^2_n -\sigma^2)
+	\to N(0, \mu_4 - \sigma^4) \quad\text{in distribution as $n\to\infty$.}
+\]
+Because this holds for all $\sigma^2>0$ we conclude that $\hat{\sigma}^2_n$ is an asymptotically normal estimator for $\sigma^2$.
+\end{answer}
+\end{parts}
+
+%----------------------------------------
+\end{questions}
+\end{exercise}
+%----------------------------------------------------------------------
+

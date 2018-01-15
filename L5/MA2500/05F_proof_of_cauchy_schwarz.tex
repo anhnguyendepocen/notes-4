@@ -1,0 +1,52 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Appendix}\label{sec:}
+
+\subsection{Proof of the Cauchy-Schwarz inequality for random variables}
+
+We need to show that for any two random variables $X$ and $Y$,
+\[
+\expe(XY)^2 \leq \expe(X^2)\expe(Y^2)
+\]
+with equality if and only if $\prob(Y=aX)=1$ for some $a\in\R$.
+
+First we need the following technical result (which we shall not prove).
+% lemma
+\begin{lemma}\label{lem:pos_rv_expe_zero}
+If $X\geq 0$ and $\expe(X)=0$ then $\prob(X=0)=1$.
+\end{lemma}
+
+\begin{proof}[Cauchy-Schwarz]
+$X^2$ and $Y^2$ are non-negative random variables, so by Lemma~\ref{lem:pos_rv_expe_zero} we can assume that $\expe(X^2)>0$ and $\expe(Y^2)>0$ (otherwise both sides of the inequality are identically zero).
+
+Let $a\in\R$ consider the random variable $Z=aX-Y$. By the properties of expectation,
+\begin{align*}
+Z^2\geq 0 
+	& \Rightarrow \expe(Z^2)\geq 0  \qquad\text{(positivity)}\\
+	& \Rightarrow \expe(a^2X^2 - 2aXY + Y^2) \geq 0  \\
+	& \Rightarrow a^2\expe(X^2) - 2a\expe(XY) + \expe(Y^2) \geq 0 \qquad\text{(linearity).}
+\end{align*}
+
+\bit
+\it Let $q(a)=a^2\expe(X^2) - 2a\expe(XY) + \expe(Y^2)$. This is a quadratic expression in $a$.
+\eit
+Since $q(a)\geq 0$ for all $a\in\R$, the roots of the quadratic equation $q(a)=0$, given by
+\[
+a = \frac{\expe(XY)\pm\sqrt{\expe(XY)^2-\expe(X^2)\expe(Y^2)}}{\expe(X^2)}
+\]
+are either both complex (discriminant is negative) or co-incide (discriminant is zero). 
+\bit
+\it Hence $\expe(XY)^2-\expe(X^2)\expe(Y^2) \leq 0$, or equivalently $\expe(XY)^2\leq \expe(X^2)\expe(Y^2)$.
+\eit
+
+The discriminant is zero if and only if the quadratic has one real root, which occurs if and only if $\expe(Z^2)=0$ for some $a\in\R$, i.e.
+\[
+\expe\left((aX-Y)^2\right) = 0\qquad\text{for some $a\in\R$.}
+\]
+Because $(aX-Y)^2$ is a non-negative random variable, we have by Lemma~\ref{lem:pos_rv_expe_zero} that
+\[
+\prob\big[(aX-Y)^2 = 0\big] = 1
+\]
+or equivalently, $\prob\big(Y = aX) = 1$, as required. 
+\end{proof}

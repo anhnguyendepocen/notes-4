@@ -1,0 +1,435 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Two-sample tests}\label{sec:two-sample-tests}
+
+So far we have looked at one-sample tests, where hypotheses about an unknown parameter are tested based on a single sample $X_1,X_2,\ldots,X_n$ from the distribution in question. For paired samples $X_1,X_2,\ldots,X_n$ and $Y_1,Y_2,\ldots,Y_n$ we apply one-sample tests to the differences $D_i=X_i-Y_i$. We now turn our attention to the question of whether two \emph{independent} random samples are drawn from the same distribution.
+\bit
+\it \emph{Welch's t-test} is a parametric test to detect a difference between the means of two independent samples.
+\it The \emph{Mann-Whitney test} is a non-parametric test to detect a difference between the medians of two independent samples.
+\eit
+%-----------------------------
+\subsection{Welch's t-test}
+Let $X\sim N(\mu_1,\sigma_1^2)$ and $Y\sim N(\mu_2,\sigma_2^2)$ be independent random variables, and suppose we with to test the null hypothesis $H_0:\mu_1=\mu_2$ against a suitable alternative. Let $X_1,X_2,\ldots,X_m$ be a random sample from the distribution of $X$ and let $Y_1,Y_2,\ldots,Y_n$ be a random sample from the distribution of $Y$. 
+
+Using characteristic functions it can be shown that a linear combination of normal variables is a normal variable: if $X\sim N(\mu_1,\sigma_1^2)$ and $Y\sim N(\mu_2,\sigma^2_2)$ then
+\[
+aX+bY\sim N(a\mu_1+b\mu_2, a^2\sigma_1^2 + b^2\sigma_2^2).
+\]
+In particular,
+\[
+X-Y\sim N(\mu_1-\mu_2, \sigma_1^2 + \sigma_2^2).
+\]
+Because the samples are independent,
+\[
+\bar{X} - \bar{Y} \sim N\left(\mu_1-\mu_2, \frac{\sigma_1^2}{m} + \frac{\sigma_2^2}{n}\right).
+\]
+
+To estimate the variances $\sigma_1^2$ and $\sigma_2^2$ we use the sample variances of $X$ and $Y$:
+%$S_1^2 = \displaystyle\frac{1}{m-1}\sum_{i=1}^m (X_i-\bar{X})^2$ and $S_2^2 = \displaystyle\frac{1}{n-1}\sum_{j=1}^n (Y_j-\bar{Y})^2$ 
+\[
+S_1^2 = \displaystyle\frac{1}{m-1}\sum_{i=1}^m (X_i-\bar{X})^2
+\quad\text{and}\quad
+S_2^2 = \displaystyle\frac{1}{n-1}\sum_{j=1}^n (Y_j-\bar{Y})^2.
+\]
+Our test statistic is
+\[
+T = \frac{(\bar{X}-\bar{Y})-(\mu_1-\mu_2)}{\sqrt{S_1^2/m + S_2^2/n}} %\sim t_{n-2} \quad\text{under $H_0:\mu_1=\mu_2$.} 
+\]
+\bit
+\it Under $H_0:\mu_1=\mu_2$ we have that $T\sim t_{\nu}$ approximately, where
+\[
+\nu = \frac{(s_1^2/m+s_2^2/n)^2}{(s_1^2/m)^2(m-1) + (s_2^2/n)^2(n-1)} \qquad\text{(Welch-Satterthwaite equation).}
+\]
+%(Student's $t$-distribution with $n-2$ degrees of freedom).
+\it An approximate $100(1-\alpha)\%$ large-sample confidence interval for the difference $\mu_1-\mu_2$ is given by
+\[
+(\bar{X}-\bar{Y}) \pm z_{\alpha/2}\sqrt{\frac{S_1^2}{m}+\frac{S_2^2}{n}}.
+\]
+\eit
+
+%To test the null hypothesis $H_0:\mu_1=\mu_2$ we define the test statistic
+%\[
+%T = \frac{(\bar{X}-\bar{Y})-(\mu_1-\mu_2)}{\sqrt{S_1^2/m + S_2^2/n}} \sim t_{n-2} \quad\text{under $H_0:\mu_1=\mu_2$.} 
+%\]
+
+%For large samples, an approximate $100(1-\alpha)\%$ confidence interval for the difference $\mu_1-\mu_2$ is given by
+%\[
+%(\bar{X}-\bar{Y}) \pm z_{\alpha/2}\sqrt{\frac{S_1^2}{m}+\frac{S_2^2}{n}}
+%\]
+
+%-----------------------------
+\subsubsection*{Equal variances}
+Suppose that $X$ and $Y$ have equal variances: $X\sim N(\mu_1,\sigma^2)$ and $Y\sim N(\mu_2,\sigma^2)$ so that their distributions belong to the location model $\mathcal{M}=\{N(\mu,\sigma^2):\mu\in\R\}$. In this case we define the so-called \emph{pooled estimator} of variance,
+\[
+S_p^2 = \frac{(m-1)S_1^2 + (n-1)S_2^2}{m+n-2}.
+\]
+It is easy to show that $S_p^2$ is an unbiased estimator of $\sigma^2$, and that
+%\[
+%T = \frac{(\bar{X}-\bar{Y})-(\mu_1-\mu_2)}{S_p\sqrt{\frac{1}{m}+\frac{1}{n}}} \sim t_{m+n-2}. 
+%\]
+\[
+T = \frac{(\bar{X}-\bar{Y})-(\mu_1-\mu_2)}{S_p\sqrt{1/m+1/n}} \sim t_{m+n-2} \quad\text{under $H_0:\mu_1=\mu_2$}. 
+\]
+
+\begin{example}
+Let $X_1,X_2,\ldots,X_{10}$ be a random sample from the $N(\mu_1,\sigma^2)$ distribution, and let $Y_1,Y_2,\ldots,Y_7$ be an independent random sample from the $N(\mu_2,\sigma^2)$ distribution. Realisations of the samples yield the sample means $\bar{x}=4.2$ and $\bar{y}=3.4$ and the sample variances $s_1^2=49$ and $s_2^2=32$. 
+\ben
+\it Test the hypothesis $H_0:\mu_1=\mu_2$ against $H_1:\mu_1>\mu_2$.
+\it Find a $90\%$ confidence interval for the difference $\mu_1-\mu_2$.
+\een
+\begin{solution}
+\ben
+\it With $m=10$ and $n=7$, the pooled estimator of variance is
+\[
+s_p^2 = \frac{(m-1)s_1^2 + (n-1)s_2^2}{m + n - 2} = \frac{(9\times 49) + (6\times 32)}{10 + 7 - 2} = 633/15 = 42.2
+\]
+The test statistic is 
+\[
+T = \frac{(\bar{X}-\bar{Y})-(\mu_1-\mu_2)}{S_p\sqrt{\frac{1}{m}+\frac{1}{n}}} \sim t_{m+n-2}\text{ under $H_0:\mu_1=\mu_2$.}
+\]
+The observed value of the test statistic is
+\[
+t = \frac{(\bar{x}-\bar{y})}{s_p\sqrt{1/m+1/n}} \frac{0.8}{\sqrt{4.2(1/10+1/7)}} = 0.7921 \text{ (approx.)}
+\]
+Under $H_0:\mu_1=\mu_2$, $T\sim t_{m+n-2}$. Upper-tail critical values are 1.341 (10\%) and 1.753 (5\%), so there is not enough evidence to reject the null hypothesis $H_0:\mu_1=\mu_2$. 
+\it % ci
+A $90\%$ confidence interval for $\mu_1-\mu_2$ is
+\[
+(\bar{x}-\bar{y}) \pm t_c s_p\sqrt{1/m+1/n} = (0.8\pm 1.753\times 6.4962\times\sqrt{1/10+1/7}) = (-4.81, 6.41).
+\]
+\een
+\end{solution}
+\end{example}
+
+%-------------------------------------------------
+\subsection{The Mann-Whitney test}\label{sec:mw_test}
+
+%The \emph{Mann-Whitney test} is a non-parametric test to detect a difference between the medians of two independent samples.
+
+%Let $X$ and $Y$ be two independent random variables having the same distribution, which is assumed to be continuous and symmetric, except that their medians $\eta_1$ and $\eta_2$ might be different. We test the null hypothesis $H_0:\eta_1 = \eta_2$ against a suitable alternative.
+
+% definition: mw statistic
+\begin{definition}
+Let $X_1,X_2,\ldots,X_m$ be a random sample from a continuous and symmetric distribution with median $\eta_1$, and let $Y_1,Y_2,\ldots,Y_n$ be a random sample from a possibly shifted version the same distribution, with median $\eta_2$. To test the null hypothesis $H_0:\eta_1=\eta_2$ against a suitable alternative, the \emph{Mann-Whitney} test statistic is
+\[
+U_{m,n} = \sum_{i=1}^m \sum_{j=1}^n Z_{ij} 
+\qquad\text{where}\qquad 
+Z_{ij} = \begin{cases} 
+	1 	& X_i < Y_j, \\
+	0.5	& X_i = Y_j, \\
+	0	& X_i > Y_j.
+\end{cases}
+\]
+\end{definition}
+
+We also define the complementary statistic 
+\[
+U'_{m,n} = \displaystyle\sum_{i=1}^m \sum_{j=1}^n (1-Z_{ij}).
+\]
+Note that $\min(U_{m,n})=0$, $\max(U_{m,n})=mn$, and
+\[
+U_{m,n} + U'_{m,n} = \sum_{i=1}^m\sum_{j=1}^n \big[Z_{ij} + (1-Z_{ij})\big] = \sum_{i=1}^m\sum_{j=1}^n 1 = mn,
+\]
+
+The direction of the alternative hypothesis determines how the test statistic should be used:
+\par
+\begin{tabular}{ll}
+$\bullet$ $H_1:\eta_1 < \eta_2$:			& large values of $U$ support the alternative hypothesis. \\
+$\bullet$ $H_1:\eta_1 > \eta_2$:			& small values of $U$ support the alternative hypothesis. \\
+$\bullet$ $H_1:\eta_1 \neq \eta_2$:\qquad	& small and large values of $U$ support the alternative hypothesis.
+\end{tabular}
+
+% example
+\begin{example}
+Suppose we have the random sample $\{14,5,8\}$ from the distribution of $X$, and the random sample $\{7,12,18,11\}$ from the distribution of $Y$. Compute the Mann-Whitney test statistic for these data.
+\end{example}
+\begin{solution}
+\[\begin{array}{|c|cccc|}\hline
+X_i		& 14		&  5		&  8		& \\ \hline
+Y_j		&  7		& 12		& 18		& 11 \\ \hline 
+\end{array}\]
+\bit 
+\it $U$ is computed by counting the number of $X_i$ that are smaller than each $Y_j$.
+\it $U'$ is computed by counting the number of $Y_j$ that are smaller than each $X_i$.
+\eit
+\begin{align*}
+u 	& = 1 + 2 + 3 + 2 = 8 \\
+u'	& = 3 + 0 + 1 = 4
+\end{align*}
+Check: $u+u' = 8 + 4 = 12 = mn$.
+\end{solution}
+
+% example
+\begin{example}\label{ex:mannwhitney}
+Two different models of car, with engines of a similar size, were compared for their fuel consumption. Five cars of each model were evaluated in independent tests. The observation made was the number of miles travelled using 10 litres of petrol. Use a suitable non-parametric test to assess the claim that Model~2 is more economical than Model~1.
+\[\begin{array}{|l|ccccc|}\hline
+\text{Model 1}	& 125.8	& 126.7	& 128.3	& 130.5	& 126.2 \\
+\text{Model 2}	& 127.8 & 131.4	& 129.6	& 130.2	& 128.1 \\ \hline
+\end{array}\]
+\end{example}
+\begin{solution}
+The hypothesis test is $H_0:\eta_1=\eta_2$ against $H_1:\eta_1 < \eta_2$, where
+\bit
+\it $\eta_1$ is the median number of miles travelled by Model~1, and
+\it $\eta_2$ is the median number of miless travelled by Model~2.
+\eit
+Only large values of $U$ support the alternative hypothesis. 
+From tables ($m=5$, $n=5$), the critical value at significance level $\alpha=0.05$ is $u_c=21$. 
+From the data,
+\begin{align*}
+u 		& = \sum_{i=1}^5\sum_{j=1}^5 Z_{ij} = 5 + 5 + 3 + 1 + 5 = 19. \\
+u'		& = \sum_{i=1}^5\sum_{j=1}^5 (1-Z_{ij}) = 0 + 0 + 2 + 4 + 0 = 6.
+\end{align*}
+Check: $u + u' = mn = 25$. 
+\par
+Since the observed value $u=19$ is smaller than the critical value $u_c=21$, there is insufficient evidence to conclude that Model~2 is more economical than Model~1. 
+\end{solution}
+
+%-----------------------------
+\subsubsection{Mean and variance of $U_{m,n}$}
+
+\begin{theorem}
+%Let $X_1,X_2,\ldots,X_m$ be a random sample from a continuous and symmetric distribution with median $\eta_1$, and let $Y_1,Y_2,\ldots,Y_n$ be a random sample from a possibly shifted version the same distribution, with median $\eta_2$. 
+Under the null hypothesis $H_0:\eta_1=\eta_2$, 
+\[
+\expe(U_{m,n}) = \frac{mn}{2}
+\text{\quad and\quad}
+\var(U_{m,n}) = \frac{mn}{12}(m+n+1).
+\]
+\end{theorem}
+
+\begin{proof}
+Under $H_0:\eta_1=\eta_2$ we have $\prob(X_i<Y_j) = 1/2$, so $Z_{ij}\sim\text{Bernoulli}(1/2)$. 
+
+Hence $\mathcal{E}(Z_{ij})=1/2$ and therefore
+\[
+\expe(U_{m,n}) 
+	= \mathcal{E}\left(\sum_{i=1}^m\sum_{j=1}^n Z_{ij}\right)
+	= \sum_{i=1}^m\sum_{j=1}^n \mathcal{E}(Z_{ij})
+	= \frac{mn}{2}.
+\]
+
+The calculation to find the variance of $U$ involves some tedious algebra:
+\begin{align*}
+\expe(U_{m,n}^2)
+	& = \expe\left[\left(\sum_{i=1}^m\sum_{j=1}^n Z_{ij}\right)\left(\sum_{k=1}^m\sum_{\ell=1}^n Z_{k\ell}\right)\right] \\
+	& = \sum_{i=1}^m\sum_{j=1}^n\sum_{k=1}^m\sum_{\ell=1}^n \expe(Z_{ij}Z_{k\ell}) \\
+	& = \sum_{i=1}^m\sum_{j=1}^n\expe(Z_{ij}^2) 
+			+ \sum_{i=1}^m\sum_{\substack{k=1\\k\neq i}}^m\sum_{j=1}^n\expe(Z_{ij}Z_{kj}) \\
+	& \qquad + \sum_{i=1}^m\sum_{j=1}^n\sum_{\substack{\ell=1\\\ell\neq j}}^n\expe(Z_{ij}Z_{i\ell})
+			+ \sum_{i=1}^m\sum_{j=1}^n\sum_{\substack{k=1\\k\neq i}}^m\sum_{\substack{\ell=1\\\ell\neq j}}^n\expe(Z_{ij}Z_{k\ell}) \\
+\end{align*}
+The four sums have $mn$, $mn(m-1)$, $mn(n-1)$ and $mn(m-1)(n-1)$ terms, respectively.
+\ben
+\it 
+If $k=i$ and $\ell=j$, the summand is $Z_{ij}Z_{k\ell}=Z_{ij}^2$, and $Z^2_{ij}=1$ only if $X_i<Y_j$. Under the null hypothesis, this occurs with probability $1/2$.
+\it
+If $k\neq i$ but $\ell=j$, $Z_{ij}$ and $Z_{k\ell}$ are not independent. In this case, $Z_{ij}Z_{k\ell}=1$ if and only if both $X_i<Y_j$ and $X_k<Y_j$. There are six possible arrangements of $X_i$, $X_k$ and $Y_j$, of which two are such that $X_i<Y_j$ and $X_k<Y_j$. Under the null hypothesis, this occurs with probability $1/3$.
+\it
+If $k=i$ but $\ell\neq j$, by a similar argument we have $Z_{ij}Z_{k\ell}=1$ if and only if both $X_i<Y_j$ and $X_i<Y_{\ell}$. Under the null hypothesis, this occurs with probability $1/3$.
+\it
+If $k\neq i$ and $\ell\neq j$ then $Z_{ij}$ and $Z_{k\ell}$ are independent. The summand $Z_{ij}Z_{k\ell}=1$ if and only if both $X_i<Y_j$ and $X_k<Y_{\ell}$. Under the null hypothesis, this occurs with probability $1/2\times 1/2 = 1/4$.
+\een
+Hence, 
+\begin{align*}
+\expe(U_{m,n}^2)
+	& = \left[mn\times\frac{1}{2}\right] + \left[m(m-1)n\times\frac{1}{3}\right] 
+			+ \left[mn(n-1)\times\frac{1}{3}\right] + \left[m(m-1)n(n-1)\times\frac{1}{4}\right] \\
+	& = \frac{mn}{12}(1 + n + m + 3mn),
+\end{align*}
+and
+\[
+\var(U_{m,n}) = \expe(U_{m,n}^2) - \expe(U_{m,n})^2 = \frac{mn}{12}(m+n+1).
+\]
+\end{proof}
+
+%-----------------------------
+\subsubsection{Normal approximation}
+
+The Mann-Whitney statistic $U_{m,n}$ is a sum of random variables (namely the $Z_{ij}$). By the central limit theorem, the distribution of $U_{m,n}$ is approximately normal for $m$ and $n$ sufficiently large. 
+
+\bigskip
+Lower-tail test:
+\[
+Z = \frac{(U_{m,n}+\frac{1}{2}) - \frac{mn}{2}}{\sqrt{\frac{mn}{12}(m+n+1)}} \sim  N(0,1)\quad\text{approx. for $m$ and $n$ sufficiently large.}
+\]
+
+Upper-tail test:
+\[
+Z = \frac{(U_{m,n}-\frac{1}{2}) - \frac{mn}{2}}{\sqrt{\frac{mn}{12}(m+n+1)}} \sim  N(0,1)\quad\text{approx. for $m$ and $n$ sufficiently large.}
+\]
+
+
+%-----------------------------
+\subsection{Exact distribution of $U_{m,n}$ under $H_0$}
+The exact distribution of $U_{m,n}$ under $H_0$ can be obtained for small $m,n$ by a recurrence relation. First we define the base case: if $m = 0$ or $n = 0$, we set $U=0$, so
+\bit
+\it $\prob(U_{m,0}=0) = 1$ and $\prob(U_{0,n}=0) = 1$; 
+\it $\prob(U_{m,0}=u) = 0$ and $\prob(U_{0,n}=u) = 0$ for $u\neq 0$.
+\eit
+
+%If $m = n = 1$, there is just one x-value and one y-value, so $U\in\{0,1\}$. There are two possible arrangements ($x<y$ or $y<x$), both equally likely under $H_0$, so
+%\bit
+%\it $\prob(U_{1,1}=0) = \prob(U_{1,1}=1) = \frac{1}{2}$.
+%%\it If $x > y$ then $U=0$; if $x < y$ then $U=1$.
+%\eit
+%
+%If $m=1$ and $n=2$, there is one x-value and two y-values, so $U\in\{0,1,2\}$. There are six possible arrangements,
+%%($x<y_1<y_2$, $x<y_2<y_1$, $y_1<x<y_2$ and so on)
+%all equally likely under $H_0$, so
+%\bit
+%\it $\prob(U_{1,2}=0) = \prob(U_{1,2}=1) = \prob(U_{1,2}=2) = \frac{1}{3}$, and similarly
+%\it $\prob(U_{2,1}=0) = \prob(U_{2,1}=1) = \prob(U_{2,1}=2) = \frac{1}{3}$.
+%\eit
+%
+
+% theorem
+\begin{theorem}
+Under $H_0:\eta_1=\eta_2$, the PMF of $U_{m,n}$ satisfies
+\[
+\prob(U_{m,n}=u) = \left(\frac{m}{m+n}\right)\prob(U_{m-1,n}=u) + \left(\frac{n}{m+n}\right)\prob(U_{m,n-1}=u-m)
+\]
+for $u=0,1,\ldots mn$ (and zero otherwise).
+\end{theorem}
+
+\begin{proof}
+Let $m$ and $n$ be fixed and assume that $m>0$ and $n>0$. Under the null hypothesis,
+\begin{align*}
+\prob(\text{The largest observation is one of the $x$-values}) & = \frac{m}{m+n}, \\[1ex]
+\prob(\text{The largest observation is one of the $y$-values}) & = \frac{n}{m+n}.
+\end{align*}
+
+Let $U=u$ and suppose that one of the $x$-values is the largest observation.
+\bit
+\it The remaining $(m - 1)$ $x$-values and $n$ $y$-values constitute a random sample, with one fewer $x$-value, for which $U=u$.
+\eit
+
+Let $U=u$ and suppose that one of the $y$-values is the largest observation.
+\bit
+\it The remaining $m$ $x$-values and $(n - 1)$ $y$-values constitute a random sample, with one fewer $y$-value, for which $U=u-m$. (The largest $y$-value adds $m$ to the value $U$ for the complete set of $m$ $x$-values and $n$ $y$-values.)
+\eit
+
+Thus we have that
+\[
+\prob(U_{m,n}=u) = \left(\frac{m}{m+n}\right)\prob(U_{m-1,n}=u) + \left(\frac{n}{m+n}\right)\prob(U_{m,n-1}=u-m)
+\]
+
+This recurrence relation can be used to find the PMF of $U$ for any $m$ and $n$.
+\end{proof}
+
+\begin{example}
+In an experiment on the effects of exposure to ozone, 10 rats were exposed to the gas for a period. A control group of 10 rats were kept in an ozone-free atmosphere, but otherwise in similar conditions. The lung volumes in millilitres for the two groups of rats after the conclusion of the experiment are tabulated below. Perform a test of size $\alpha=0.05$ to determine whether there is a statistically significant difference in the average lung volumes of the two groups of rats. 
+\[\begin{array}{|l|cccccccccc|} \hline
+\text{Exposed } (X)		& 9.2    & 8.4    & 8.6    & 9.2    & 9.5    & 9.1    & 9.9    & 9.6    & 9.0    & 9.6 \\
+\text{Not Exposed } (Y)	& 8.8    & 8.6    & 8.7    & 8.4    & 9.1    & 9.2    & 8.3    & 8.5    & 8.8    & 8.2 \\ \hline
+\end{array}\]
+\end{example}
+
+\begin{solution}
+We test the null hypothesis $H_0:\eta_1=\eta_2$ against the alternative $H_1:\eta_1\neq\eta_2$.
+
+\begin{align*}
+u  & = 2 + 1.5 + 2 + 0.5 + 3.5 + 5 + 0 + 1 + 2 + 0 = 17.5. \\
+u' & = 100-17.5 = 82.5.
+\end{align*}
+
+From tables, the critical value for a two-tailed test is $81$ at $\alpha=0.02$, and $84$ at $\alpha=0.01$. Thus $H_0$ is rejected at $\alpha=0.02$ but retained at $\alpha=0.01$.
+\end{solution}
+
+\begin{exercise}
+\begin{questions}
+
+\question
+We wish to determine whether the distribution of population $B$ is located to the right of population $A$.
+\[\begin{array}{|l|ccccccccc|}\hline
+\text{Sample $A$} & 37 & 40 & 33 & 29 & 42 & 33 & 35 & 28 & 34 \\
+\text{Sample $B$} & 65 & 35 & 47 & 52 & & & & & \\ \hline
+\end{array}\]
+\ben
+\it State the null and alternative hypotheses for the test.
+\it Perform the hypothesis test using the Mann-Whitney test at $\alpha=0.05$.
+\een
+\begin{answer}
+\ben
+\it % << (i)
+$H_0:\eta_A=\eta_B$, $H_1:\eta_A<\eta_B$.
+\it % << (i)
+$U = 3 + 3 + 4 + 4 + 3 + 4 + 3.5 + 4 + 4 = 32.5$. 
+\par
+From tables, with $m=9$ and $n=4$, a one-tailed test at $\alpha=0.05$ has critical value $U_c = 29$. 
+\par
+Since $U>U_c$, we reject $H_0$.
+\een
+\end{answer}
+
+\question
+Independent random samples are selected from two populations. The data is shown in the following table.
+\[\begin{array}{|l|cccccccc|}\hline
+\text{Sample $1$} & 15 & 10 & 12 & 16 & 13 &  8 &    & 		\\
+\text{Sample $2$} &  5 & 12 &  9 &  9 &  8 &  4 &  5 & 10 	\\ \hline
+\end{array}\]
+\ben
+\it Use the Mann-Whitney to determine whether the data provide sufficient evidence to indicate a shift in the locations of the probability distributions of the sampled populations. Test using $\alpha=0.05$.
+\it Do the data provide sufficient evidence to indicate that the probability distribution of the first propulation is shifted to the right of the second population? Use the Mann-Whitney test with $\alpha=0.05$
+\een
+
+\begin{answer}
+Recall that 
+\[
+U = \sum_{i=1}^m \sum_{j=1}^n Z_{ij} 
+\quad\text{and}\quad 
+U' = \sum_{i=1}^m \sum_{j=1}^n (1-Z_{ij}) 
+\quad\text{where}\quad 
+Z_{ij} = \begin{cases} 
+	1 	& X_i < Y_j, \\
+	0.5	& X_i = Y_j, \\
+	0	& X_i > Y_j.
+\end{cases}
+\]
+From the table,
+\begin{align*}
+U 	& = 0 + 1.5 + 0.5 + 0 + 0 + 4.5 = 6.5, \\
+U'	& = 6 + 3.5 + 5 + 5 + 5.5 + 6 + 6 + 4.5 = 41.5.
+\end{align*}
+\ben
+\it $H_0:\eta_1=\eta_2$ and $H_1:\eta_1\neq\eta_2$. 
+\par 
+From tables, for a two-tailed test at $\alpha=0.05$ with $m=6$ and $n=8$, the upper-tail critical value is $U_c=40$ and the lower-tail critical value is $mn-U_c = 48-40=8$. The rejection region is therefore $\{U:U\leq 8\text{ or }U\geq 40\}$. Since the observed value of $U$ lies in the critical region, we reject $H_0$, and conclude that the medians of the two populations are different.
+
+\it $H_0:\eta_1=\eta_2$ and $H_1:\eta_1>\eta_2$. 
+\par 
+Only small values of $U$ support the alternative hypothesis $H_1:\eta_1>\eta_2$. 
+\par
+From tables, for a one-tailed test at $\alpha=0.05$ with $m=6$ and $n=8$, the upper-tail critical value is $U_c=37$, so the lower-tail critical value is $mn-U_c = 48-37=11$. The rejection region is therefore $\{U:U\leq 11\}$. Since the observed value of $U$ lies in the critical region, we reject $H_0$, and conclude that population $1$ lies to the right of population $2$.
+\een
+\end{answer}
+
+\question
+The percentage of carbon in iron samples taken from two different furnaces was measured. The results obtained are as follows
+\[\begin{array}{|c|cccccc|} \hline
+\text{Furnace $1$} 	& 2.28    & 2.34    & 2.37    & 2.39    & 2.40    & 2.41 \\
+\text{Furnace $2$}	& 2.36    & 2.40    & 2.42    & 2.44    & 2.44    & 2.48 \\ \hline
+\end{array}\]
+Perform a suitable non parametric test to determine if there is a significant difference between the median percentage carbon in the two furnaces. Discuss how you have dealt with ties and the effect that these might have had on your conclusions.          
+
+\begin{answer}
+We assume that the furnaces are independent of each other, and use the Mann-Whintey test. 
+\bit
+\it Using the counting method: $U = 6 + 6 + 5 + 5 + 4.5 + 4 = 30.5$
+\it Alternatively, using rank sums:
+\[\begin{array}{|c|cccccc|l|}\hline
+\text{Furnace $1$}	& 2.28	& 2.34	& 2.37	& 2.39	& 2.40	& 2.41	&  				\\ \hline
+\text{Rank}			& 1    	& 2    	& 4    	& 5  	& 6.5	& 8  	& R_X = 26.5		\\ \hline\hline
+\text{Furnace $2$}	& 2.36	& 2.40	& 2.42	& 2.44	& 2.44	& 2.48	& 				\\ \hline
+\text{Rank}			& 3  	& 6.5	& 9		& 10.5	& 10.5 	& 12		& R_Y = 51.5		\\ \hline
+\end{array}\]
+Hence $U = R_Y - \frac{1}{2} n(n+1) = 51.5 - 21 = 30.5$.
+\eit
+From tables, the critical value for a 2-tailed test at significance level $\alpha=0.05$ is $U_c=31$, and at $\alpha=0.1$ is $U_c=29$. Thus the test statistic is outside the critical region $\{U:U\geq 31\}$ at $\alpha=0.05$, but inside the critical region $\{U:U\geq 29\}$ at the $\alpha=0.1$ significance level. Thus we would retain the null hypothesis at $\alpha=0.05$, but it is a close decision. 
+
+When computing the test statistic, ties were handled by assigning the average of the ranks that would have been assigned had there not been any ties. If the two observations recorded as $2.40$ had been recorded more accurately, and the value for Furnace~2 had turned out to be bigger than the value for Furnace~1, the Mann-Whitney statistic would be $U=31$. This would have led us to reject the null hypothesis at $\alpha=0.05$, which illustrates that the decision is indeed a close call.
+\end{answer}
+
+\end{questions}
+\end{exercise}

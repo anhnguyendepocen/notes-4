@@ -1,0 +1,40 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Conditional probability}\label{sec:cond_prob}
+
+Recall from elementary probability that the conditional probability of $A$ given $B$ is defined by
+\[
+\prob(A|B) = \frac{\prob(A\cap B)}{\prob(B)}.
+\]
+provided that $P(B)>0$. The following theorem shows that this defines a probability measure on subsets of $\Omega$.
+
+\begin{theorem}
+Let $\prob$ be a probability measure on subsets of $\Omega$ and let $B$ be an event with $\prob(B)>0$. Then the function
+\[
+\mathbb{Q}(A) = \prob(A|B)
+\]
+is also probability measure on subsets of $\Omega$.
+
+\begin{proof}
+To show that $\mathbb{Q}$ is a probability measure, we need to verify that $\mathbb{Q}(\emptyset) = 1$, $\mathbb{Q}(\Omega) = 1$ and that $\mathbb{Q}$ is countably additive. Firstly,
+\begin{align*}
+\mathbb{Q}(\emptyset) 
+	& = \prob(\emptyset|B) = \prob(\emptyset\cap B)/\prob(B) = \prob(\emptyset)/\prob(B) = 0; \\
+\mathbb{Q}(\Omega) 
+	& = \prob(\Omega|B) = \prob(\Omega\cap B)/\prob(B) = \prob(B)/\prob(B) = 1.
+\end{align*}
+To prove that $\mathbb{Q}$ is countable additive, let $A_1,A_2,\ldots$ be pairwise disjoint subsets of $\Omega$. Then using the fact that $\prob$ is countably additive,
+\begin{align*}
+\mathbb{Q}(\medcup_{i=1}^{\infty} A_i) 
+	= \prob(\medcup_{i=1}^{\infty} A_i\,|\,B)
+	& = \frac{\prob\big[(\medcup_{i=1}^{\infty} A_i) \cap B\big]}{\prob(B)} \\
+	& = \frac{\prob\big[\medcup_{i=1}^{\infty} (A_i \cap B)\big]}{\prob(B)} \quad\text{(because intersection is distributive over union)},\\
+	& = \frac{\sum_{i=1}^{\infty} \prob(A_i \cap B)}{\prob(B)} \quad\text{(because the sets $A_i\cap B$ are disjoint)}, \\
+	& = \sum_{i=1}^{\infty}\frac{\prob(A_i \cap B)}{\prob(B)}
+	  = \sum_{i=1}^{\infty}\prob(A_i|B)
+		= \sum_{i=1}^{\infty} \mathbb{Q}(A_i)\quad\text{as required.}
+\end{align*}
+\end{proof}
+\end{theorem}
+

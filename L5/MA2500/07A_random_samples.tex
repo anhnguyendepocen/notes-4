@@ -1,0 +1,82 @@
+% !TEX root = main.tex
+
+An important problem in statistics is to estimate the distribution of a random variable from a set of observations. For example, certain observations may be known (or assumed) to have an exponential distribution and we want to estimate the rate parameter $\lambda$ of the distribution, or observations may be taken from a normal distribution and we want to estimate the mean $\mu$ and variance $\sigma^2$ of the distribution.
+
+%-------------------------------------------------
+\section{Random samples}\label{sec:random_samples}
+
+First we define random vectors. These are simply vectors of random variables.
+
+\begin{definition}\label{def:random_vector}
+Let $X_1,X_2,\ldots,X_n$ be random variables defined on the same probability space. The vector-valued function
+\[
+\begin{array}{rccl}
+\mathbf{X}:	& \Omega 	& \longrightarrow 		& \R^n \\
+			& \omega	& \mapsto	& \big[X_1(\omega), X_2(\omega),\ldots, X_n(\omega)\big]
+\end{array}
+\]
+is called a \emph{random vector} of size $n$. The individual $X_i$ are called the \emph{component variables} of $\mathbf{X}$ and a vector $\mathbf{x} = (x_1,x_2\ldots,x_n)\in\R^n$ is called a \emph{realisation} of $\mathbf{X}$, where $x_i$ is the value taken by the corresponding component variable $X_i$.
+\end{definition}
+
+The behaviour of a random vector is completely described by the joint CDF of its component variables.
+\begin{definition}
+Let $\mathbf{X}=(X_1,X_2,\ldots,X_n)$ be a random vector.
+\ben
+\it 
+The \emph{joint distribution} of $\mathbf{X}$ is the function $\prob_{\mathbf{X}}(B) = \prob(\mathbf{X}\in B)$ defined on subsets of $\R^n$.
+\it
+The \emph{joint CDF} of $\mathbf{X}$ is the function $F_{\mathbf{X}}:\R^n\to[0,1]$ given by
+\begin{align*}
+F_{\mathbf{X}}(\mathbf{x}) 	= \prob(\mathbf{X}\leq\mathbf{x})
+							& = \prob(X_1\leq x_1, X_2\leq x_2, \ldots, X_n\leq x_n) \\
+%							& = \prob\big(\{\omega:X_1(\omega)\leq x_1, X_2(\omega)\leq x_2, \ldots, X_n(\omega)\leq x_n\}\big).
+\end{align*}
+\een
+\end{definition}
+
+In general the component variables $X_i$ might depend on each other and have different distributions. Our analysis is greatly simplified by assuming that the $X_i$ are \emph{independent} and \emph{identically distributed}.% random variables.
+
+\begin{definition}\label{def:random_sample}
+Let $X$ be a random variable. A \emph{random sample from the distribution of $X$} is a random vector with the property that the component variables $X_i$ are independent and have the same distribution as $X$.
+\end{definition}
+
+By independence the joint CDF of a random sample is just the product of its marginal CDFs and because each $X_i$ has the same distribution as $X$, this can be expressed entirely in terms of the CDF of $X$.
+ 
+\begin{lemma}
+Let $\mathbf{X}=(X_1,X_2,\ldots,X_n)$ be a random sample from the distribution of $X$. Then the joint CDF and joint PMF/PDF of $\mathbf{X}$ can be written respectively as
+\[
+F_{\mathbf{X}}(\mathbf{x}) = \textstyle\prod_{i=1}^n F_X(x_i) 
+\qquad\text{and}\qquad
+f_{\mathbf{X}}(\mathbf{x}) = \textstyle\prod_{i=1}^n f_X(x_i)
+%\qquad\text{respecively},
+\]
+where $F_X$ and $f_X$ are the CDF and PMF/PDF of $X$ respectively, and $\boldx=(x_1,x_2,\ldots,x_n)$ is a realisation of the sample.. 
+\end{lemma}
+\begin{proof}
+\begin{align*}
+F_{\mathbf{X}}(\mathbf{x})
+	& = \prob(X_1\leq x_1, X_2\leq x_2, \ldots, X_n\leq x_n) \\
+	& = \prob(X_1\leq x_1)\prob(X_2\leq x_2)\ldots\prob(X_n\leq x_n) \quad\text{(by independence)} \\
+	& = F_X(x_1)F_X(x_2)\cdots F_X(x_n) \quad\text{(because each $X_i$ has the same distribution as $X$)}\\
+	& = \textstyle\prod_{i=1}^n F_X(x_i).
+\end{align*}
+\end{proof}
+
+%\begin{example}
+%Let $\mathbf{X}=(X_1,X_2,\ldots,X_n)$ be a random sample from the $\text{Exponential}(\lambda)$ distribution, where $\lambda>0$ is a rate parameter. Then the joint CDF and joint PDF of $\mathbf{X}$ are respectively
+%\begin{align*}
+%F_{\mathbf{X}}(\mathbf{x}) 
+%	& = \textstyle\prod_{i=1}^n\big[1-\exp(-\lambda x_i)\big] \\
+%f_{\mathbf{X}}(\mathbf{x}) 
+%	& = \textstyle\prod_{i=1}^n\lambda \exp(\lambda x_i) = \lambda^n\exp(-\lambda\sum_{i=1}^n x_i).
+%\end{align*}
+%\end{example}
+%The same relationship holds for PMFs (discrete case) and PDFs (continuous case).
+%\begin{corollary}
+%If $\boldX=(X_1,X_2,\ldots,X_n)$ is a random sample from the distribution of $X$, the joint PMF/PDF of $\mathbf{X}$ can be written as
+%\[
+%f_{\mathbf{X}}(\mathbf{x}) = \textstyle\prod_{i=1}^n f_X(x_i)
+%\]
+%for all $\boldx=(x_1,x_2,\ldots,x_n)\in\R^n$, where $f_X$ is the PMF/PDF of $X$.
+%\end{corollary}
+

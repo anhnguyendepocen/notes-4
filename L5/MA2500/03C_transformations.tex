@@ -1,0 +1,469 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Transformations}\label{sec:transfs}
+
+Random variables can be transformed into other random variables, and the distribution of a transformed variable can be deduced from the distribution of the original variable. Transformations of discrete distributions are relatively straightforward: here we focus on transformations of continuous distributions.
+
+Applying a transformation $g:\R\to\R$ to a random variable $X:\Omega\to\R$ involves the \emph{composition} of these two functions,
+\[
+\begin{array}{rlcl}
+g(X) : 	& \Omega & \to 		& \R \\
+		& \omega & \mapsto	& g\big[X(\omega)\big],
+\end{array}
+\]
+
+This can be interpreted in two ways:
+\ben 
+\it $g(X)$ is a random variable on the probability space $(\Omega,\prob)$;
+\it $g$ is a random variable on the probability space $(\R,\prob_X)$,
+\een
+where $\prob_X$ is the distribution of $X$. Here we focus on the first interpretation with $Y=g(X)$ denoting the transformed variable.
+
+%-----------------------------
+\subsection{Support}
+Many PDFs are non-zero only over certain subsets of $\R$. When we transform continuous distributions we need only consider these subsets, provided we ensure that those over which PDFs are zero are carried over correctly into the transformed space. For technical reasons, it is not quite enough to focus on the \emph{range} of the random variable in question: instead we must consider the smallest closed set that contains the range (a closed set is one that contains all its limit points). This is called the \emph{support} of the associated PDF.
+
+\begin{definition}
+The \emph{support} of an arbitrary function $h:\R\to\R$, denoted by $\supp(h)$, is the smallest closed set for which $h(x)=0$ for all $x\notin\supp(h)$. 
+\end{definition}
+
+Let $Y = g(X)$ where $g:\R\to\R$ is a transformation, and let $f_X$ and $f_Y$ denote the PMFs/PDFs of $X$ and $Y$ respectively. The support of the transformed variable $Y = g(X)$ is given by
+\[
+\supp(f_Y) = \big\{g(x) : x\in\supp(f_X)\big\}.
+\]
+In fact, $\supp(f_Y)$ should be defined as the \emph{closure} of this set, which is obtained by adding in its limit points where necessary. We will not pursue such matters here.
+
+%-----------------------------
+\subsection{Linear transformations}
+
+Let $X$ be a random variable and let $Y = aX + b$ where $a\neq 0$. 
+
+The CDF of of the transformed variable $Y$ can be expressed in terms of the CDF of $X$ as follows:
+\[
+F_Y(y) 
+	= \prob(Y\leq y) 
+	= \prob(aX+b\leq y)
+	= \begin{cases}
+		\displaystyle\prob\left(X\leq\frac{y-b}{a}\right) = \phantom{1 -\ } F_X\left(\frac{y-b}{a}\right)		& \text{if $a>0$,} \\[3ex]
+		\displaystyle\prob\left(X>\frac{y-b}{a}\right)	 = 1 - F_X\left(\frac{y-b}{a}\right)	& \text{if $a<0$.}
+	\end{cases}
+\]
+Using the chain rule, the PDF of $Y$ can then be expressed in terms of the PDF of $X$:
+\smallskip
+\[
+f_Y(y) = \frac{d}{dy}F_Y(y) = 
+	\left\{
+	\begin{array}{ll}
+		\phantom{-}\displaystyle\frac{1}{a}f_X\left(\frac{y-b}{a}\right)	& \text{if $a>0$,} \\[3ex]
+		-\displaystyle\frac{1}{a}f_X\left(\frac{y-b}{a}\right)				& \text{if $a<0$.}
+	\end{array}
+	\right\}
+	= \frac{1}{|a|}f_X\left(\frac{y-b}{a}\right).
+\]
+% example: linear transf.
+\begin{example}
+Let $X\sim\text{Uniform}[0,1]$. Find the distribution of the random variable $Y = 3X + 7$.
+\begin{solution}
+Let $g(x) = 3x+7$ denote the transformation. The PDF of $X\sim\text{Uniform}[0,1]$ is
+\[
+f_X(x) = \begin{cases}
+	1	& 0\leq x\leq 1 \\
+	0	& \text{otherwise.}
+\end{cases}
+\]
+First we see that $\supp(f_X)$ is transformed as follows:
+\[
+\supp(f_Y) = \{g(x) : x\in\supp(f_X)\} = \{3x+7 : x\in [0,1]\} = [7,10].
+\]
+From the above discussion,
+\[
+f_Y(y) = \displaystyle\frac{1}{3}f_X\left(\frac{y-7}{3}\right) 
+	= \begin{cases}
+		1/3	& \text{if $7\leq y\leq 10$,} \\
+		0	& \text{otherwise,}
+	\end{cases}
+\]
+so $Y\sim\text{Uniform}[7,10]$. We see that the original distribution has been scaled by a factor of $3$ and shifted $7$ units to the right.
+\end{solution}
+\end{example}
+
+These ideas can be extended to any one-to-one transformation of $X$.
+
+%-----------------------------
+\subsection{Transformations of CDFs}
+
+\begin{theorem}\label{thm:transf_cdf}
+If $g:\R\to\R$ is one-to-one over $\supp(f_X)$ the CDF of $Y=g(X)$ is
+\[
+F_Y(y) = \begin{cases}
+F_X\big[g^{-1}(y)\big]		& \text{if $g$ is increasing, and} \\[1ex]
+1 - F_X\big[g^{-1}(y)\big]	& \text{if $g$ is decreasing.} 
+\end{cases}
+\]
+\end{theorem}
+
+\begin{proof}
+\ben
+\it If $g$ is increasing, $g(x)\leq y$ implies that $x\leq g^{-1}(y)$ so
+\[
+F_Y(y) 
+	= \prob(Y\leq y) 
+	= \prob\big[g(X)\leq y\big] 
+	= \prob\big[X\leq g^{-1}(y)\big]
+	= F_X\big[g^{-1}(y)\big].
+\]
+\it If $g$ is decreasing, $g(x)\leq y$ implies that $x\geq g^{-1}(y)$ so
+\begin{align*}
+F_Y(y) 
+	= \prob(Y\leq y) 
+	= \prob\big[g(X)\leq y\big] 
+	& = \prob\big[X\geq g^{-1}(y)\big] \\
+	& = 1 - \prob\big[X\leq g^{-1}(y)\big] \quad\text{(because $X$ is a continuous r.v.)}\\
+	& = 1 - F_X\big[g^{-1}(y)\big].
+\end{align*}
+\een
+\end{proof}	
+
+\begin{example}
+Let $X\sim\text{Uniform}[0,1]$ and let $Y = -\displaystyle\frac{1}{\lambda}\log X$ where $\lambda>0$. Show that $Y\sim\text{Exponential}(\lambda)$ where $\lambda$ is a rate parameter.
+\begin{solution}
+The CDF and PDF of $X\sim\text{Uniform}[0,1]$ are, respectively,
+\[\begin{array}{lcl}
+F_X(x) = \begin{cases}
+	0	& x < 0, \\ 
+	x	& 0\leq x\leq 1 \\
+	1	& x > 1
+\end{cases}
+& \text{and} &
+f_X(x) = \begin{cases}
+	1	& 0\leq x\leq 1 \\
+	0	& \text{otherwise.}
+\end{cases}
+\end{array}\]
+Let $g(x) = -\log x/\lambda$ denote the transformation. Because $\lambda>0$ we see that $\supp(f_X)$ is transformed to
+\[
+\supp(f_Y) = \{g(x) : x\in\supp(f_X)\} =\{-\log/\lambda : x\in[0,1]\} = [0,\infty).
+\]
+The transformation is strictly decreasing over $\supp(f_X)$, and its inverse is $g^{-1}(y) = e^{-\lambda y}$ over $\supp(f_Y)$. Hence, by Theorem~\ref{thm:transf_cdf},
+\[
+F_Y(y) 
+	= 1 - F_X\big[g^{-1}(y)\big]
+	= 1 - F_X(e^{-\lambda y})
+	= 1 - e^{-\lambda y} \quad\text{for}\quad y\geq 0.
+\]
+This is the CDF of the $\text{Exponential}(\lambda)$ distribution (where $\lambda$ is a rate parameter).
+\end{solution}
+\end{example}
+
+%-----------------------------
+\subsection{Transformations of PDFs}
+
+\begin{theorem}\label{thm:transf_pdfs}
+If $g:\R\to\R$ is one-to-one over $\supp(f_X)$ the PDF of $Y=g(X)$ is
+\[
+f_Y(y) = f_X\big[g^{-1}(y)\big]\left|\frac{d}{dy}g^{-1}(y)\right| %\quad\text{for all}\quad y\in \supp(f_Y).
+\]
+\end{theorem}
+
+\begin{proof}
+For clarity of notation, let $h(y)$ denote the inverse function $g^{-1}(y)$.
+\ben
+\it If $g$ is increasing then $F_Y(y) = F_X\big[g^{-1}(y)\big]$, so by the chain rule (and using the fact that $h$ is also increasing),
+\begin{align*}
+f_Y(y)
+	= \frac{d}{dy} F_Y(y)
+	& = \frac{d}{dy} F_X\big[h(y)\big] \\
+	& = \frac{d}{dh(y)} F_X\big[h(y)\big]\cdot \frac{dh(y)}{dy} \\
+	& = f_X\big[h(y)\big]\left|\frac{dh(y)}{dy}\right|, \text{\qquad\qquad because } \frac{dh(y)}{dy}>0\text{ over $\supp(f_Y)$.}
+\end{align*}
+
+\it If $g$ decreasing, $F_Y(y) = 1 - F_X\big[g^{-1}(y)\big]$, so by the chain rule  (and using the fact that $h$ is also decreasing),
+\begin{align*}
+f_Y(y)
+	= \frac{d}{dy} F_Y(y)
+	& = \frac{d}{dy} \big[1 - F_X[h(y)]\big] \\
+	& = 0 - \frac{d}{dh(y)} F_X\big[h(y)\big]\cdot \frac{dh(y)}{dy} \\
+	& = - f_X\big[h(y)\big] \frac{dh(y)}{dy} \\
+	& = f_X\big[h(y)\big]\left|\frac{dh(y)}{dy}\right|, \text{\qquad\qquad because} \frac{dh(y)}{dy}<0\text{ over $\supp(f_Y)$.}
+\end{align*}
+\een
+\end{proof}
+
+% remark
+\begin{remark}
+The term $\left|\frac{d}{dy}g^{-1}(y)\right|$ in Theorem~\ref{thm:transf_pdfs} is a \emph{scale factor}, which ensures that $f_Y$ integrates to one.
+\end{remark}
+
+\begin{example}
+Let $X$ be a continuous random variable with the following PDF,
+\[
+f_X(x) = \begin{cases}
+	1/x^2	& \text{for $x > 1$,} \\
+	0		& \text{otherwise.}
+\end{cases}
+\]
+Find the PDF of $Y=1/X$.
+\end{example}
+
+\begin{solution}
+Let $g(x) = 1/x$. Since $\supp(f_X)=[x,\infty)$, the support of $f_Y$ is 
+\[
+\supp(f_Y) = \{g(x): x\in\supp(f_X)\} = \{1/x :x\in[0,\infty)\} = [0,1].
+\]
+The transformation is one-to-one over $\supp(f_X)$, and its inverse is $g^{-1}(y) = 1/y$ over $\supp(f_Y)$. Hence, by Theorem~\ref{thm:transf_pdfs}, the PDF of $Y$ is given by
+\begin{align*}
+f_Y(y)
+	& = f_X\big[g^{-1}(y)\big]\left|\frac{d}{dy}g^{-1}(y)\right| \\
+	& = f_X\left(\frac{1}{y}\right)\left|\frac{d}{dy}\left(\frac{1}{y}\right)\right| \\
+	& = y^2 \left|-\frac{1}{y^2}\right| 
+	= \begin{cases}
+		1	& \text{for } 0<y<1 \\
+		0	& \text{otherwise.}
+	\end{cases}
+\end{align*}
+Thus $Y\sim\text{Uniform}(0,1)$.
+\end{solution}
+
+
+%-----------------------------
+\subsection{The probability integral transform}
+
+What happens when a random variable is transformed using its own CDF? 
+
+\begin{theorem}%[The Probability Integral Transform]
+Let $X$ be a continuous random variable, and suppose that the inverse of its CDF exists for all $x\in\R$. Then the random variable $U=F(X)$ has the uniform distribution on $[0,1]$.
+\end{theorem}
+
+\begin{proof}
+Because $F(x)=P(X\leq x)$ is a CDF we know that $F(x)\in [0,1]$ for all $x\in\R$. In particular, $\prob(U<0)=0$ and $\prob(U>1)=0$. For $u\in[0,1]$, because the inverse $F^{-1}$ exists for all $x\in\R$ we have that
+\begin{align*}
+F_U(u) = P(U\leq u) 
+	& = P\big(F(X)\leq u\big) \\
+	& = P\big(X\leq F^{-1}(u)\big) \\
+	& = F\big(F^{-1}(u)\big) \\
+	& = u,
+\end{align*}
+which is the CDF of the continuous uniform distribution on $[0,1]$.
+\end{proof}
+
+% corollary
+\begin{corollary}
+Let $F$ be a CDF whose inverse exists for all $x\in\R$, and let $U\sim\text{Uniform}[0,1]$. Then $F$ is the CDF of the random variable $X = F^{-1}(U)$.
+\end{corollary}
+
+Although it is difficult to generate truly random numbers, there are fast deterministic algorithms which generate numbers that are approximately random - such numbers are called \emph{pseudo-random numbers}. Many such algorithms can generate numbers that are approximately uniformly distributed in $[0,1]$. Using the probability integral transform we can convert these into pseudo-random numbers from other continuous distributions.
+
+\ben
+\it First we obtain a uniformly distributed pseudo-random number $u\in [0,1]$.
+\it The number $x = F^{-1}(u)$ is then a pseudo-random number from the distribution $F$.
+\een
+
+% example: 
+\begin{example}
+Given an algorithm which generates uniformly distributed pseudo-random numbers in the range $[0,1]$, show how to obtain a pseudo-random number from the exponential distribution having rate parameter $2$.
+\begin{solution}
+The CDF of the exponential distribution with rate parameter $2$ is
+\[
+F(x) = \begin{cases}
+	1 - e^{-2x}	& x>0 \\
+	0			& \text{otherwise.}
+\end{cases}	
+\]
+First we invert $F$:
+\begin{align*}
+u = 1 - e^{-2x} 
+	& \iff e^{-2x} = 1-u \\
+	& \iff e^x = \frac{1}{\sqrt{1-u}} \\
+	& \iff x = \log\left(\frac{1}{\sqrt{1-u}}\right)
+\end{align*}
+Then we generate a pseudo-random number $u$ from the $\text{Uniform}[0,1]$ distribution and
+\[
+x = \log\left(\frac{1}{\sqrt{1-u}}\right)
+\]
+which is a pseudo-random number from the $\text{Exponential}(\lambda)$ distribution.
+\end{solution}
+\end{example}
+
+
+\begin{exercise}
+\begin{questions}
+
+\question % transf
+Let $X\sim\text{Uniform}(-1,1)$. Find the CDF and PDF of $X^2$.
+
+\begin{answer}
+The PDF of $X$ is 
+\[
+f_X(x) = \left\{\begin{array}{ll}
+	1/2	& -1\leq x\leq 1 \\
+	0	& \text{otherwise}
+\end{array}\right.	
+\]	
+For $x\in[-1,1]$, 
+\[
+\prob(X\leq x) 
+	= \int_{-\infty}^x f_X(t)\,dt
+	= \int_{-1}^x \frac{1}{2}\,dt
+	= \left[\frac{t}{2}\right]_{-1}^x
+	= \frac{1}{2}(x+1).
+\]
+The CDF of $X$ is:
+\[
+F(x) = \left\{\begin{array}{ll}
+	0				 	& x < -1, \\
+	\frac{1}{2}(x+1) 	& -1\leq x\leq 1, \\
+	1					& x > 1.
+\end{array}\right.	
+\]
+Let $Y=X^2$. For $0\leq y\leq 1$ we have
+\begin{align*}
+\prob(Y\leq y)
+	= \prob(X^2\leq y)
+	& = \prob(-\sqrt{y}\leq X\leq\sqrt{y}) \\
+	& = \prob(X\leq\sqrt{y}) - \prob(X\leq-\sqrt{y}) \\
+	& = \sqrt{y}.
+\end{align*}
+Hence the CDF of $Y$ is
+\[
+F_Y(y) = \left\{\begin{array}{ll}
+	0		 	& y < 0, \\
+	\sqrt{y} 	& 0\leq y\leq 1, \\
+	1			& y > 1.
+\end{array}\right.	
+\]
+and the PDF of $Y$ is
+\[
+f_Y(y) = \left\{\begin{array}{ll}
+\frac{1}{2}y^{-1/2}	& 0\leq y\leq 1, \\
+0					& \text{otherwise}.
+\end{array}\right.	
+\]
+\end{answer}
+
+\question % transf
+Suppose that $X$ has the exponential distribution with rate parameter $\lambda>0$. (The PDF of $X$ is $f(x) = \lambda\exp(-\lambda x)$ for $x \geq 0$ and zero otherwise.)
+%\[
+%f(x) = \left\{\begin{array}{ll}
+%	\lambda\exp(-\lambda x)	& \text{for } x \geq 0, \\
+%	0						& \text{otherwise.}
+%\end{array}\right.
+%\]
+Find the PDFs of $Y=X^2$ and $Z=e^X$.
+
+\begin{answer}
+\ben
+\it % << (i)
+The transformation $g(x)=x^2$ is one-to-one and increasing over $[0,\infty)$; its inverse function is
+\[
+g^{-1}(y) =  \sqrt{y},\text{\quad which has first derivative \quad} \frac{d}{dy}g^{-1}(y) = \frac{1}{2\sqrt{y}}.
+\]
+
+Since $\supp(f_X)=[0,\infty)$ it follows immediately that $\supp(f_Y)=[0,\infty)$.
+\par
+For $y>0$, 
+\[
+f_Y(y) 
+	= f_X\big[g^{-1}(y)\big]\left|\frac{d}{dy}g^{-1}(y)\right| 
+	= \lambda\exp(\lambda\sqrt{y}) \left| \frac{1}{2\sqrt{y}}\right|
+	= \frac{\lambda}{2\sqrt{y}}\exp(-\lambda\sqrt{y}).
+\]
+Hence the PDF of $Y=X^2$ is given by
+\[
+f_Y(y) = \left\{\begin{array}{ll}
+	\displaystyle\frac{\lambda}{2\sqrt{y}}\exp(-\lambda\sqrt{y}) & y\geq 0, \\[2ex]
+	0 & \text{otherwise}.
+\end{array}\right.
+\]
+
+\it % << (ii)
+The transformation $g(x)=e^x$ is one-to-one and increasing over $[0,\infty)$; its inverse function is
+\[
+g^{-1}(z) = \log y \text{\quad and\quad} \frac{d}{dy}g^{-1}(z) = \frac{1}{z}.
+\]
+
+Since $\supp(f_X)=[0,\infty)$ it follows immediately that $\supp(f_Z)=[1,\infty)$.
+\par
+For $z\geq 1$,
+\[
+f_Z(z) 
+	= f_X\big[g^{-1}(z)\big]\left|\frac{d}{dz}g^{-1}(z)\right|
+	= \lambda\exp(-\lambda\log z)\left|\frac{1}{z}\right| 
+	= \lambda z^{-(\lambda+1)}.
+\]
+Hence the PDF of $Z=e^X$ is given by
+\[
+f_Z(z) = \left\{\begin{array}{ll}
+	\lambda z^{-(\lambda+1)} & z\geq 1, \\
+	0 & \text{otherwise}.
+\end{array}\right.
+\]
+\een
+\end{answer}
+
+\question % transf
+A continuous random variable $U$ has PDF
+$f(u) = 12u^{2}(1-u)$ for $0 < u < 1$ and zero otherwise.
+%\[
+%f(u) = \left\{\begin{array}{ll}
+%	12u^{2}(1-u) 	& \text{for}\quad 0 < u < 1, \\
+%	0				& \text{otherwise.}
+%\end{array}\right.	
+%\]
+Find the PDF of $V = (1 - U)^{2}$.
+\begin{answer}
+\bit
+\it The transformation $g(u) = (1 - u)^{2}$ is one-to-one and decreasing over $[0,1]$.  
+\it The inverse transformation is $g^{-1}(v) = 1 - v^{1/2}$, for which $\displaystyle \frac{d}{dv}g^{-1}(v) = -\frac{1}{2v^{1/2}}$.
+\it Since $\supp(f_U)=(0,1)$ it follows that $\supp(f_V)=(0,1)$. 
+\eit
+Hence for $0<v<1$ the PDF of $V$ is 
+\begin{align*}
+f_V(v)
+	& = f_U\big[g^{-1}(v)\big]\left|\frac{d}{dv}g^{-1}(v)\right| \\
+	& = 12(1-v^{1/2})^2 v^{1/2}\left|-\frac{1}{2v^{1/2}}\right| \\
+	& = 6(1-v^{1/2})^2,
+\end{align*}
+and zero otherwise. 
+\end{answer}
+
+\question % probability integral transform
+The CDF of a random variable $X$ is $F(x) = 1-1/x^3$ for $x\geq 1$ and zero otherwise.
+%\[
+%F_X(x) = \left\{\begin{array}{ll}
+%	\displaystyle 1-\frac{1}{x^3}		& \text{for $x\geq 1$,} \\
+%	0								& \text{otherwise.}
+%\end{array}\right.
+%\]
+Find the CDF of the random variable $Y=1/X$, then describe how a pseudo-random number from the distribution of $Y$ can be obtained using an algorithm that generates uniformly distributed pseudo-random numbers in the range $[0,1]$.
+\begin{answer}
+Let $g(x) = 1/x$ denote the transformation. 
+\bit
+\it $\supp(f_X) = [1,\infty] \Rightarrow\ \supp(f_Y) = [0,1]$.
+\it The inverse transformation: $g^{-1}(y) = 1/y$.
+\eit
+\par
+Because $g(x)$ is a decreasing function over $\supp(f_X)$,
+\[
+F_Y(y) 
+	= 1 - F_X\big[g^{-1}(y)\big]
+	= 1 - F_X\left(\frac{1}{y}\right)
+	= \left\{\begin{array}{ll}
+		0	& y < 0 \\
+		y^3	& 0\leq y\leq 1 \\
+		1	& y > 1.
+	\end{array}\right.
+\]
+For the second part we use the fact that $F_Y(Y)\sim\text{Uniform}(0,1)$. First we invert $F_Y$ by letting $u=F_Y(y)$ from which we obtain.
+\[
+y = F_Y^{-1}(u) = u^{1/3}.
+\]
+Next we obtain a pseudo-random number $u$ from the $\text{Uniform}[0,1]$ distribution, then compute
+\[
+y = u^{1/3},
+\]
+which is a pseudo-random number from the distribution of $Y$.
+\end{answer}
+
+\end{questions}
+\end{exercise}

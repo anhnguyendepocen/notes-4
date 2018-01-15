@@ -1,0 +1,859 @@
+% !TEX root = main.tex
+%=====================================================================
+\chapter{Bayesian Inference}\label{chap:randomprocesses}
+
+%----------------------------------------------------------------------
+%\section{The Bayesian approach}
+%----------------------------------------------------------------------
+
+So far we have looked at \emph{frequentist inference}, which assumes that an unknown parameter $\theta$ has a fixed (but unknown) value. 
+\bit
+\it The PMF/PDF of an observation is written as $f(x;\theta)$.
+\it The likelihood function is written as $L(\theta;x)$.
+\it Estimators such as the MME and MLE claim to estimate the `true' value of $\theta$.
+\eit
+
+For \emph{Bayesian inference}, we instead think of an unknown parameter $\theta$ as a \emph{random variable}.
+\bit
+\it The PMF/PDF of an observation is written as $f(x|\theta)$.
+\it The likelihood function of is written as $L(\theta|x)$.
+\it We seek to estimate the distribution of $\theta$.
+\eit
+
+%----------------------------------------------------------------------
+\section{Bayes' theorem}
+%----------------------------------------------------------------------
+
+% events
+If the events $A_1,A_2,\ldots$ form a partition of event $B$, Bayes' theorem states that
+\[
+\prob(A_j|B) 
+%	= \frac{\prob(B|A_j)\prob(A_j)}{\prob(B)} 
+	= \frac{\prob(B|A_j)\prob(A_j)}{\sum_k \prob(B|A_k)\prob(A_k)}.
+\]
+
+% discrete
+Let $X$ and $Y$ be discrete random variables taking values in the sets $\{x_1,x_2,\ldots\}$ and $\{y_1,y_2,\ldots\}$ respectively. Because the events $\{Y=y_1\},\{Y=y_2\},\ldots$ form a partition of the event $\{X=x_i\}$, we have % so applying Bayes' theorem we obtain
+\[
+\prob(Y=y_j|X=x_i) 
+%= \frac{\prob(X=x_i|Y=y_j)\prob(Y=y_j)}{\prob(X=x_i)}
+= \frac{\prob(X=x_i|Y=y_j)\prob(Y=y_j)}{\sum_k \prob(X=x_i|Y=y_k)\prob(Y=y_k)}.
+\]
+To avoid cluttering the notation with subscripts, we write this as
+\[
+\prob(Y=y|X=x) 
+%= \frac{\prob(X=x|Y=y)\prob(Y=y)}{\prob(X=x)}
+= \frac{\prob(X=x|Y=y)\prob(Y=y)}{\sum_y \prob(X=x|Y=y)\prob(Y=y)},
+\]
+where the sum in the denominator is taken over the range of $Y$.
+In terms of PMFs, this becomes
+\[
+f_{Y|X}(y|x) 
+%= \frac{f_{X|Y}(x|y)f_Y(y)}{f_X(x)}
+= \frac{f_{X|Y}(x|y)f_Y(y)}{\sum_y f_{X|Y}(x|y)f_Y(y)}.
+\]
+
+% continuous
+This extends directly to the case of continuous random variables, the only difference being that the denominator (which is the marginal PDF of $X$) is expressed by an integral:
+\[
+f_{Y|X}(y|x) 
+%= \frac{f_{X|Y}(x|y)f_Y(y)}{f_X(x)}
+= \frac{f_{X|Y}(x|y)f_Y(y)}{\int f_{X|Y}(x|y)f_Y(y)\,dy}.
+\]
+
+% parameter estimation
+For Bayesian inference, the unknown parameter $\theta$ takes the role of $Y$ in the above formulation. To simplify the notation we denote the PMF/PDF of $\theta$ by the symbol $\pi$: 
+\[
+\pi(\theta|\mathbf{x}) = \left\{\begin{array}{ll}
+	\displaystyle\frac{f(\mathbf{x}|\theta)\pi(\theta)}{\sum_{\theta}f(\mathbf{x}|\theta)\pi(\theta)} 			& \text{\quad ($\theta$ discrete)}, \\[5ex]
+	\displaystyle\frac{f(\mathbf{x}|\theta)\pi(\theta)}{\int f(\mathbf{x}|\theta)\pi(\theta)\,d\theta} 	& \text{\quad ($\theta$ continuous)}.
+\end{array}\right.
+\]
+
+This can also be expressed in terms of likelihood functions,
+\[
+\pi(\theta|\mathbf{x}) = \left\{\begin{array}{ll}
+	\displaystyle\frac{L(\theta|\mathbf{x})\pi(\theta)}{\sum_{\theta}L(\theta|\mathbf{x})\pi(\theta)} 			& \text{\quad ($\theta$ discrete)}, \\[5ex]
+	\displaystyle\frac{L(\theta|\mathbf{x})\pi(\theta)}{\int L(\theta|\mathbf{x})\pi(\theta)\,d\theta} 	& \text{\quad ($\theta$ continuous)}.
+\end{array}\right.
+\]
+
+%----------------------------------------------------------------------
+\section{The prior and posterior distributions}
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+\subsection*{The prior distribution}
+%----------------------------------------------------------------------
+% prior
+Suppose we have an initial estimate for distribution of $\theta$, perhaps obtained as a result of some preliminary experiments. 
+\bit
+\it This is called the \emph{prior distribution} of $\theta$, which we denote by $\pi_0(\theta)$.
+\eit
+
+An initial point estimate of $\theta$ can be computed from the prior distribution, for example
+\bit
+\it by the \emph{mean} of the prior distribution: $\hat{\theta} = \expe\big[\pi_0(\theta)\big]$ or
+\it by the \emph{mode} of the prior distribution: $\hat{\theta} = \argmax_{\theta}\big[\pi_0(\theta)\big]$.
+\eit
+
+If we have no prior knowledge, we should initially consider every value of $\theta$ to be equally likely. For example, if $\theta$ is continuous and all we know is that $\theta$ belongs to some interval $[a,b]$, we should adopt the \emph{uniform} distribution over $[a,b]$ as the prior distribution of $\theta$,
+\[
+\pi_0(\theta) = \left\{\begin{array}{ll}
+	1/(b-a)	& \text{if } a\leq\theta\leq b, \\
+	0	& \text{otherwise.}
+\end{array}\right.
+\]
+In this context, the uniform distribution is often called the \emph{na\"{\i}ve} or \emph{non-informative} prior.
+
+%----------------------------------------------------------------------
+\subsection*{The posterior distribution}
+%----------------------------------------------------------------------
+% posterior
+Suppose we now obtain some sample data $\mathbf{x}=(x_1,\ldots,x_n)$. 
+\bit
+\it Bayes' theorem can be used to combine the prior distribution with the data.
+\it This yields an updated PMF/PDF $\pi_1(\theta)$, called the \emph{posterior distribution} of $\theta$.
+\eit
+
+By Bayes' theorem, 
+%\[
+%\pi_1(\theta|\mathbf{x}) = \left\{\begin{array}{ll}
+%	\displaystyle\frac{f(\mathbf{x}|\theta)\pi_0(\theta)}{\sum_{\theta}f(\mathbf{x}|\theta)\pi_0(\theta)} 			& \text{\quad ($\theta$ discrete)}, \\[3ex]
+%	\displaystyle\frac{f(\mathbf{x}|\theta)\pi_0(\theta)}{\int_{\theta}f(\mathbf{x}|\theta)\pi_0(\theta)\,d\theta} 	& \text{\quad ($\theta$ continuous)}.
+%\end{array}\right.
+%\]
+%
+%This can also be expressed in terms of likelihood functions,
+%\[
+%\pi_1(\theta|\mathbf{x}) = \left\{\begin{array}{ll}
+%	\displaystyle\frac{L(\theta|\mathbf{x})\pi_0(\theta)}{\sum_{\theta}L(\theta|\mathbf{x})\pi_0(\theta)} 			& \text{\quad ($\theta$ discrete)}, \\[3ex]
+%	\displaystyle\frac{L(\theta|\mathbf{x})\pi_0(\theta)}{\int_{\theta}L(\theta|\mathbf{x})\pi_0(\theta)\,d\theta} 	& \text{\quad ($\theta$ continuous)}.
+%\end{array}\right.
+%\]
+
+\[
+\pi_1(\theta|\mathbf{x}) 
+	= \frac{f(\mathbf{x}|\theta)\pi_0(\theta)}{\sum_{\theta}f(\mathbf{x}|\theta)\pi_0(\theta)}
+\qquad\text{or}\qquad
+\pi_1(\theta|\mathbf{x}) 
+	= \frac{f(\mathbf{x}|\theta)\pi_0(\theta)}{\int f(\mathbf{x}|\theta)\pi_0(\theta)\,d\theta}.
+\]
+In terms of likelihood functions,
+\[
+\pi_1(\theta|\mathbf{x}) 
+	= \frac{L(\theta|\mathbf{x})\pi_0(\theta)}{\sum_{\theta}L(\theta|\mathbf{x})\pi_0(\theta)} 		
+\qquad\text{or}\qquad	
+\pi_1(\theta|\mathbf{x}) 
+	= \frac{L(\theta|\mathbf{x})\pi_0(\theta)}{\int L(\theta|\mathbf{x})\pi_0(\theta)\,d\theta}.
+\]
+
+Having obtained the posterior distribution, we can compute an updated estimate of $\theta$, for example
+\bit
+\it by the mean of the posterior distribution: $\hat{\theta} = \expe\big[\pi_1(\theta)\big]$, or
+\it by the mode of the posterior distribution: $\hat{\theta} = \argmax_{\theta}\big[\pi_1(\theta)\big]$.
+\eit
+
+% defn: MAP estimator
+\begin{definition}
+The mode of the posterior is called the \emph{maximum a-posteriori} or \emph{MAP} estimator of $\theta$.
+\end{definition}
+
+% remark
+\begin{remark}
+%The posterior distribution is
+%\[
+%\pi_1(\theta|\mathbf{x}) = 
+%\displaystyle\frac{L(\theta|\mathbf{x})\pi_0(\theta)}{\sum_{\theta}L(\theta|\mathbf{x})\pi_0(\theta)}
+%\text{\quad or\quad}
+%\pi_1(\theta|\mathbf{x}) =
+%\displaystyle\frac{L(\theta|\mathbf{x})\pi_0(\theta)}{\int_{\theta}L(\theta|\mathbf{x})\pi_0(\theta)\,d\theta}
+%\]
+The denominator of the posterior depends only on $\mathbf{x}$, so the posterior is proportional to the likelihood times the prior:
+%\begin{align*}
+\[
+\pi_1(\theta|\mathbf{x}) 	\propto L(\theta|\mathbf{x})\pi_0(\theta),
+%\qquad\text{or}\qquad
+%\text{"posterior}				\propto \text{likelihood}\times\text{prior"}.
+\]
+The MAP estimator is the value of $\theta$ that maximizes the numerator $L(\theta|\mathbf{x})\pi_0(\theta)$ of the posterior.
+\bit 
+\it Note that when $\pi_0$ is the uniform distribution, the MAP estimator is just the MLE.
+\eit
+To compute the mean of $\pi_1(\theta|\mathbf{x})$ we also need to compute the denominator. This is not always easy, which is why the MAP estimator is more widely used in practical applications.
+\end{remark}
+
+%% example
+%\begin{example}\label{ex:biscuits}
+%We have three tins of biscuits. The first tin contains $30$ chocolate and $10$ plain biscuits, the second tin contains $20$ chocolate and $20$ plain biscuits, and the third tin contains $10$ chocolate and $30$ plain biscuits. A tin is chosen at random, and a biscuit is chosen at random from the tin.
+%\ben
+%\it If a chocolate biscuit is observed, estimate which tin was chosen.
+%\een
+%The experiment is repeated, but this time two biscuits are chosen at random from the tin.
+%\ben\stepcounter{enumi}
+%\it If two chocolate biscuits are observed, estimate which tin was chosen.
+%\it If one chocolate biscuit and one plain biscuit are observed, estimate which tin was chosen.
+%\een
+%\end{example}
+%
+%\begin{solution}
+%\ben
+%\it % one chocolate
+%Let $\Theta = \{\theta_1,\theta_2,\theta_3\}$ where the value $\theta_k$ indicates that tin $k$ was chosen ($k=1,2,3$). Before observing the biscuit, it is reasonable to suppose that each tin is equally likely to be chosen. Thus we adopt the \emph{uniform} prior distribution for $\theta$:
+%\[
+%\pi_0(\theta) = \frac{1}{3} \quad\text{for all}\quad \theta\in\Theta.
+%\]
+%Let $A$ be the event that a chocolate biscuit was observed. Then
+%\[
+%\prob(A|\theta_1)=3/4,\qquad \prob(A|\theta_2)=1/2,\qquad \prob(A|\theta_3)=1/4,
+%\]
+%or equivalently
+%\[
+%L(\theta_1| A)=3/4,\qquad L(\theta_2| A)=1/2,\qquad L(\theta_3| A)=1/4.
+%\]
+%By Bayes' theorem, the posterior distribution is
+%\[
+%\pi_1(\theta_k|A) = \frac{L(\theta_k| A)\pi_0(\theta_k)}{\sum_{k=1}^3 L(\theta_k| A)\pi_0(\theta_k)}
+%\text{\quad\qquad ($k=1,2,3$).}
+%\]
+%For the first tin,
+%\[
+%\prob(\theta_1|A) = \frac{3/4\times 1/3}{(3/4\times 1/2) + (1/2\times 1/3) + (1/4\times 1/3)} = \frac{1}{2}.
+%\]
+%Similar calculations for the second and third tins yield the following posterior:
+%\[
+%\pi_1(\theta_1) = 1/2,\qquad \pi_1(\theta_2) = 1/3, \qquad \pi_1(\theta_3) = 1/6.
+%\]
+%The MAP estimate is $\hat{\theta}_{MAP} = \theta_1$, so our best guess is that the first tin was chosen.
+%
+% % <<
+%
+%\it % two chocolate
+%Let $B$ be the event that two chocolate biscuits are observed, 
+%\[
+%\prob(B|\theta_1)=87/156,\qquad \prob(B|\theta_2)=38/156,\qquad \prob(B|\theta_3)=9/156.
+%\]
+%If we assume the uniform prior $\pi_0$, we obtain the posterior distribution
+%\[
+%\pi_1(\theta_1|B) = 87/134,\qquad \pi_1(\theta_2|B) = 38/134, \qquad \pi_1(\theta_3|B) = 9/134.
+%\]
+%The MAP estimator again suggests that the first tin was chosen.
+%
+%\it % one chocolate, one plain
+%Let $C$ be the event that one chocolate and one plain biscuit are observed, 
+%\[
+%\prob(C|\theta_1)=60/156,\qquad \prob(C|\theta_2)=80/156,\qquad \prob(C|\theta_3)=60/156.
+%\]
+%If we assume the uniform prior $\pi_0$,
+%\[
+%\pi_1(\theta_1|C) = 3/10,\qquad \pi_1(\theta_2|C) = 4/10, \qquad \pi_1(\theta_3|C) = 3/10.
+%\]
+%This time, the MAP estimator leads us to assert that the second tin was chosen.
+%\een
+%\end{solution}
+
+
+%----------------------------------------------------------------------
+%\section{Example}
+%----------------------------------------------------------------------
+% example
+\begin{example}\label{ex:biscuits}
+Suppose we have three tins of biscuits. The first tin contains $30$ chocolate and $10$ plain biscuits, the second tin contains $20$ chocolate and $20$ plain biscuits, and the third tin contains $10$ chocolate and $30$ plain biscuits. A tin is selected at random, and a biscuit is chosen at random from the tin.
+\ben
+\it If a chocolate biscuit is chosen, estimate which tin was selected.
+\een
+The biscuit is replaced, then a biscuit is again chosen from the tin.
+\ben\stepcounter{enumi}
+\it If a chocolate biscuit is chosen, update your estimate regarding which tin was selected.
+\it If a plain biscuit is chosen, update your estimate regarding which tin was selected.
+\een
+\end{example}
+
+\begin{solution}
+Let $\Theta = \{\theta_1,\theta_2,\theta_3\}$ where the value $\theta_k$ indicates that tin $k$ was selected ($k=1,2,3$). Before the biscuit is chosen, it is reasonable to suppose that each tin is equally likely to be selected. Thus we adopt the \emph{uniform} prior distribution for $\theta$:
+\[
+\pi_0(\theta) = \frac{1}{3} \quad\text{for all}\quad \theta\in\Theta.
+\]
+
+\ben
+\it % one chocolate
+Let $A$ be the event that a chocolate biscuit is chosen. Then
+%\[
+%\prob(A|\theta_1)=3/4,\qquad \prob(A|\theta_2)=1/2,\qquad \prob(A|\theta_3)=1/4,
+%\]
+%or equivalently
+\[
+L(\theta_1| A)=3/4,\qquad L(\theta_2| A)=1/2,\qquad L(\theta_3| A)=1/4.
+\]
+Using Bayes' theorem, the posterior distribution is
+\[
+\pi_1(\theta_k|A) = \frac{L(\theta_k| A)\pi_0(\theta_k)}{\sum_{k=1}^3 L(\theta_k| A)\pi_0(\theta_k)}
+\text{\quad\qquad ($k=1,2,3$).}
+\]
+For the first tin,
+\[
+\pi_1(\theta_1|A) = \frac{3/4\times 1/3}{(3/4\times 1/3) + (1/2\times 1/3) + (1/4\times 1/3)} = \frac{1}{2}.
+\]
+Similar calculations for the second and third tins yield the following posterior distribution:
+\[
+\pi_1(\theta_1) = 1/2,\qquad \pi_1(\theta_2) = 1/3, \qquad \pi_1(\theta_3) = 1/6.
+\]
+The MAP estimate is $\hat{\theta}_{MAP} = \theta_1$, so our best guess is that the first tin was selected.
+
+ % <<
+
+\it % two chocolate
+Let $B$ be the event that the a chocolate biscuit was chosen the second time:
+\[
+L(\theta_1|B)=3/4,\qquad L(\theta_2|B)=1/2,\qquad L(\theta_3|B)=1/4.
+\]
+Using $\pi_1$ as our prior distribution, we obtain an updated posterior distribution:
+\[
+\pi_2(\theta_k|B) = \frac{L(\theta_k|B)\pi_1(\theta_k)}{\sum_{k=1}^3 L(\theta_k| B)\pi_1(\theta_k)}
+\text{\quad\qquad ($k=1,2,3$).}
+\]
+For the first tin,
+\[
+\pi_2(\theta_1|B) = \frac{3/4\times 1/2}{(3/4\times 1/2) + (1/2\times 1/3) + (1/4\times 1/6)} = \frac{9}{14}.
+\]
+Similar calculations for the second and third tins yield the following posterior:
+\[
+\pi_2(\theta_1) = 9/14,\qquad \pi_2(\theta_2) = 4/14, \qquad \pi_2(\theta_3) = 1/14.
+\]
+The MAP estimator again leads us to estimate that the first tin was selected.
+
+\it % one chocolate, one plain
+Let $C$ be the event that a plain biscuit was chosen the second time:
+\[
+L(\theta_1|C)=1/4,\qquad L(\theta_2|C)=1/2,\qquad L(\theta_3|C)=3/4.
+\]
+Again using $\pi_1$ as our prior distribution, we obtain an updated posterior:
+\[
+\pi_2(\theta_k|C) = \frac{L(\theta_k|C)\pi_1(\theta_k)}{\sum_{k=1}^3 L(\theta_k|C)\pi_1(\theta_k)}
+\text{\quad\qquad ($k=1,2,3$).}
+\]
+For the first tin,
+\[
+\pi_2(\theta_1|C) = \frac{1/4\times 1/2}{(1/4\times 1/2) + (1/2\times 1/3) + (3/4\times 1/6)} = \frac{3}{10}.
+\]
+Similar calculations for the second and third tins yield the following posterior distribution:
+\[
+\pi_2(\theta_1) = 3/10,\qquad \pi_2(\theta_2) = 4/10, \qquad \pi_2(\theta_3) = 3/10.
+\]
+This time, the MAP estimator leads us to estimate that the second tin was selected.
+\een
+\end{solution}
+
+
+%%----------------------------------------------------------------------
+%\section{The scientific method}
+%%----------------------------------------------------------------------
+%
+% remark
+\begin{remark}%[The Scientific Method]
+We can think of the biscuit tins in Example~\ref{ex:biscuits} as competing scientific hypotheses:
+\bit
+\it The probability assigned to each hypothesis indicates its \emph{relative plausibility}.
+\it We update the relative plausibility of each competing hypothesis based on \emph{observation}.
+\eit
+
+%\vspace*{2ex}
+In this way, Bayesian inference embodies the \emph{scientific method}.
+%\ben
+%\it Start with an initial set of beliefs about the relative plausibility of various hypotheses.
+%\it Collect new data by conducting experiments.
+%\it Refine the relative plausibility of the various hypotheses in the light of the new data. 
+%\it Repeat (2) and (3).
+%\een
+\end{remark}
+
+
+\begin{exercise}
+Suppose we have three coins $A$, $B$ and $C$ which have probabilities $1/4$, $1/2$ and $3/4$ respectively of showing heads. A coin is chosen at random, and tossed three times. If exactly two heads are obtained, use the maximum a-posteriori (MAP) estimator to estimate which coin was chosen.
+\begin{answer}
+First we define the parameter $\theta\in\{1,2,3\}$ such that $\{\theta=1\}$ is the event that coin $A$ is chosen, $\{\theta=2\}$ is the event that coin $B$ is chosen, and $\{\theta=3\}$ is the event that coin $C$ is chosen. We should initially assume that each coin is equally likely to be chosen, so we choose the uniform prior distribution:
+\begin{align*}
+\pi_0(1) & = \prob(\theta=1) = 1/3 \\
+\pi_0(2) & = \prob(\theta=2) = 1/3 \\
+\pi_0(3) & = \prob(\theta=3) = 1/3 
+\end{align*}
+Let $T$ be the event that exactly two heads are obtained. Then
+\begin{align*}
+\prob(T|\theta=1)	& = 3(1/4)^2(3/4) = 9/64 \\
+\prob(T|\theta=2)	& = 3(1/2)^2(1/2) = 3/8 \\
+\prob(T|\theta=3)	& = 3(1/4)(3/4)^2 = 27/64
+\end{align*}
+The denominator of the posterior is the overall probability of obtaining exactly two heads:
+\begin{align*}
+\prob(T) 	
+	& = \prob(T|\theta=1)\prob(\theta=1) + \prob(T|\theta=2)\prob(\theta=2) + \prob(T|\theta=3)\prob(\theta=3) \\
+	& = 3(1/4)^2(3/4)(1/3) + 3(1/2)^3(1/3) + 3(3/4)^2(1/4)(1/3) \\
+	& = 3/64 + 8/64 + 9/64 \\
+	& = 20/64
+\end{align*}
+Hence the posterior distribution is given by
+\[
+\pi_1(\theta) = \frac{\prob(T|\theta)\pi_0(\theta)}{\prob(T)} = 
+\]
+from which we obtain
+\begin{align*}
+\pi_1(1) & = 3/20, \\
+\pi_1(2) & = 8/20, \\
+\pi_1(3) & = 9/20.
+\end{align*}
+The MAP estimator (mode of the posterior) is $\theta=3$, which corresponds to coin $C$.
+\end{answer}
+\end{exercise}
+
+%----------------------------------------------------------------------
+\section{The binomial model}
+%----------------------------------------------------------------------
+A suitable model for estimating the distribution of a parameter in the interval $[0,1]$ is provided by the \emph{beta distribution}.
+
+% definition
+\begin{definition}\label{def:beta_distribution}
+The beta distribution with parameters $\alpha,\beta>0$ is defined by the PDF
+\[
+f(x;\alpha,\beta) = \begin{cases}
+	\displaystyle\frac{x^{\alpha-1}(1-x)^{\beta-1}}{B(\alpha,\beta)} & \text{if $0\leq x\leq 1$}, \\
+	0												& \text{otherwise,}
+\end{cases}
+\]
+where $B(\alpha,\beta)$ is the so-called \emph{beta function},
+\[
+B(\alpha,\beta) = \int_0^1 t^{\alpha-1}(1-t)^{\beta-1}\,dt,
+\]
+which is defined for all $\alpha,\beta>0$.
+\end{definition}
+
+%\begin{remark}[Special case]
+%If $X\sim\text{Beta}(1,1)$, then $X\sim\text{Uniform}(0,1)$.
+%\end{remark}
+
+% lemma
+\begin{lemma}
+Let $X\sim\text{Beta}(\alpha,\beta)$. Then $\expe(X) = \displaystyle\frac{\alpha}{\alpha+\beta}$ and $\mode(X) = \displaystyle\frac{\alpha-1}{\alpha+\beta-2}$ provided that $\alpha,\beta > 1$.
+%For $X\sim\text{Beta}(\alpha,\beta)$,
+%\[
+%\expe(X) = \frac{\alpha}{\alpha+\beta} \text{\quad and\quad} \var(Y) = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}. 
+%\]
+%and if $\alpha,\beta > 1$,
+%\[
+%\mode(X) = \frac{\alpha-1}{\alpha+\beta-2}.
+%\]
+\end{lemma}
+
+% proof
+\begin{proof}
+Exercise.
+\end{proof}
+
+% example
+\begin{example}
+Let $X\sim\text{Binomial}(n,\theta)$ where $n$ is known, but $0<\theta<1$ is unknown. 
+\ben
+\it We conduct a sequence of $n$ independent trials and observe $k$ successes. Find a suitable prior distribution for $\theta$, compute the posterior distribution, and find its mean and mode.
+\it We conduct a further sequence of $n$ independent trials, this time observing $k'$ successes. Compute an updated posterior distribution for $\theta$, and find its mean and mode.
+\een
+\end{example}
+
+% solution
+\begin{solution}
+\ben
+\it % <<< (i)
+Let $f(x|\theta)$ be the PMF of the $\text{Binomial}(n,\theta)$ distribution:
+\[
+f(x|\theta) = \binom{n}{k}\theta^x(1-\theta)^{n-x}
+\]
+
+Initially we should consider every value of $\theta$ to be equally likely. Thus we adopt the uniform prior distribution for $\theta$.
+\[
+\pi_0(\theta) = \left\{\begin{array}{ll}
+	1	& \text{if } \theta\in[0,1] \\
+	0	& \text{otherwise.}
+\end{array}\right.
+\]
+Given $k$ successes in $n$ trials, the likelihood function is
+\[
+L(\theta|k) = f(k|\theta) = \binom{n}{k}\theta^k(1-\theta)^{n-k}
+\]
+
+The posterior distribution combines the observation with the prior distribution:
+\[
+\pi_1(\theta) = \pi_1(\theta|k)	
+	= \frac{L(\theta|k)\pi_0(\theta)}{\int L(\theta|k)\pi_0(\theta)\,d\theta}
+	= \frac{\theta^k(1-\theta)^{n-k}}{\int_0^1\theta^k(1-\theta)^{n-k}\,d\theta}.
+\]
+
+We recognise $\pi_1(\theta)$ as the PDF of the $\text{Beta}(\alpha,\beta)$ distribution, with parameters 
+\[
+\alpha=k+1 \text{\quad and\quad}\beta=n-k+1.
+\]
+
+\bit
+\it The mode of $\pi_1(\theta)$ is $k/n$. This is the MAP estimator of $\theta$.
+\it Note that this co-incides with the MLE of $\theta$.
+\eit
+\bit
+\it The expected value of $\pi_1(\theta)$ is $(k+1)/(n+2)$.
+\it This is approximately equal to the MAP estimator when $k$ and $n$ are both large.
+\eit
+
+\it % <<< (ii)
+Given $k'$ successes in $n$ trials, the likelihood function is
+\[
+L(\theta|k') = f(k'|\theta) = \binom{n}{k'}\theta^{k'}(1-\theta)^{n-k'}.
+\]
+
+Using $\pi_1$ as the new prior distribution for $\theta$, the new posterior distribution $\pi_2$ is
+\[
+\pi_2(\theta) = 
+\pi_2(\theta|k,k')	
+	= \frac{L(\theta|k')\pi_1(\theta)}{\int_0^1 L(\theta|k')\pi_1(\theta)\,d\theta} 
+	= \frac{\theta^{k+k'}(1-\theta)^{2n-(k+k')}}{\int_0^1\theta^{k+k'}(1-\theta)^{2n-(k+k')}\,d\theta}.
+\]
+
+We recognise $\pi_2(\theta)$ as the PDF of the $\text{Beta}(\alpha,\beta)$ distribution, with parameters 
+\[
+\alpha=k+k'+1 \text{\quad and\quad}\beta=2n-(k+k')+1.
+\]
+
+Hence our updated MAP estimate of $\theta$ is
+\[
+\hat{\theta}_{MAP} = \frac{k+k'}{2n}.
+\]
+
+\bit
+\it If $k'<k$, the mode shifts to the left (adjusted down).
+\it If $k'>k$, the mode shifts to the right (adjusted up).
+\eit
+\een
+\end{solution}
+
+%----------------------------------------------------------------------
+\section{The exponential model}
+%----------------------------------------------------------------------
+A suitable model for estimating the distribution of a non-negative parameter $\theta\geq 0$ is provided by the \emph{gamma distribution}.
+
+% definition
+\begin{definition}\label{def:gamma_distribution}
+The \emph{gamma distribution} with parameter $\alpha,\beta>0$ is defined by the PDF
+\[
+f(x;\alpha,\beta) = \begin{cases}
+	\displaystyle\frac{\beta^{\alpha}}{\Gamma(\alpha)}\, x^{\alpha-1} e^{-\beta x} & \text{for $x>0$}, \\
+	0												& \text{otherwise.}
+\end{cases}
+\]
+where $\Gamma(\alpha)$ is the so-called \emph{gamma function},
+\[
+\Gamma(\alpha) = \int_0^{\infty} t^{\alpha-1}e^{-t}\,dt,
+\quad\text{which is defined for all $\alpha\in\R$.}
+\]
+\end{definition}
+
+%% remark
+%\begin{remark}[Special cases]
+%\bit
+%\it If $X\sim\text{Exponential}(\lambda)$, where $\lambda$ is a rate parameter, then $X\sim\text{Gamma}(1,\lambda)$.
+%\it If $X\sim\text{Chi-squared}(k)$ then $X\sim\text{Gamma}(k/2,2)$
+%\eit
+%\end{remark}
+
+% lemma
+\begin{lemma}
+Let $X\sim\text{Gamma}(\alpha,\beta)$. Then $\expe(X) = \displaystyle\frac{\alpha}{\beta}$ and $\mode(X) = \displaystyle\frac{\alpha-1}{\beta}$ provided that $\alpha > 1$.
+%\quad\text{and}\quad 
+%(2)\quad \mode(X) = \frac{\alpha-1}{\beta}
+%\text{ provided that $\alpha > 1$}.
+%\]
+\end{lemma}
+% proof
+\begin{proof}
+Exercise.
+\end{proof}
+
+% example: exponential
+\begin{example}
+Let $X\sim\text{Exponential}(\lambda)$, where $\lambda>0$ is an unknown rate parameter. Let $X_1,X_2,\ldots,X_n$ be a random sample of observations from the distribution of $X$, and suppose that we adopt the $\text{Gamma}(\alpha,\beta)$ distribution as a prior distribution for $\lambda$, where $\alpha,\beta>0$ are fixed values (perhaps estimated in some preliminary experiments). 
+
+\ben
+\it Find the mean and mode of the prior distribution.
+\it Show that the posterior of $\lambda$ is the $\text{Gamma}(\alpha+n,\beta+\sum_{i=1}^n x_i)$ distribution.
+\it Find the mean and mode of the posterior distribution.
+\een
+\end{example}
+
+% solution
+\begin{solution}
+Let $f(x|\lambda)$ be the PDF of the $\text{Exponential}(\lambda)$ distribution:
+\[
+f(x|\lambda) = \left\{\begin{array}{ll}
+	\lambda\exp(-\lambda x) & \text{for $x>0$}, \\
+	0							& \text{otherwise.}
+\end{array}\right.
+\]
+
+The PDF of the prior distribution is
+\[
+\pi_0(\lambda) = 	\frac{\beta^{\alpha}}{\Gamma(\alpha)}\,\lambda^{\alpha-1}\exp(-\beta\lambda).
+\]
+which has mean $\alpha/\beta$ and mode $(\alpha-1)/\beta$.
+
+Let $\boldx$ be a realisation of the sample. The likelihood function is
+\[
+L(\lambda|\mathbf{x}) 
+	= \prod_{i=1}^n f(x_i|\lambda)
+	= \prod_{i=1}^n \lambda\exp(-\lambda x_i)
+	= \lambda^n \exp\Big(-\lambda\textstyle\sum_{i=1}^n  x_i\Big).
+\]
+
+The PDF of the posterior distribution is
+\[
+\pi_1(\lambda|\mathbf{x})	
+	= \frac{L(\lambda|\mathbf{x})\pi_0(\lambda)}{\displaystyle\int_0^{\infty} L(\lambda|\mathbf{x})\pi_0(\lambda)\,d\lambda}.
+\]
+
+The numerator is the product of the likelihood $L(\lambda|\mathbf{x})$ and the prior $\pi_0(\lambda)$:
+\begin{align*}
+L(\lambda|\mathbf{x})\pi_0(\lambda)
+	& = \Big[\lambda^n \exp\big(-\lambda\textstyle\sum_{i=1}^n  x_i\big)\Big]\left[\displaystyle\frac{\beta^{\alpha}}{\Gamma(\alpha)}\lambda^{\alpha-1}\exp(-\beta\lambda)\right] \\[1ex]
+	& = \frac{\beta^{\alpha}}{\Gamma(\alpha)} \lambda^{\alpha+n-1}\exp\Big[-\big(\beta+\textstyle\sum_{i=1}^n x_i\big)\lambda\Big]
+\end{align*}
+
+%Notice that this resembles the PDF of the $\text{Gamma}\Big(\alpha+n,\beta+\sum_{i=1}^n x_i\Big)$ distribution.
+
+The PDF of the posterior distribution becomes
+\[
+\pi_1(\lambda|\mathbf{x})	
+	= \frac{\lambda^{\alpha+n-1}\exp\Big[-\big(\beta+\sum_{i=1}^n x_i\big)\lambda\Big]}
+		{\displaystyle\int_0^{\infty} \lambda^{\alpha+n-1}\exp\Big[-\big(\beta+\sum_{i=1}^n x_i\big)\lambda\Big]\,d\lambda}
+\]
+
+To compute the denominator, change the variable of integration to $t = -\big(\beta+\sum_{i=1}^n x_i\big)\lambda$. This yields
+\[
+\int_0^{\infty} \lambda^{\alpha+n-1}\exp\Big[-\big(\beta+\textstyle\sum_{i=1}^n x_i\big)\lambda\Big]\,d\lambda 
+	= \displaystyle\frac{\Gamma(\alpha+n)}{\big(\beta+\sum_{i=1}^n x_i\big)^{\alpha+n}}
+\]
+
+Thus the PDF of the posterior distribution is 
+\[
+\pi_1(\lambda|\mathbf{x})	
+	= \frac{\big(\beta+\sum_{i=1}^n x_i\big)^{\alpha+n}}{\Gamma(\alpha+n)}
+	\lambda^{\alpha+n-1}\exp\Big[-\big(\beta+\sum_{i=1}^n x_i\big)\lambda\Big]
+\]
+which is the PDF of the $\text{Gamma}\Big(\alpha+n,\beta+\sum_{i=1}^n x_i\Big)$ distribution.
+
+ % << 
+
+The mean and mode of $\lambda\sim\text{Gamma}\Big(\alpha+n,\beta+\sum_{i=1}^n x_i\Big)$ are
+\[
+\expe(\lambda) = \frac{\alpha+n}{\beta+\sum_{i=1}^n x_i}
+\text{\quad and\quad}
+\text{Mode}(\lambda) = \frac{\alpha+n-1}{\beta+\sum_{i=1}^n x_i}
+\text{\quad respectively.}
+\]
+Hence the MAP estimator of $\lambda$ is
+\[
+\hat{\lambda}_{MAP} = \frac{\alpha+n-1}{\beta+\sum_{i=1}^n x_i}
+\]
+
+\bit
+\it When $n=0$, this is simply the mode of the prior distribution, $\text{Gamma}(\alpha,\beta)$.
+\it As $n$ increases, the influence of the prior distribution decreases.
+\it If we write $\hat{\lambda}_{MAP}$ as
+\[
+\hat{\lambda}_{MAP} 
+	= \frac{1 + \left(\frac{\alpha-1}{n}\right)}{\frac{1}{n}\sum_{i=1}^n x_i + \left(\frac{\beta}{n}\right)}.
+\]
+we see that $\hat{\lambda}_{MAP}=\bar{X}^{-1}$ as $n\to\infty$.
+\it This is the method-of-moments estimator (MME) of $\lambda$, which is based entirely on the data and takes no account of the prior distribution.
+\eit
+\end{solution}
+
+%----------------------------------------
+\begin{exercise}
+\begin{questions}
+
+\question 
+Let $X\sim\text{Geometric}(\theta)$ where $0<\theta<1$ is unknown. 
+\begin{parts}
+\part % << (i)
+A single experiment yields the observation $k$. Find a suitable prior distribution for $\theta$, compute the corresponding posterior distribution, and find the MAP estimator of $\theta$ for this posterior.
+\begin{answer}
+Let $f(x|\theta)$ be the PMF of the $\text{Geometric}(\theta)$ distribution:
+\[
+f(x|\theta) = \theta^x(1-\theta)^{n-x}
+\]
+Without any information about $\theta$, we should choose the \emph{na\"{\i}ve} prior:
+\[
+\pi_0(\theta) = \begin{cases}
+	1	& \text{if $0\leq\theta\leq 1$,} \\
+	0	& \text{otherwise.}
+\end{cases}
+\]
+For the observation $X=k$, the likelihood function is
+\[
+L(\theta|k) = f(k|\theta) = \theta(1-\theta)^{k-1}
+\]
+The posterior distribution is:
+\[
+\pi_1(\theta|k)	
+	= \frac{L(\theta|k)\pi_0(\theta)}{\int L(\theta|k)\pi_0(\theta)\,d\theta}
+	= \frac{\theta(1-\theta)^{k-1}}{\int_0^1\theta(1-\theta)^{k-1}\,d\theta}.
+\]
+We recognise this as the PDF of the $\text{Beta}(\alpha,\beta)$ distribution, with parameters $\alpha=2$ and $\beta=k$. The mode of the $\text{Beta}(\alpha,\beta)$ distribution is $(\alpha-1)/(\alpha+\beta-2)$, so the MAP estimator is
+\[
+\hat{\theta}_{MAP} = \frac{1}{k}.
+\]
+\end{answer}
+\part % << (ii)
+A second experiment yields the observation $k'$. Compute an updated posterior distribution for $\theta$, and find a new MAP estimator for $\theta$.
+\begin{answer}
+For the observation $X=k'$, the likelihood function is
+\[
+L(\theta|k') = f(k'|\theta) = \theta(1-\theta)^{k'-1}
+\]
+Using $\pi_1$ as the new prior distribution for $\theta$, the new posterior distribution $\pi_2$ is
+\[
+\pi_2(\theta|k,k')	
+	= \frac{L(\theta|k')\pi_1(\theta)}{\int_0^1 L(\theta|k')\pi_1(\theta)\,d\theta} 
+	= \frac{\theta^2(1-\theta)^{k+k'-2}}{\int_0^1\theta^2(1-\theta)^{k+k'-2}\,d\theta}.
+\]
+which we recognise as the PDF of the $\text{Beta}(\alpha,\beta)$ distribution, with parameters $\alpha=3$ and $\beta=k+k'-1$. Hence the new MAP estimator is
+\[
+\hat{\theta}_{MAP} = \frac{2}{k+k'}.
+\]
+\end{answer}
+\end{parts}
+
+\question 
+Let $X\sim\text{Poisson}(\lambda)$, where $\lambda>0$ is unknown, and let $X_1,X_2,\ldots,X_n$ be a random sample of observations from the distribution of $X$. Suppose we adopt the $\text{Gamma}(\alpha,\beta)$ distribution as a prior distribution for $\lambda$, where $\alpha,\beta>0$ are fixed values.  
+\begin{parts}
+\part % << (i)
+Show that the MAP estimator of $\lambda$ is given by
+\[
+\hat{\lambda}_{MAP} = \frac{\alpha-1+\sum_{i=1}^n X_i}{n+\beta}
+\]
+\begin{answer}
+Let $f(x|\lambda)$ be the PMF of the $\text{Poisson}(\lambda)$ distribution:
+\[
+f(x|\lambda) = \begin{cases}
+	\frac{\lambda^{x}e^{-\lambda}}{x!} & \text{for $x=0,1,2,\ldots$}, \\
+	0							& \text{otherwise.}
+\end{cases}
+\]
+The PDF of the prior distribution is
+\[
+\pi_0(\lambda) = \frac{\beta^{\alpha}}{\Gamma(\alpha)}\,\lambda^{\alpha-1}\exp(-\beta\lambda).
+\]
+which has mean $\alpha/\beta$ and mode $(\alpha-1)/\beta$.
+
+Let $\boldx=(x_1,x_2,\ldots,x_n)$ be a realisation of the sample. The likelihood function is
+\[
+L(\lambda|\mathbf{x}) 
+	= \prod_{i=1}^n f(x_i|\lambda)
+	= \prod_{i=1}^n \frac{\lambda^{x_i}e^{-\lambda}}{x_i!}
+	= \lambda^{\sum x_i} e^{-n} \prod_{i=1}^n \frac{1}{x_i!}
+\]
+The PDF of the posterior distribution is
+\[
+\pi_1(\lambda|\mathbf{x})	
+	= \frac{L(\lambda|\mathbf{x})\pi_0(\lambda)}{\int_0^{\infty} L(\lambda|\mathbf{x})\pi_0(\lambda)\,d\lambda}.
+\]
+To find the MAP estimator, we need to find the value of $\lambda$ that maximises the numerator:
+\[
+L(\lambda|\mathbf{x})\pi_0(\lambda)
+	= c\lambda^{(\alpha-1+\sum x_i)} e^{-(n+\beta)\lambda}
+	\quad\text{where}\quad
+	c = \left(\prod_{i=1}^n \frac{1}{x_i!}\right) \frac{\beta^\alpha}{\Gamma(\alpha)}
+\]
+Let $g(\lambda)=\lambda^{\alpha-1+\sum x_i} e^{-(n+\beta)\lambda}$. Then
+\[
+g'(\lambda) = \lambda^{(\alpha-2+\sum x_i)} e^{-(n+\beta)\lambda}\left[(\alpha-1+\sum _{i=1}^n x_i) - \lambda(n+\beta)\right]
+\]
+Setting $g'(\lambda)$ to zero and solving for $\lambda$, we obtain the MAP estimator
+\[
+\hat{\lambda}_{MAP} = \frac{\alpha-1+\sum_{i=1}^n X_i}{n+\beta}
+\]
+as required.
+\end{answer}
+\part % << (ii)
+Comment on the limiting cases (i) $n=0$ and (ii) $n\to\infty$.
+\begin{answer}
+\bit
+\it When $n=0$, $\hat{\lambda}_{MAP}=(\alpha-1)/\beta$ is the mode of the prior distribution.
+\it When $n\to\infty$, 
+\[
+\hat{\lambda}_{MAP}
+	= \frac{\frac{\alpha-1}{n}+\frac{1}{n}\sum_{i=1}^n X_i}{1+\frac{\beta}{n}}
+	\to \frac{1}{n}\sum_{i=1}^n X_i
+\]
+As the sample size increases, the effect of the prior decreases, and the MAP estimator approaches the sample mean in the limit as $n\to\infty$.
+\eit
+\end{answer}
+\end{parts}
+
+\question 
+Let $X_1,\ldots,X_n$ be a random sample from the $N(\mu,\sigma^2)$ distribution, where the mean $\mu$ is unknown but the variance $\sigma^2$ is known. Suppose we adopt the $N(\mu_0,\sigma_0^2)$ distribution as a prior for the unknown mean $\mu$ (where $\mu_0$ and $\sigma_0^2$ are known constants). Compute the maximum a-posteriori (MAP) estimator of $\mu$.
+
+\begin{answer}
+Let $\pi_0(\mu)$ denote the prior density function of $\mu$:
+\[
+\pi_0(\mu) = \frac{1}{\sigma_0\sqrt{2\pi}}\exp\left[-\frac{1}{2}\left(\frac{\mu-\mu_0}{\sigma_0}\right)^2\right].
+\]
+
+For the observed sequence $\mathbf{x}=(x_1,x_2,\ldots,x_n)$, the likelihood function is
+\begin{align*}
+L(\mu\,|\,\mathbf{x}) 
+	& = \prod_{i=1}^n \left(\frac{1}{\sigma\sqrt{2\pi}}\right)\exp\left[-\frac{1}{2}\left(\frac{x_i-\mu}{\sigma}\right)^2\right] \\
+	& = \left(\frac{1}{\sigma\sqrt{2\pi}}\right)^{n/2}\exp\left[-\frac{1}{2}\sum_{i=1}^n\left(\frac{x_i-\mu}{\sigma}\right)^2\right].
+\end{align*}
+
+The posterior density function of $\mu$ combines the data and the prior:
+\begin{align*}
+\pi_1(\mu)	
+	& = \frac{L(\mu\,|\,\mathbf{x})\pi_0(\mu)}{\int L(\mu|\mathbf{x})\pi_0(\mu)\,d\mu}.
+\end{align*}
+
+The MAP estimator of $\mu$ is the value that maximises the posterior $\pi_1(\mu)$. Since the denominator in the above expression for $\pi_1$ is a constant, it is sufficient to find the value of $\mu$ that maximises the numerator,
+\begin{align*}
+L(\mu|\mathbf{x})\pi_0(\mu)
+	= \left(\frac{1}{\sigma_0\sqrt{2\pi}}\right)\left(\frac{1}{\sigma\sqrt{2\pi}}\right)^{n/2}
+			\exp\left[-\frac{1}{2}\sum_{i=1}^n\left(\frac{x_i-\mu}{\sigma}\right)^2 -\frac{1}{2}\left(\frac{\mu-\mu_0}{\sigma_0}\right)^2\right].
+\end{align*}
+Let 
+\[
+g(\mu) = \exp\left[-\frac{1}{2}\sum_{i=1}^n\left(\frac{x_i-\mu}{\sigma}\right)^2 -\frac{1}{2}\left(\frac{\mu-\mu_0}{\sigma_0}\right)^2\right].
+\]
+The value of $\mu$ that maximizes $L(\mu|\mathbf{x})\pi_0(\mu)$ also maximizes $g(\mu)$. The first derivative of $g$ with respect to $\mu$ is
+\[
+g'(\mu) = \left[\frac{1}{\sigma^2}\sum_{i=1}^n (x_i-\mu) - \frac{1}{\sigma_0^2} (\mu-\mu_0)\right]g(\mu).
+\]
+Setting this equal to zero,
+\[
+\frac{1}{\sigma^2}\sum_{i=1}^n (x_i-\mu) = \frac{1}{\sigma_0^2}(\mu-\mu_0),
+\]
+and solving for $\mu$, we obtain the MAP estimator,
+\[
+\hat{\mu}_{MAP} = \left(\frac{\sigma^2\sigma_0^2}{\sigma^2+n\sigma_0^2}\right)\left(\frac{1}{\sigma^2}\sum_{i=1}^n x_i + \frac{\mu_0}{\sigma_0^2}\right).
+\]
+\bit
+\it This expression can be rearranged to give
+\[
+\hat{\mu}_{MAP}\left(1 + \frac{n\sigma_0^2}{\sigma^2}\right) = \frac{\sigma_0^2}{\sigma^2}\sum_{i=1}^n x_i + \mu_0.
+\]
+This shows that $\hat{\mu}=\mu_0$ when $n=0$, so the $\hat{\mu}_{MAP}$ is equal to the mean of the prior distribution when there is no data. 
+\it The expression can also be rearranged to give
+\[
+\hat{\mu}_{MAP}\left(1 + \frac{\sigma^2}{n\sigma_0^2}\right) = \frac{1}{n}\sum_{i=1}^n x_i + \left(\frac{\sigma^2}{n\sigma_0^2}\right)\mu_0.
+\]
+This shows that $\hat{\mu}_{MAP} \to \bar{X}$ as $n\to\infty$ (which is independent of the prior).
+\eit
+\end{answer}
+
+%----------------------------------------
+\end{questions}
+\end{exercise}
+%----------------------------------------------------------------------
+
+

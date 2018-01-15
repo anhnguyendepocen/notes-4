@@ -1,0 +1,528 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{The Cram\'{e}r-Rao lower bound}\label{sec:crlb}
+
+We now show that the variance of any unbiased estimator cannot be smaller than a certain fixed value which depends only on the Fisher information of the associated distribution. First we need the following lemma.
+%\bit
+%\it Let $X$ be a random variable having PDF $f(x,\theta)$, where $\theta$ is an unknown scalar parameter. 
+%\it Let $X_1,X_2,\ldots,X_n$ be a random sample from the distribution of $X$. 
+%\it Let $I(\theta)$ be the Fisher information of a single observation,
+%\[
+%I(\theta) = \var\big[u(\theta;X)\big]
+%\quad\text{where}\quad
+%u(\theta;X) = \frac{\partial}{\partial\theta}\log f(X;\theta).
+%\]
+%\eit
+%
+\begin{lemma}
+%Let $X$ be a random variable, let $f(x,\theta)$ denote its PDF, l
+Let $T(X)$ be an unbiased estimator of $\theta$ and let $U(X)$ be the score function of $X$. Then
+\[
+\cov(T,U) = 1
+\]
+\end{lemma}
+
+\begin{proof}
+We prove the lemma for continuous random variables. 
+\par
+By Lemma~\ref{lem:expe_score_function}, $\expe(U)=0$ so
+\begin{align*}
+\cov(T,U)
+	& = \expe(TU) - \expe(T)\expe(U) = \expe(TU) \\
+%	= \expe(TU) \\
+	& = \expe\left[T(X)\left(\frac{\partial}{\partial\theta}\log f(X;\theta)\right)\right] \\
+	& = \expe\left[T(X)\left(\frac{1}{f(X;\theta)}\frac{\partial}{\partial\theta}f(X;\theta)\right)\right] \\
+	& = \int T(x)\left(\frac{1}{f(x;\theta)}\frac{\partial}{\partial\theta}f(x;\theta)\right)f(x;\theta)\,dx \\
+	& = \int T(x)\left(\frac{\partial}{\partial\theta}f(x;\theta)\right)\,dx\\
+	& = \frac{\partial}{\partial\theta}\int T(x)f(x;\theta)\,dx \quad\text{(by the regularity conditions)} \\
+	& = \frac{\partial}{\partial\theta}\expe(T)
+	= \frac{\partial}{\partial\theta}\theta
+	= 1\qquad\text{(because $T$ is unbiased).}
+\end{align*}
+\end{proof}
+
+% thm: CRLB
+\begin{theorem}[CRLB]\label{thm:crlb}
+Let $X$ be a random variable and let $f(x;\theta)$ denote its PDF where $\theta$ is an unknown scalar. If $T(X)$ is an unbiased estimator of $\theta$ then
+\[
+\var(T) \geq \frac{1}{I(\theta)}.
+\]
+\end{theorem}
+
+% proof
+\begin{proof}
+%Because $\expe(U)=0$ and $\expe(T)=0$, 
+By the Cauchy-Schwarz inequality applied to $T-\expe(T)$ and $U-\expe(U)$,
+\begin{align*}
+1 = \cov(T,U)^2
+	& = \expe\big([T-\expe(T)][U-\expe(U)]\big)^2 \\
+	& \leq \expe\big([T-\expe(T)]^2\big)\expe\big([U-\expe(U)]^2\big) \\
+	& = \var(T)\var(U)
+\end{align*}
+Hence
+\[
+\var(T) \geq \frac{1}{\var(U)}.
+\]
+Thus, because $I(\theta)=\var(U)$, i.e. the variance of the score function, we conclude that
+\[
+\var(T) \geq \frac{1}{I(\theta)}.
+\]
+\end{proof}
+
+% thm: CRLB
+\begin{corollary}\label{cor:crlb}
+Let $X_1,X_2,\ldots,X_n$ be a random sample and let $f(x,\theta)$ denote their common PDF, where $\theta$ is an unknown scalar. If $T_n$ is an unbiased estimator of $\theta$ then
+\[
+\var(T_n) \geq \frac{1}{nI(\theta)}
+\]
+where $I(\theta)$ is the Fisher information of a single observation.
+\end{corollary}
+
+% remark
+\begin{remark}
+\bit
+\it The CRLB provides a \emph{lower limit} on the variance of an unbiased estimator.
+%\it The CRLB provides an \emph{upper limit} on the amount of information we can extract from a random sample.
+\it Similar results hold for biased estimators, vectors of parameters, non-independent samples, and so on.
+\it The CRLB has deep connections with the \emph{Heisenberg Uncertainty Principle}.
+\eit
+\end{remark}
+
+%----------------------------------------------------------------------
+\section{Efficiency}
+%----------------------------------------------------------------------
+
+% definition: efficiency
+\begin{definition}
+Let $T$ be an unbiased estimator of the parameter $\theta$.
+\ben
+\it 
+The \emph{efficiency} of $T$ as an estimator of $\theta$ is defined by 
+$e(T) = \displaystyle\frac{1/I(\theta)}{\var(T)}$.
+\it 
+If $e(T)=1$ then $T$ is called an \emph{efficient} estimator of $\theta$.
+\een
+\end{definition}
+An efficient estimator is thus an unbiased estimator whose variance achieves the Cram\'{e}r-Rao lower bound (for all $\theta$) and which therefore has the smallest variance among all possible unbiased estimators.
+
+%----------------------------------------
+% example: mean of a Bernoulli sample
+\begin{example}
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $\text{Bernoulli}(\theta)$ distribution, where $0<\theta<1$ is unknown. Show that the sample mean $\bar{X}$ is an efficient estimator of $\theta$.
+\end{example}
+
+\begin{solution}
+Let $X\sim\text{Bernoulli}(\theta)$. Then $\var(X)=\theta(1-\theta)$, so 
+\[
+\var(\bar{X})=\frac{\theta(1-\theta)}{n}.
+\]
+\par
+\par
+The PMF of $X$ is 
+$
+f(x;\theta)=\theta^x(1-\theta)^{1-x}\quad\text{for $x\in\{0,1\}$ (and zero otherwise).}
+$
+%for $x\in\{0,1\}$, and zero otherwise.
+\par
+The log-likelihood function of a single observation is
+\[
+%\log f(x;\theta) = \displaystyle\frac{x-\theta}{\theta(1-\theta)}
+\log f(x;\theta) = x\log\theta + (1-x)\log(1-\theta).
+\]
+The score function of a single observation is
+\[
+u(\theta;x)
+	= \frac{\partial}{\partial\theta}\log f(x,\theta)
+%	= \frac{\partial}{\partial\theta}\left(\frac{1}{\theta(1-\theta)}\right)
+	= \frac{x}{\theta} - \frac{1-x}{1-\theta}
+	= \frac{x-\theta}{\theta(1-\theta)}.
+\]
+Since $\expe(X)=\theta$ and $\var(X)=\theta(1-\theta)$, the Fisher information of a single observation is
+\[
+I(\theta) = \expe\left[\left(\frac{\partial\log f(x,\theta)}{\partial\theta}\right)^2\right]
+	= \frac{\expe\big[(X-\theta)^2\big]}{\theta^2(1-\theta)^2} 
+	= \frac{\var(X)}{\theta^2(1-\theta)^2} 
+	= \frac{1}{\theta(1-\theta)}.
+\]
+Hence for a random sample of size $n$, because $\bar{X}$ is an unbiased estimator of $\theta$, the Cram\'{e}r-Rao lower bound yields
+\[
+\var(\bar{X}) \geq \frac{\theta(1-\theta)}{n}.
+\]
+But we know that $\var(\bar{X})=\theta(1-\theta)/n$, so the variance of $\bar{X}$ attains the CRLB. Thus it follows that $\bar{X}$ is an efficient estimator of $\theta$.
+\end{solution}
+
+% example: mean of normal sample
+\begin{example}
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $N(\theta,\sigma^2)$ distribution, whose mean $\theta$ is unknown but whose variance $\sigma^2$ is known. Show that $\bar{X}$ is an efficient estimator of $\theta$.
+\end{example}
+\begin{solution}
+Let $X\sim N(\theta,\sigma^2)$. By Example~\ref{example:fisher_information_normal}, the Fisher information of $X$ is 
+\[
+I(\theta) = \displaystyle\frac{1}{\sigma^2}.
+\]
+$\bar{X}$ is an unbiased estimator of $\theta$, so its variance is bounded below by the CRLB:
+\[
+\var(\bar{X}) \geq \frac{1}{nI(\theta)} 
+\qquad\text{so}\qquad
+\var(\bar{X}) \geq \frac{\sigma^2}{n}.
+\]
+Since $\var(\bar{X}) = \displaystyle\frac{\sigma^2}{n}$, we see that $\var(\bar{X})$ attains the CRLB, so $\bar{X}$ is an efficient estimator for $\theta$.
+\end{solution}
+
+\begin{example}
+Let $X$ be a continuous random variable with the following PDF:
+\[
+f(x) = \begin{cases}
+	\displaystyle\frac{3\theta^3}{(x+\theta)^4}	& \text{ for $x>0$,} \\
+	0											& \text{ otherwise.}
+\end{cases}
+\]
+\ben
+\it Show that $\expe(X)=\theta/2$ and $\var(X) = 3\theta^2/4$.
+\it Show that $T = 2\bar{X}$ is an unbiased esimator of $\theta$, and find its variance.
+\it Show that the efficiency of $T$ as an estimator of $\theta$ is $5/9$.
+\een
+\begin{solution}
+\ben
+\it % <<< mean and variance of sample points
+Integration by parts:
+\begin{align*}
+\expe(X)
+	& = 3\theta^3 \int_0^{\infty} \frac{x}{(x+\theta)^4}\,dx \\
+	& = 3\theta^3\left(\left[\frac{-x}{(x+\theta)^3}\right]_0^\infty - \int_0^\infty \frac{-1}{3(x+\theta)^2}\,dx\right)
+	= 3\theta^3\left[\frac{-1}{6(x+\theta)^2}\right]_0^\infty = \frac{\theta}{2}. \\
+\expe(X^2)
+	& = 3\theta^3 \int_0^{\infty} \frac{x^2}{(x+\theta)^4}\,dx \\
+	& = 3\theta^3\left(\left[\frac{-x^2}{(x+\theta)^3}\right]_0^\infty - \int_0^\infty 2x\frac{-1}{3(x+\theta)^3}\,dx\right) \\
+	& = 2\theta^3\int_0^\infty \frac{x}{(x+\theta)^3}\,dx \\
+	& = 2\theta^3\left(\left[\frac{-x}{2(x+\theta)^2}\right]_0^\infty - \int_0^\infty \frac{-1}{2(x+\theta)^2}\,dx\right)
+	= \theta^3\left[\frac{-1}{x+\theta}\right]_0^\infty = \theta^2.
+	\end{align*}
+Hence $\var(X) = \expe(X^2)-\expe(X)^2 = \theta^2 - \theta^2/4 = 3\theta^2/4$.	
+\it % <<< bias & variance of T
+The mean and variance of $T$ are
+\begin{align*}
+\expe(T) 
+	& = 2\expe(\bar{X}) = 2\expe(X) = \theta \quad\text{so $T$ is unbiased}, \\
+\var(T) 
+	& = 4\var(\bar{X}) = 4\var(X)/n = 3\theta^2/n.
+\end{align*}
+\it % <<< efficiency
+\bit
+\it $f(x) = 3\theta^3/(x+\theta)^4$.
+\it $\ell(\theta) = \log 3 + 3\log\theta - 4\log(x+\theta)$.
+\it $\ell'(\theta) = \displaystyle\frac{3}{\theta} - \frac{4}{x+\theta}$.
+\it $\ell''(\theta) = -\displaystyle\frac{3}{\theta^2} + \frac{4}{(x+\theta)^2}$.
+\it $I(\theta) = -\expe\big[\ell''(\theta;X)\big] = \displaystyle\frac{3}{\theta^2} - 4\expe\left(\frac{1}{(X+\theta)^2}\right)$.
+\eit
+Now,
+\begin{align*}
+\expe\left(\frac{1}{(X+\theta)^2}\right)
+	& = \int_0^\infty \left(\frac{1}{(x+\theta)^2}\right)\left(\frac{3\theta^3}{(x+\theta)^4}\right)\,dx \\
+	& = 3\theta^3 \int_0^\infty \frac{1}{(x+\theta)^6}\,dx \\
+	& = 3\theta^3\left[\frac{-1}{5(x+\theta)^5}\right]_0^\infty
+	= \frac{3}{5\theta^2}.
+\end{align*}
+Hence,
+\[
+I(\theta) = \frac{3}{\theta^2} - \frac{12}{5\theta^2} = \frac{3}{5\theta^2}
+\quad\text{and}\quad
+I_n(\theta) = nI(\theta) = \frac{3n}{5\theta^2}
+\]
+Since $\var(T)=3\theta^2/n$, we see that
+\[
+\text{Efficiency}(T) = \frac{1/I_n(\theta)}{\var{T}} = \frac{5\theta^2/3n}{3\theta^2/n} = \frac{5}{9}.
+\]
+\een
+\end{solution}
+\end{example}
+
+%%-----------------------------
+%% example: variance of normal sample
+%\begin{example}
+%Let $X_1,X_2,\ldots,X_n$ be a random sample from the $N(\mu,\theta)$ distribution, whose mean $\mu$ is known but whose variance $\theta$ is unknown. Using the fact that, for the normal distribution, $\expe\big((X-\mu)^4\big)=3\theta^2$, show that the statistic
+%\[
+%T(X_1,X_2,\ldots,X_n) = \frac{1}{n}\sum_{i=1}^{n} (X_i-\mu)^2 
+%\]
+%is an efficient estimator of the variance $\theta$.
+%\end{example}
+%
+%\begin{solution}
+%Let $X\sim N(\mu,\theta)$. First we note that $T$ is unbiased, because
+%\[
+%\expe(T) = \frac{1}{n}\sum_{i=1}^{n} \expe\big[(X_i-\mu)^2\big] = \var(X) = \theta.
+%\]
+%
+%Furthermore, because the $X_i$ are independent, the variance of $T$ is
+%\begin{align*}
+%\var(T) 
+%	= \frac{1}{n}\var\big[(X-\mu)^2\big]
+%	& = \frac{1}{n}\Big(\expe\big[(X-\mu)^4\big] - \expe\big[(X-\mu)^2\big]^2\Big) \\
+%	& = \frac{1}{n}\big(3\theta^2 - \theta^2\big) \\
+%	& = \frac{2\theta^2}{n}
+%\end{align*}
+%
+%Let $f(x;\theta)$ denote the PDF of the $N(\mu,\theta)$ distribution:
+%\begin{align*}
+%f(x;\theta) 
+%	& = \ \frac{1}{\sqrt{2\pi\theta}}\exp\left(-\frac{(x-\mu)^2}{2\theta}\right), \\[2ex]
+%\log f(x;\theta)
+%	& = \ \log\left(\frac{1}{\sqrt{2\pi}}\right) + \log\left(\frac{1}{\sqrt{\theta}}\right)  - \frac{(x-\mu)^2}{2\theta}, \\[2ex]
+%\frac{\partial}{\partial\theta}\log f(x;\theta)
+%	& = \ -\frac{1}{2\theta} + \frac{(x-\mu)^2}{2\theta^2}, \\[2ex]
+%\frac{\partial^2}{\partial\theta^2}\log f(x;\theta)
+%	& = \ \frac{1}{2\theta^2} - \frac{(x-\mu)^2}{\theta^3}.
+%\end{align*}
+%
+%The Fisher information of a single observation is thus given by
+%\begin{align*}
+%I(\theta) 
+%	= -\expe\left(\frac{\partial^2}{\partial\theta^2}\log f(X;\theta)\right)
+%	& = -\expe\left(\frac{1}{2\theta^2} - \frac{(X-\mu)^2}{\theta^3}\right) \\
+%	& = -\frac{1}{2\theta^2} + \frac{\expe(X-\mu)^2}{\theta^3} \\
+%	& = -\frac{1}{2\theta^2} + \frac{\theta}{\theta^3} 
+%	= \frac{1}{2\theta^2}.
+%\end{align*}
+%
+%By the Cram\'{e}r-Rao theorem,
+%\[
+%\var(T) \geq \frac{1}{nI(\theta)} = \frac{2\theta^2}{n}
+%\]
+%
+%\bit
+%\it The variance of $T$ attains the CRLB for all values of $\theta>0$.
+%\it $T$ is therefore an efficient estimator of the variance of the Normal distribution.
+%\eit
+%\end{solution}
+
+% !TEX root = main.tex
+%----------------------------------------------------------------------
+\begin{exercise}
+\begin{questions}
+%----------------------------------------
+\question
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $\text{Poisson}(\theta)$ distribution, where $\theta>0$ is unknown. Show that the sample mean $\bar{X}$ is an efficient estimator of $\theta$.
+
+\begin{answer}
+The PMF of the $\text{Poisson}(\theta)$ distribution is
+\[
+f(x;\theta) = \frac{\theta^x\exp(-\theta)}{x!} \quad \text{for $x=0,1,2,3,\ldots$ (zero otherwise)}
+\]
+Let $X\sim\text{Poisson}(\theta)$. The score function of $X$ is
+\[
+u(\theta;X)
+	= \frac{\partial}{\partial\theta}\log f(X,\theta)
+	= \frac{\partial}{\partial\theta}(X\log\theta - \theta - \log x!)
+	= \frac{X-\theta}{\theta}.
+\]
+Since $\expe(X)=\theta$ and $\var(X)=\theta$, the Fisher information of a single observation is therefore
+\[
+I(\theta) 
+	= \expe\left[\left(\frac{\partial}{\partial\theta}\log f(x,\theta)\right)^2\right]
+	= \frac{\expe\big[(X-\theta)^2\big]}{\theta^2} = \frac{\var(X)}{\theta^2} = \frac{1}{\theta}.
+\]
+Hence for a random sample of size $n$, the CRLB is equal to 
+\[
+\frac{1}{nI(\theta)} = \frac{\theta}{n}.
+\]
+This is equal to the variance of the sample mean $\bar{X}$, so $\bar{X}$ is an efficient estimator of $\theta$.
+
+\end{answer}
+
+
+%----------------------------------------
+\question
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $N(\mu,\theta)$ distribution, whose mean $\mu$ is known but whose variance $\theta$ is unknown. Using the fact that $\expe\big((X-\mu)^4\big)=3\theta^2$ for the normal distribution, show that the statistic
+\[
+T = \frac{1}{n}\sum_{i=1}^{n} (X_i-\mu)^2 
+\]
+is an efficient estimator of the variance $\theta$.
+
+\begin{answer}
+Let $X\sim N(\mu,\theta)$. First we note that $T$ is unbiased, because
+\[
+\expe(T) = \frac{1}{n}\sum_{i=1}^{n} \expe\big[(X_i-\mu)^2\big] = \var(X) = \theta.
+\]
+
+Furthermore, because the $X_i$ are independent, the variance of $T$ is
+\begin{align*}
+\var(T) 
+	= \frac{1}{n}\var\big[(X-\mu)^2\big]
+	& = \frac{1}{n}\Big(\expe\big[(X-\mu)^4\big] - \expe\big[(X-\mu)^2\big]^2\Big) \\
+	& = \frac{1}{n}\big(3\theta^2 - \theta^2\big) \\
+	& = \frac{2\theta^2}{n}
+\end{align*}
+
+Let $f(x;\theta)$ denote the PDF of the $N(\mu,\theta)$ distribution:
+\begin{align*}
+f(x;\theta) 
+	& = \ \frac{1}{\sqrt{2\pi\theta}}\exp\left(-\frac{(x-\mu)^2}{2\theta}\right), \\[2ex]
+\log f(x;\theta)
+	& = \ \log\left(\frac{1}{\sqrt{2\pi}}\right) + \log\left(\frac{1}{\sqrt{\theta}}\right)  - \frac{(x-\mu)^2}{2\theta}, \\[2ex]
+\frac{\partial}{\partial\theta}\log f(x;\theta)
+	& = \ -\frac{1}{2\theta} + \frac{(x-\mu)^2}{2\theta^2}, \\[2ex]
+\frac{\partial^2}{\partial\theta^2}\log f(x;\theta)
+	& = \ \frac{1}{2\theta^2} - \frac{(x-\mu)^2}{\theta^3}.
+\end{align*}
+
+The Fisher information of a single observation is thus given by
+\begin{align*}
+I(\theta) 
+	= -\expe\left(\frac{\partial^2}{\partial\theta^2}\log f(X;\theta)\right)
+	& = -\expe\left(\frac{1}{2\theta^2} - \frac{(X-\mu)^2}{\theta^3}\right) \\
+	& = -\frac{1}{2\theta^2} + \frac{\expe(X-\mu)^2}{\theta^3} \\
+	& = -\frac{1}{2\theta^2} + \frac{\theta}{\theta^3} 
+	= \frac{1}{2\theta^2}.
+\end{align*}
+
+By the Cramer-Rao theorem,
+\[
+\var(T) \geq \frac{1}{nI(\theta)} = \frac{2\theta^2}{n}
+\]
+
+\bit
+\it The variance of $T$ attains the CRLB for all values of $\theta>0$.
+\it $T$ is therefore an efficient estimator of the variance of the Normal distribution.
+\eit
+\end{answer}
+
+\question % rayleigh
+Let $X\sim\text{Rayleigh}(\theta)$ whose CDF is given by
+\[
+F(x) = 1 - e^{-x^2/2\theta} \quad\text{for $x\geq 0$ and zero otherwise.}
+\]
+\ben
+\it Show that $X^2\sim\text{Exponential}(2\theta)$ where $2\theta$ is a scale paremter.
+\it Show that the MLE of $\theta$ is $\displaystyle T=\frac{1}{2n}\sum_{i=1}^n X_i^2$.
+\it Show that the $T$ is an unbiased estimator of $\theta$.
+\it Show that the $T$ is an efficient estimator of $\theta$.
+\een
+\begin{answer}
+\ben
+\it % <<< transformation
+Let $Y=g(X)$ where $g(x)=x^2$. This is one-to-one and increasing over $\supp(f_X)=[0,\infty)$. The inverse transformation is $g^{-1}(y) = \sqrt{y}$ and $\supp(f_Y)=[0\infty)$. Hence
+\[
+F_Y(y) = F_X\big[g^{-1}(y)\big] = 1 - e^{-y/2\theta} \quad\text{for $y\geq 0$, and zero otherwise.}
+\]
+This is the CDF of the $\text{Exponential}(2\theta)$ distribution, where $2\theta$ is a scale parameter.
+\it % <<< MLE
+\bit
+\it $f(x,\theta) = \displaystyle\frac{x}{\theta}e^{-x^2/2\theta}$.
+\it $L(\theta) = \prod_{i=1}^n \displaystyle\frac{x_i}{\theta}e^{-x_i^2/2\theta}$.
+\it $\ell(\theta) = -n\log\theta + \sum_{i=1}^n\log x_i - \displaystyle\frac{1}{2\theta}\sum_{i=1}^n x_i^2$.
+\it $\ell'(\theta) = -\displaystyle\frac{n}{\theta} + \frac{1}{2\theta^2}\sum_{i=1}^n x_i^2$.
+\it $\ell''(\theta) = \displaystyle\frac{n}{\theta^2} - \frac{1}{\theta^3}\sum_{i=1}^n x_i^2$.
+\eit
+Setting $\ell'(\theta)=0$, the MLE of $\theta$ is $\displaystyle T=\frac{1}{2n}\sum_{i=1}^n X_i^2$.
+\it % <<< bias
+Because $X^2\sim\text{Exponential}(2\theta)$ we have $\expe(X^2)=2\theta$, so
+\[
+\expe(T) = \frac{1}{2n}\sum_{i=1}^n \expe(X_i^2) = \theta.
+\]
+so $T$ is unbiased.
+
+\it % <<< efficiency
+Again using the fact that $\expe(X^2) = 2\theta$,
+\begin{align*}
+I_n(\theta) = -\expe\big[\ell''(\theta;\mathbf{X})\big] 
+	& = -\frac{n}{\theta^2} + \frac{1}{\theta^3}\sum_{i=1}^n \expe(X_i^2)
+	= -\frac{n}{\theta^2} + \frac{n}{\theta^3}2\theta	
+	= \frac{n}{\theta^2}.
+\end{align*}
+Because $X^2\sim\text{Exponential}(2\theta)$ we have $\expe(X^2)=2\theta$ and $\var(X^2) = 4\theta^2$. By indepedence,
+\[
+\var(T) = \frac{1}{4n^2}\sum_{i=1}^n\var(X_i) = \frac{n}{4n^2}4\theta^2 = \frac{\theta^2}{n}
+\]
+Thus $\var(T)$ achieves the CRLB, so $T$ is an efficient estimator for $\theta$. 
+\een
+\end{answer}
+
+%----------------------------------------
+\question 
+Let $X\sim\text{Exponential}(\lambda)$ where $\lambda>0$ is an unknown rate parameter and let $X_1,X_2,\ldots,X_n$ be a random sample from the distribution of $X$. The PDF of $X$ is
+\[
+f(x) = \begin{cases}
+	\lambda e^{-\lambda x}	& \text{ for $x>0$,} \\
+	0						& \text{ otherwise.}
+\end{cases}
+\]
+Let $S_n=\sum_{i=1}^n X_i$. This is the sum of $n$ independent $\text{Exponential}(\lambda)$ random variables, and has the so-called \emph{Erlang} distribution with parameters $n\in\N$ and $\lambda>0$, whose PDF is given by
+\[
+f_S(s) = \frac{\lambda^n s^{n-1}e^{-\lambda s}}{\Gamma(k)} \quad\text{for $s>0$ and zero otherwise,} 
+\]
+where $\Gamma(k)$ is the so-called \emph{gamma function},
+\[
+\Gamma(k) = \int_{0}^{\infty} t^{k-1}e^{-t}\,dt.
+\]
+$\Gamma(k)$ is an extension of the factorial function and has the property $\Gamma(k+1) = k\Gamma(k)$.
+
+\ben
+\it Show that 
+$\expe(S_n^{-1}) = \displaystyle\frac{\lambda}{n-1}$ and 
+$\var(S_n^{-1}) = \displaystyle\frac{\lambda^2}{(n-1)^2(n-2)}$.
+%$\displaystyle\expe\left(\frac{1}{S_n}\right) = \frac{\lambda}{n-1}$ and 
+%%$\displaystyle\expe\left(\frac{1}{S_n^2}\right) = \frac{\lambda^2}{(n-1)(n-2)}$.
+%$\displaystyle\var\left(\frac{1}{S_n}\right) = \frac{\lambda^2}{(n-1)^2(n-2)}$.
+\it Show that the MLE of $\lambda$ is given by $T_n = \displaystyle\frac{n}{\sum_{i=1}^n X_i}$.
+\it Show that $T_n$ is an asymptotically unbiased estimator for $\lambda$ as $n\to\infty$.
+\it Show that $T_n$ is an asymptotically efficient estimator of $\lambda$, in the sense that its variance converges to the CRLB as $n\to\infty$.
+\een
+
+\begin{answer}
+\ben
+\it % <<< inverse moments
+\begin{align*}
+\expe(S_n^{-1}) 
+	& = \frac{\lambda^n}{\Gamma(n)}\int_0^\infty s^{n-2}e^{-\lambda s}\,ds
+	= \frac{\lambda}{\Gamma(n)}\int_0^\infty u^{n-2}e^{-u}\,du 
+	= \frac{\lambda\Gamma(n-1)}{\Gamma(n)} = \frac{\lambda}{n-1}. \\
+\expe(S_n^{-2}) 
+	& = \frac{\lambda^n}{\Gamma(n)}\int_0^\infty s^{n-3}e^{-\lambda s}\,ds 
+	= \frac{\lambda^2}{\Gamma(n)}\int_0^\infty u^{n-3}e^{-u}\,du 
+	= \frac{\lambda^2\Gamma(n-2)}{\Gamma(n)} = \frac{\lambda^2}{(n-1)(n-2)}. \\
+\var(S_n^{-1})
+	& = \expe(S_n^{-2}) -\expe(S_n^{-1})^2 =  \frac{\lambda^2}{(n-1)^2(n-2)}.
+\end{align*}
+\it % <<< mle
+\bit
+\it $L(\lambda) = \prod_{i=1}^n \lambda e^{-\lambda x_i}$.
+\it $\ell(\lambda) = n\log\lambda + (\theta-1)\sum_{i=1}^n x_i$.
+\it $\ell'(\lambda) = n/\theta + \sum_{i=1}^n x_i$.
+\it $\ell''(\lambda) = -n/\theta^2 < 0$.
+\eit
+Setting $\ell'(\lambda)=0$ we obtain $T=n/\sum_{i=1}^n X_i$ as the MLE of $\lambda$.
+\it % <<< bias
+$T_n$ is an asymptotically unbiased estimator for $\lambda$ because
+\[
+\expe(T_n) 
+	= n\expe\left(\frac{1}{S_n}\right) 
+	= \left(\frac{n}{n-1}\right)\lambda.
+	= \left(\frac{1}{1-1/n}\right)\lambda
+	\to \lambda \text{ as $n\to\infty$.}
+\]
+\it % <<< efficiency
+The Fisher information of the sample is
+\[
+I_n(\lambda) = -\expe\big[\ell''(\lambda)\big] = \frac{n}{\lambda^2}
+\]
+so the CRLB is $\lambda^2/n$. Now,
+\[
+\var(T_n) 
+	= n^2\var\left(\frac{1}{S_n}\right) 
+	= \frac{\lambda^2}{n}\left(\frac{n^3}{(n-1)^2(n-2)}\right)
+	= \frac{\lambda^2}{n}\left(\frac{1}{(1-1/n)^2(1-2/n)}\right)
+	\to \frac{\lambda^2}{n} \text{ as $n\to\infty$.}
+\]
+Thus $\var(T_n)$ converges to the CRLB as $n\to\infty$.
+\een
+\end{answer}
+
+%----------------------------------------
+\end{questions}
+\end{exercise}
+%----------------------------------------------------------------------
+
+%======================================================================
+\endinput
+%======================================================================

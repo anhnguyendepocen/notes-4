@@ -1,0 +1,404 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Conditional expectation}\label{sec:cond_expe}
+
+Conditional expectations are expectations computed with respect to conditional distributions.
+%PMFs (discrete case) and conditional PDFs (continuous case).
+
+%%-----------------------------
+%\subsection{Conditioning on events}
+%\begin{definition}\label{defn:cond_expe_A}
+%let $A$ be an event with $\prob(A)>0$, and let $X$ be a random variable. Then
+%\[
+%\begin{array}{lll}
+%\expe(X|A) & = \displaystyle\sum_{i=1}^{\infty} x_i\,f_{X|A}(x_i)		& \quad\text{if $X$ is discrete, or} \\[4ex]
+%\expe(X|A) & = \displaystyle\int_{-\infty}^{\infty} x\,f_{X|A}(x|y)\,dy	& \quad\text{if $X$ is continuous.} 
+%\end{array}
+%\]
+%\end{definition}
+%
+%% example: cond_expe for cts. uniform
+%\begin{example}
+%Let $X\sim\text{Uniform}[0,1]$ and let $A=\{1/2\leq X\leq 3/4\}$. The CDF of $X$ is $F_X(x) = x$ for $0\leq x\leq 1$ (with $F_X(x)=0$ for $x<0$ and $F_X(x)=1$ for $x>1$) so
+%\[
+%\prob(A) = \prob(1/2\leq x\leq 3/4) = \prob(X\leq 3/4)-\prob(X\leq 1/2) = F_X(3/4) - F_X(1/2) = 3/4 - 1/2 = 1/4.
+%\]
+%The PDF of $X$ is $f_X(x)=1$ for $0\leq x\leq 1$ (and zero otherwise), so the conditional PDF of $X|A$ is
+%\[
+%f_{X|A}(x) = \frac{f_X(x)}{\prob(A)} = 4 \text{for $1/2\leq x\leq 3/4$ (and zero otherwise),}
+%\]
+%which shows that $X|A\sim\text{Uniform}[1/2,3/4]$. The conditional expectation of $X|A$ is
+%\[
+%\expe(X|A) 
+%	= \int_{-\infty}{\infty} x f_{X|A}(x)\,dx
+%	= \int_{1/2}{3/4} 4x \,dx
+%	= 5/8.
+%\]
+%This is the mid-point of the interval $[1/2,3/4]$ as expected.
+%\end{example}
+
+%\begin{example}
+%Recall example~\label{example:cond_pmf}: a fair coin is tossed repeatedly until a head occurs; $X$ is the number of times the coin is tossed; $A$ is the event that the coin is tossed an odd number of times. If $A$ occurs, the expcted value of $X$ is
+%\[
+%\expe(X|A) = \sum_{k\text{odd}} k(3/2^{k+1}) = \sum_{k\text{odd}}^{\infty} 3/2^k  = 3(1/2 + 1/8 + 1/32 + \ldots) = 2.
+%\]
+%The unconditional expectation is 
+%\[
+%\expe(X) = \sum_{k=1}^{\infty} k(1/2^k) = \sum_{k=1}^{\infty} 1/2^{k-1} = 1 + 1/2 + 1/4 + 1/8 + \ldots = 2.
+%\]
+%*** so it doesn't change!? ***
+%\end{example}
+
+\begin{definition}\label{def:cond_expe_x}
+Let $x$ be a fixed value. The \emph{conditional expectation of $Y$ given $X=x$} is 
+\[
+\begin{array}{lll}
+\expe(Y|X=x) & = \displaystyle\sum_{j=1}^{\infty} y_j\,f_{Y|X}(y_j|x)		& \quad\text{if $Y$ is discrete, or} \\[4ex]
+\expe(Y|X=x) & = \displaystyle\int_{-\infty}^{\infty} y\,f_{Y|X}(y|x)\,dy	& \quad\text{if $Y$ is continuous.} 
+\end{array}
+\]
+\end{definition}
+
+%-----------------------------
+%\subsection{Conditioning on events}
+%\begin{definition}\label{defn:cond_expe_A}
+%let $A$ be an event with $\prob(A)>0$, and let $X$ be a random variable. Then
+%\[
+%\begin{array}{lll}
+%\expe(X|A) & = \displaystyle\sum_{i=1}^{\infty} x_i\,f_{X|A}(x_i)		& \quad\text{if $X$ is discrete, or} \\[4ex]
+%\expe(X|A) & = \displaystyle\int_{-\infty}^{\infty} x\,f_{X|A}(x|y)\,dy	& \quad\text{if $X$ is continuous.} 
+%\end{array}
+%\]
+%\end{definition}
+
+\begin{definition}
+Let $A$ be an event with $\prob(A)>0$. The \emph{conditional expectation of $Y|A$} is the conditional expectation of $Y$ given $I_A=1$, where $I_A$ is the indicator variable of $A$.
+%%\[
+%%\begin{array}{cccl}
+%%F_{X|A}:	& \R	& \to		& [0,1] \\
+%%			& x		& \mapsto	& \prob(X\leq x\,|\, A).
+%%\end{array}
+%%\]
+%The conditional PMF/PDF of $X|A$ are the functions
+%\[
+%\begin{array}{lll}
+%f_{X|A}(x) & = \prob(\{X=x\}\cap A)/\prob(A)& \quad\text{if $X$ is discrete, or} \\
+%f_{X|A}(x) & = f_{X}(x)/\prob(A)			& \quad\text{if $X$ is continuous.} 
+%\end{array}
+%\]
+\end{definition}
+
+
+% example: cond_expe for cts. uniform
+\begin{example}
+Let $Y\sim\text{Uniform}[0,1]$. Find the conditional expectation of $Y$ given that $1/2\leq Y\leq 3/4$.
+
+\begin{solution}
+Let $A=\{1/2\leq X\leq 3/4\}$. 
+
+The CDF of $Y$ is $F_Y(y) = y$ for $0\leq y\leq 1$ (with $F_Y(y)=0$ for $y<0$ and $F_Y(y)=1$ for $y>1$) so
+\[
+\prob(A) = \prob(1/2\leq Y\leq 3/4) = \prob(Y\leq 3/4)-\prob(Y\leq 1/2) = F_Y(3/4) - F_Y(1/2) = 3/4 - 1/2 = 1/4.
+\]
+
+The PDF of $Y$ is $f_Y(y)=1$ for $0\leq y\leq 1$ (and zero otherwise), so the conditional PDF of $Y|A$ is
+\[
+f_{Y|A}(y) = \frac{f_Y(y)}{\prob(A)} = 4 \quad\text{for $1/2\leq x\leq 3/4$ (and zero otherwise),}
+\]
+which shows that $Y|A\sim\text{Uniform}[1/2,3/4]$. The conditional expectation of $Y|A$ is
+\[
+\expe(Y|A) 
+	= \int_{-\infty}^{\infty} y f_{Y|A}(y)\,dy
+	= \int_{1/2}^{3/4} 4y \,dy
+	= 5/8.
+\]
+This is the mid-point of the interval $[1/2,3/4]$ as expected.
+\end{solution}
+\end{example}
+
+%-----------------------------
+\subsection{Conditioning on random variables}
+
+For any fixed value of $x$, the conditional expectation $\expe(Y|X=x)$ is just a number. Let us now think of $x$ as a variable quantity, and consider the transformation
+\[
+\begin{array}{rccl}
+	g:	& \R	& \to		& \R \\
+		& x		& \mapsto	& \expe(Y|X=x)
+\end{array}
+\]
+This transformation of $X$ yields a new random variable called the \emph{conditional expectation of $Y$ given $X$}.
+\begin{definition}\label{def:cond_expe}
+The \emph{conditional expectation of $Y|X$} is the random variable
+\[\begin{array}{llll}
+\expe(Y|X):	& \Omega 	& \to 		& \R \\
+			& \omega	& \mapsto 	& \expe\big[Y|X=X(\omega)\big].
+\end{array}\]
+\end{definition}
+
+The distribution of $\expe(Y|X)$ depends only on the distribution of $X$, and its expectation is given by
+
+\[
+\begin{array}{lll}
+\expe\big[\expe(Y|X)\big] & = \displaystyle\sum_{i=1}^{\infty}\expe(Y|X=x_i)f_X(x_i)		& \quad\text{if $X$ is discrete, or} \\[3ex]
+\expe\big[\expe(Y|X)\big] & = \displaystyle\int_{-\infty}^{\infty} \expe(Y|X=x)f_X(x)\,dx	& \quad\text{if $X$ is continuous.} 
+\end{array}
+\]
+
+\begin{theorem}[Law of total expectation]
+Let $X$ and $Y$ be random variables defined on the same probability space. Then
+\[
+\expe(Y) = \expe\big[\expe(Y|X)\big].
+\]
+\end{theorem}
+\begin{proof}
+For discrete random variables (the continuous case is similar):
+\begin{align*}
+\expe\big[\expe(Y|X)\big] 
+	= \sum_x \expe(Y|X=x) f_X(x) 
+	& = \sum_x\left(\sum_y y\,f_{Y|X}(y|x)\right) f_X(x) \\
+	& = \sum_x\left(\sum_y y\,\frac{f_{X,Y}(x,y)}{f_X(x)}\right) f_X(x) \\
+	& = \sum_x\left(\sum_y y f_{X,Y}(x,y)\right) \\
+	& = \sum_x y \left(\sum_y f_{X,Y}(x,y)\right) \\
+	& = \sum_x y f_Y(y)  
+	= \expe(Y).
+\end{align*}
+%For continuous random variables (the discrete case is similar):
+%\begin{align*}
+%\expe\big[\expe(Y|X)\big] 
+%	& = \int_{-\infty}^{\infty} \expe(Y|X=x) f_X(x)\,dx \\
+%	& = \int_{-\infty}^{\infty}\left(\int_{-\infty}^{\infty} y\,f_{Y|X}(y|x)\,dy\right) f_X(x)\,dx \\
+%	& = \int_{-\infty}^{\infty}\left(\int_{-\infty}^{\infty} y\,\frac{f_{X,Y}(x,y)}{f_X(x)}\,dy\right) f_X(x)\,dx \\
+%	& = \int_{-\infty}^{\infty}\left(\int_{-\infty}^{\infty} y f_{X,Y}(x,y)\,dy\right)\,dx \\
+%	& = \int_{-\infty}^{\infty} y \left(\int_{-\infty}^{\infty} f_{X,Y}(x,y)\,dx\right)\,dy \\
+%	& = \int_{-\infty}^{\infty} y f_Y(y) \,dy \\
+%	& = \expe(Y).
+%\end{align*}
+\end{proof}
+
+\begin{theorem}[Law of total variance]
+If $X$ and $Y$ are random variables defined on the same probability space,
+\[
+\var(Y) = \expe\big[\var(Y|X)\big] + \var\big[\expe(Y|X)\big] 
+\]
+where $\var(Y|X)=\expe(Y^2|X) - \expe(Y|X)^2$.
+\end{theorem}
+\begin{proof}
+By the law of total expectation,
+\begin{align*}
+\var(Y)
+	& = \expe(Y^2) - \expe(Y)^2 \\
+	& = \expe\big[\expe(Y^2|X)\big] - \expe\big[\expe(Y|X)\big]^2
+\end{align*}
+Because $\var(Y|X)=\expe(Y^2|X) - \expe(Y|X)^2$,
+\[
+\var(Y) = \expe\big[\var(Y|X) + \expe(Y|X)^2\big] - \expe\big[\expe(Y|X)\big]^2
+\]
+Hence, by the linearity of expectation,
+\begin{align*}
+\var(Y)
+	& = \expe\big[\var(Y|X)\big] + \Big(\expe\big[\expe(Y|X)^2\big] - \expe\big[\expe(Y|X)\big]^2\Big) \\
+	& = \expe\big[\var(Y|X)\big] + \var[\expe(Y|X)\big].
+\end{align*}
+\end{proof}
+
+% example
+\begin{example}
+Let the joint PDF of the continuous random variables $X$ and $Y$ be 
+\[
+f_{X,Y}(x,y) = \begin{cases}
+	cxy & \quad\text{for $x,y\geq 0$ with $x+y\leq 1$}, \\
+	0	& \quad\text{otherwise.}
+\end{cases}
+\]
+\ben
+\it Sketch the support of $f_{X,Y}$
+\it Show that $c=24$.
+\it Compute the conditional expectation $\expe(Y|X)$.
+\it Verify the identity $\expe\big[\expe(Y|X)\big]=\expe(Y)$.
+\een 
+
+\begin{solution}
+\ben
+
+\it % << (a)
+$\supp(f_{X,Y})$ is the lower-left half of the unit square.
+
+\it % << (b)
+The marginal PDF of $X$ is
+\[
+f_X(x) = c\int_{0}^{1-x} xy\,dy = \frac{cx(1-x)^2}{2}
+\]
+To find $c$,
+\[
+\int_{0}^{1} f_X(x)\,dx = 1, \qquad\text{so}\quad c=24.
+\]
+Thus
+\begin{align*}
+f_X(x)	& = 12x(1-x)^2 \qquad 0\leq x\leq 1 \\
+f_Y(y)	& = 12y(1-y)^2 \qquad 0\leq y\leq 1 \\
+\end{align*}
+and
+\begin{align*}
+\expe(X) & = 12\int_0^1 x(1-x)^2\,dx = 2/5 \\
+\expe(Y) & = 12\int_0^1 y(1-y)^2\,dy = 2/5 \\
+\end{align*}
+
+\it % << (c)
+To compute $\expe(Y|X)$,
+\begin{align*}
+\expe(Y|X=x)
+	& = \int_0^1 y\left(\frac{f_{X,Y}(x,y)}{f_X(x)}\right)\,dy \\
+	& = \int_0^{1-x} y\left(\frac{24xy}{12x(1-x)^2}\right)\,dy \\
+	& = \frac{24x}{12x(1-x)^2}\int_0^{1-x} y^2\,dy \\
+	& =  \frac{24x}{12x(1-x)^2}\left[\frac{(1-x)^3}{3}\right] \\
+	& = \frac{2}{3}(1-x)	
+\end{align*}
+so $\expe(Y|X) = 2(1-X)/3$.
+
+\it % << (d)
+\begin{align*}
+\expe\big(\expe(Y|X)\big)
+	& = \int_0^1 \expe(Y|X=x) f_X(x)\,dx \\
+	& = \frac{2}{3}\int_0^1 (1-x) f_X(x)\,dx \\
+	& = \frac{2}{3}\big(1-\expe(X)\big) = \frac{2}{3}\left(1-\frac{2}{5}\right) = \frac{2}{5} \\
+	& = \expe(Y)
+\end{align*}
+\een
+\mbox{}
+\end{solution}
+\end{example}
+
+% exercises
+\begin{exercise}
+\begin{questions}
+\question
+Let $X$ and $Y$ be jointly continuous random variables having the following joint PDF,
+\[
+f_{X,Y}(x,y) = 
+\begin{cases}
+	\frac{21}{4}x^2y		& \quad x^2<y<1, \\
+	0						& \quad\text{otherwise.}
+\end{cases}
+\]
+\ben
+\it Sketch the support of $f_{X,Y}$.
+\it Find the marginal PDFs of $X$ and $Y$.
+\it Find the mean and variance of $Y$.
+\it Find the conditional PDF of $Y$ given $X=x$. 
+\it Are $X$ and $Y$ independent? 
+\it Find the conditional expectation of $Y$ given $X=x$. 
+\it Find the conditional expectation of $Y$ given $X$. 
+\it Verify that $\expe(Y)=\expe\big[\expe(Y|X)\big]$.
+\een
+
+\begin{answer}
+\ben
+\it % << (a)
+The support of the joint PDF $f(x,y)$ is the set $\{(x,y): x^2 < y < 1\}$.  This is the region of the plane between the vertical lines $x=-1$ and $x=+1$, bounded above by the horizontal line $y=1$ and below by parabola $y=x^2$. In particular,
+\bit
+\it For fixed $x\in[-1,1]$, $f_{X,Y}(x,y)\neq 0$ only for $y\in[x^2,1]$.
+\it For fixed $y\in[0,1]$, $f_{X,Y}(x,y)\neq 0$ only for $x\in[-\sqrt{y},+\sqrt{y}]$.
+\eit
+
+\it % << (b)
+The marginal distributions are computed as follows:
+\begin{align*}
+f_X(x) 	
+	& = \int_{-\infty}^{\infty} f(x,y)\,dy 
+	= \int_{x^2}^1 \frac{21}{4}x^2y\,dy 
+	= \frac{21}{4}x^2\left[\frac{y^2}{2}\right]_{x^2}^1 
+	= \begin{cases} \frac{21}{8}x^2(1-x^4)	& -1<x<1, \\ 0 & \text{ otherwise.}\end{cases} \\ [2ex]
+f_Y(y) 	
+	& = \int_{-\infty}^{\infty} f(x,y)\,dx 
+	= \int_{-\sqrt{y}}^{\sqrt{y}} \frac{21}{4}x^2y\,dx 
+	= \frac{21}{4}y\left[\frac{x^3}{3}\right]_{-\sqrt{y}}^{\sqrt{y}}
+	= \begin{cases} \frac{7}{2}y^{5/2} & 0< y< 1, \\ 0 & \text{ otherwise.}\end{cases} \\
+\end{align*}
+
+\it % << (c)
+The expected value and variance of $Y$ are computed as follows:
+\begin{align*}
+\expe(Y)
+	& = \int_{-\infty}^{\infty} y\,f_Y(y)\,dy 	= \int_0^1 y\left(\frac{7y^{5/2}}{2}\right)\,dy = \frac{7}{9}, \\
+\expe(Y^2)
+	& = \int_{-\infty}^{\infty} y^2\,f_Y(y)\,dy = \int_0^1 y^2\left(\frac{7y^{5/2}}{2}\right)\,dy = \frac{7}{11}, \\
+\var(Y)
+	& = \expe(Y^2) - \expe(Y)^2 = \frac{7}{11} - \frac{49}{81} = \frac{28}{891}.
+\end{align*}
+
+\it % << (d)
+The conditional PDF of $Y$ given $X=x$ is
+\[
+f_{Y|X=x}(y) 	
+	= \frac{f_{X,Y}(x,y)}{f_X(x)} 
+	= \frac{(21/4)x^2y}{(21/8)x^2(1-x^4)} 	
+	= \begin{cases} 
+		\displaystyle\frac{2y}{1-x^4} 	& x^2\leq y\leq 1, \\
+	 	0 								& \text{ otherwise}.
+	 \end{cases}
+\]	 
+
+\it % << (e)
+$X$ and $Y$ are clearly not independent, because the support of $f_{X,Y}$ is not a rectangular region, and moreover, the conditional PDF of $Y$ given $X=x$ depends on $x$.
+
+\it % << (f)
+The conditional expected value of $Y$ given that $X=x$ is
+\begin{align*}
+\expe(Y|X=x) 
+	& = \int_{-\infty}^{\infty} y f_{Y|X=x}(y\,|\,x)\,dy \\
+	& = \int_{x^2}^1 y \left(\frac{2y}{1-x^4}\right)\,dy 
+	= \frac{2}{1-x^4}\left[\frac{y^3}{3}\right]_{x^2}^1
+	= \frac{2(1-x^6)}{3(1-x^4)} 
+\end{align*}	
+
+\it % << (g)
+The conditional expectation of $Y$ given $X$ is the random variable 
+\[
+\expe(Y|X)=\displaystyle\frac{2(1-X^6)}{3(1-X^4)}
+\]
+
+\it % << (h)
+The expected value of $\expe(Y|X)$ is
+\begin{align*}
+\expe\big[\expe(Y|X)\big] 
+	& = \int_{-\infty}^{\infty} \expe(Y|X=x)f_X(x)\,dx \\
+	& = \frac{2}{3}\int_{-1}^{1} \left(\frac{1-x^6}{1-x^4}\right)\left(\frac{21}{8}x^2(1-x^4)\right)\,dx \\
+	& = \frac{7}{4}\int_{-1}^{1} x^2(1-x^6)\,dx 
+	= \frac{7}{9}.
+\end{align*}	
+Thus $\expe\big[\expe(Y|X)\big]=\expe(Y)$ as required.
+\een
+\end{answer}
+
+% house for sale
+\question
+A man puts his house for sale, and decides to accept the first offer that exceeds the reserve price of $\pounds r$. Let $X_1,X_2,\ldots$ represent the sequence of offers received, and suppose that the $X_i$ are independent and identically distributed random variables, each having exponential distribution with rate parameter $\lambda$. 
+\begin{parts}
+\part
+What is the expected number of offers received before the house is sold?% is $e^{\lambda r}$.
+\begin{answer}
+Let $N$ be the number of offers received before the house is sold. Then $\{N=k\}$ is the event that the first $k-1$ offers are at most $\pounds r$, each occurring independently with probability $F(r)$, and the $k$th offer exceeds $\pounds r$, which occurs with probability $1-F(r)$. Thus $N$ has \emph{geometric} distribution, with `probability of success' equal to $1-F(r)$ (where `success' corresponds to the sale of the house). Hence the expected number of offers received before the house is sold is
+\[
+\expe{E}(N) = \frac{1}{1-F(r)} = e^{\lambda r}.
+\]
+\end{answer}
+\part 
+What is the expected selling price of the house?
+\begin{answer}
+Let $F_S$ be the conditional CDF of $X_i$ given that $X_i>r$:
+\[
+F_S(x)  
+	= \frac{\mathbb{P}(r < X_i \leq x)}{\mathbb{P}(X_i > r)}
+	= \frac{F(x)-F(r)}{1-F(r)}
+	= \begin{cases}
+		1 - e^{-\lambda(x-r)} 	& x > r, \\
+		0						& \text{otherwise.}
+	\end{cases}
+\]
+A straightforward calculation yields $\mathbb{E}(X_i | X_i>r) = r + \displaystyle\frac{1}{\lambda}$.
+\end{answer}
+\end{parts}
+
+\end{questions}
+\end{exercise}

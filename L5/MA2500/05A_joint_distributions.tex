@@ -1,0 +1,195 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Random points in the plane}\label{sec:joint}
+
+Let $X$ and $Y$ be random variables on the same probability space.
+
+% defn: joint distributions
+\begin{definition}
+\ben
+\it The \emph{joint distribution} of $X$ and $Y$ is the function $\prob_{X,Y}$ defined on pairs of subsets of $\R$ by
+\[
+\prob_{X,Y}(C,D) = \prob(X\in C, Y\in D).
+\]
+\it The distributions $\prob_X(C)=\prob(X\in C)$ and $\prob_Y(D)=\prob(Y\in D)$ are called the \emph{marginal distributions} of $X$ and $Y$ respectively.
+\een
+\end{definition}
+
+%The joint distribution of $X$ and $Y$ is completely determined by their joint CDF.
+% defn: joint distributions
+\begin{definition}
+\ben
+\it The \emph{joint CDF} of $X$ and $Y$ is the function $F_{X,Y}:\R^2\to[0,1]$ given by
+\[
+F_{X,Y}(x,y) = \prob(X\leq x,Y\leq y).
+\]
+\it The CDFs $F_X(x)=\prob(X\leq x)$ and $F_Y(y)=\prob(Y\leq y)$ are called the \emph{marginal CDFs} of $X$ and $Y$ respectively.
+\een
+\end{definition}
+
+% defn: jointly discrete
+\begin{definition}
+\ben
+\it $X$ and $Y$ are called \emph{jointly discrete} if the random vector $(X,Y)$ takes only countably many values in $\R^2$, in which case they are described by their \emph{joint PMF},
+\[
+\begin{array}{cccl}
+f_{X,Y}:	& \R^2	& \to		& [0,1] \\
+			& (x,y)	& \mapsto	& \prob(X=x,Y=y).
+\end{array}
+\]
+\it The PMFs $f_X(x)=\prob(X=x)$ and $f_Y(y)=\prob(Y=y)$ are called the \emph{marginal PMFs} of $X$ and $Y$ respectively.
+\een
+\end{definition}
+
+% defn: jointly continuous
+\begin{definition}
+\ben
+\it $X$ and $Y$ are called \emph{jointly continuous} if their joint CDF can be written as
+\[
+F_{X,Y}(x,y) = \int_{-\infty}^x\int_{-\infty}^y f_{X,Y}(u,v)\,du\,dv \text{\qquad for all $x,y\in\R$,}
+\]
+for some integrable function $f_{X,Y}:\R^2\to[0,\infty)$ called the \emph{joint PDF} of $X$ and $Y$. 
+\it The PDFs $f_X(x)=F'_X(x)$ and $f_Y(y)=F'_Y(y)$ are called the \emph{marginal PDFs} of $X$ and $Y$ respectively, where $F_X(x)$ and $F_Y(y)$ are their marginal CDFs. Note that
+\[
+f_X(x) = \int_{-\infty}^{\infty}f_{X,Y}(x,y)\,dy
+\text{\qquad and\qquad}
+f_Y(y) = \int_{-\infty}^{\infty}f_{X,Y}(x,y)\,dx.
+\]
+\een
+
+\end{definition}
+
+%-----------------------------
+\subsection{Independence}
+
+Recall that two events $A$ and $B$ are \emph{independent} if $\prob(A\cap B)=\prob(A)\prob(B)$.
+
+% defn: independence
+\begin{definition}
+Two random variables $X$ and $Y$ are said to be \emph{independent} if the events $\{X\leq x\}$ and $\{Y\leq y\}$ are independent for all $x,y\in\R$.
+\end{definition}
+
+\begin{lemma}\label{lem:product_marginal_cdfs}
+\ben
+\it $X$ and $Y$ are independent if and only if $F_{X,Y}(x,y) = F_X(x)F_Y(y)$ for all $x,y\in\R$.
+\it If $X$ and $Y$ are jointly discrete, they are independent if and only if $f_{X,Y}(x,y) =f_X(x) f_Y(y)$ for all $x,y\in\R$.
+\it If $X$ and $Y$ are jointly continuous, they are independent if and only if $f_{X,Y}(x,y) = f_X(x)f_Y(y)$ for all $x,y\in\R$ and $\supp(f_{X,Y})$ is a rectangular region in $\R^2$.
+\een
+%\ben
+%\it $X$ and $Y$ are independent if and only if 
+%    \bit
+%    \it $F_{X,Y}(x,y) = F_X(x)F_Y(y)$ for all $x,y\in\R$.
+%    \eit
+%\it If $X$ and $Y$ are jointly discrete, they are independent if and only if 
+%    \bit
+%    \it $f_{X,Y}(x,y) =f_X(x) f_Y(y)\quad\text{for all}\quad x,y\in\R$.
+%    \eit
+%\it If $X$ and $Y$ are jointly continuous, they are independent if and only if
+%    \bit
+%    \it $f_{X,Y}(x,y) = f_X(x)f_Y(y)$ for all $x,y\in\R$, and
+%    \it the support of $f_{X,Y}$ is a rectangular region in $\R^2$.
+%    \eit
+%\een
+\end{lemma}
+\begin{proof}
+The first two parts follow directly from the definitions. For the jointly continuous case,
+\bit
+\it because $X$ and $Y$ are independent, $F_{X,Y}(x,y)=F_X(x)F_Y(y)$, and differentiating both sides with respect to $x$ and $y$ we get $f_{X,Y}(x,y)=f_X(x)f_Y(y)$. 
+\it If the value taken by $X$ affects the range of values taken by $Y$, then $Y$ clearly dependes on $X$. Thus for $X$ and $Y$ to be independent we need that
+\[
+\supp(f_{X,Y}) = \supp(f_X)\times \supp(f_Y),
+\]
+which is a rectangular region in $\R^2$.
+\eit
+\end{proof}
+
+% example: discrete
+\begin{exercise}\label{exc:joint_disc}
+A fair die is rolled once. Let $\omega$ denote the outcome, and consider the random variables
+\[
+X(\omega) = \left\{\begin{array}{cl}
+	1 & \text{ if $\omega$ is odd}, \\
+	2 & \text{ if $\omega$ is even},
+\end{array}\right. 
+\text{\quad and\quad}
+Y(\omega) = \left\{\begin{array}{cl}
+	1 & \text{ if $\omega\leq 3$}, \\
+	2 & \text{ if $\omega\geq 4$}.
+\end{array}\right.
+\]
+Find the joint PMF of $X$ and $Y$. Are $X$ and $Y$ independent?
+\begin{solution}
+\[
+\begin{array}{c|cc|c}
+		& Y=1 	& Y=2	& f_X	\\ \hline
+X=1		& 1/3	& 1/6	& 1/2	\\ 
+X=2		& 1/6 	& 1/3	& 1/2 	\\ \hline	
+f_Y		& 1/2	& 1/2	& 		\\ 
+\end{array}
+\]
+$X$ and $Y$ are \emph{not} independent, because (for example) 
+\[
+\prob(X=1,Y=1)\neq\prob(X=1)\prob(Y=1).
+\]
+\end{solution}
+\end{exercise}
+
+% example: continuous
+\begin{example}
+Let $X$ and $Y$ be jointly continuous random variables with the following joint PDF:
+\[
+f_{X,Y}(x,y) = 
+\left\{\begin{array}{ll}
+	c(1-x)y	& \text{for } 0\leq y \leq x \leq 1, \\
+	0		& \text{otherwise.}
+\end{array}\right.
+\]
+\ben
+\it Sketch the support of $f_{X,Y}$.
+\it Are $X$ and $Y$ independent?
+\it Find the marginal PDFs of $X$ and $Y$, and show that $c=24$.
+%\it Show that $c=24$.
+\een
+\end{example}
+
+\begin{solution}
+\ben
+\it % << (a)
+$\supp(f_{X,Y})$ is the triangular region bounded by the lines $y=x$, $y=0$ and $x=1$.
+\it % << (d)
+The support of $f_{X,Y}$ is not a rectangular region in $\R^2$, so $X$ and $Y$ cannot be independent.
+\it % << (c)
+The marginal PDFs are:
+\[\begin{array}{lll}
+f_X(x) 	
+	& = 24\int_0^x (1-x)y\,dy 
+	= 24(1-x)\left[\frac{y^2}{2}\right]_0^x 
+	& = \begin{cases}
+		12x^2(1-x) & 0\leq x\leq 1, \\
+		0			& \text{otherwise.}
+		\end{cases} \\[3ex]
+f_Y(y) 	
+	& = 24\int_y^1 (1-x)y\,dx 
+	= 24y\left[x - \frac{x^2}{2}\right]_y^1 
+	& = \begin{cases}
+		12y(1-y)^2 & 0\leq y\leq 1, \\
+		0			& \text{otherwise.}
+		\end{cases}
+\end{array}\]
+\it % << (b)
+\bit
+\it For fixed $x\in[0,1]$, we must have $0\leq y\leq x$.
+\it For fixed $y\in[0,1]$, we must have $y\leq x\leq 1$.
+\eit
+\[
+\int_{-\infty}^{\infty}\left(\int_{-\infty}^{\infty}f_{X,Y}(x,y)\,dy\right)\,dx
+	= \int_0^1\int_0^x c(1-x)y\,dy\,dx 
+	= \frac{c}{2}\int_0^1 x^2-x^3\,dx
+%	= \frac{c}{2}\left(\frac{1}{3}-\frac{1}{4}\right)
+	= \frac{c}{24}.
+\]
+By the law of total probability this must equal $1$, so $c=24$.
+\een
+\end{solution}
+

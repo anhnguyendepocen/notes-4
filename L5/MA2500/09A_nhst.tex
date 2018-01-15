@@ -1,0 +1,280 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Null hypothesis siginficance testing}\label{sec:nhst}
+
+Let $X$ be a random variable, let $\mathcal{M}=\{F(x;\theta):\theta\in\Theta\}$ be a statistical model for its distribution and let $\{\Theta_0, \Theta_1\}$ be a \emph{partition} of the parameter space:
+\[
+\Theta_0\cup\Theta_1 = \Theta \qquad\text{and}\qquad \Theta_0\cap\Theta_1 = \emptyset.
+\]
+This partition defines two possible statistical models for the distribution of $X$.
+\[
+\begin{array}{ll}
+\text{The \emph{null} model:}			&\quad\mathcal{M}_0	 =\{F(x,\theta):\theta\in\Theta_0\}.	\\
+\text{The \emph{alternative} model:}	&\quad\mathcal{M}_1	 =\{F(x,\theta):\theta\in\Theta_1\}.
+\end{array}
+\]
+To decide which model is the `correct' one, we need to test the claim that the true parameter belongs to the set $\Theta_0$ against the alternative claim that it belongs to $\Theta_1$. We denote these two hypotheses by $H_0$ and $H_1$ respectively and refer to them as follows.
+
+\begin{center}
+\begin{tabular}{ll} \hline
+The \emph{null} hypothesis:		& \quad $H_0: \theta\in\Theta_0$. \\
+The \emph{alternative} hypothesis:	& \quad $H_1: \theta\in\Theta_1$. \\ \hline
+\end{tabular}
+\end{center}
+
+\begin{definition}
+\bit
+\it A hypothesis which specifies a particular value of $\theta$ is called a \emph{simple hypothesis}.
+\it A hypothesis which specifies a set of values for $\theta$ is called a \emph{composite hypothesis}.
+\eit
+\end{definition}
+
+For example, $H_0:\theta = \theta_0$ is a simple hypothesis while $H_1:\theta\neq\theta_0$ is a composite hypothesis.
+
+%-----------------------------
+\subsection{Type I and Type II errors}
+
+In the absence of any evidence to the contrary, we assume that $H_0$ is correct. Suppose we now obtain a random sample $\mathbf{x}=(x_1,x_2,\ldots,x_n)$ from the distribution of $X$, and compute an estimate $T(\mathbf{x})$ of the true parameter value $\theta$. We decide which hypothesis is correct based on the computed value of $T(\mathbf{x})$:
+\bit
+\it if $T(\mathbf{x})\in\Theta_0$ we retain the null hypothesis $H_0:\theta\in\Theta_0$;
+\it if $T(\mathbf{x})\in\Theta_1$ we reject $H_0$ in favour of the alternative hypothesis $H_1:\theta\in\Theta_1$.
+\eit
+
+\begin{definition}
+\bit
+\it A \emph{Type I error} occurs when $\theta\in\Theta_0$ but $T(\mathbf{x})\in\Theta_1$, which leads us to incorrectly reject $H_0$. 
+\it A \emph{Type II error} occurs when $\theta\in\Theta_1$ but $T(\mathbf{x})\in\Theta_0$, which leads us to incorrectly retain $H_0$.
+\eit
+\end{definition}
+
+% decision tables
+Hypothesis tests can be respresented by \emph{decision tables}:
+\begin{center}
+\begin{tabular}{|c|c|c|} \hline
+											& \multicolumn{2}{c|}{Reality} \\ 
+Decision									& $H_0$ true ($\theta\in\Theta_0$)	& $H_0$ false ($\theta\in\Theta_1$) \\ \hline
+Retain $H_0$ ($T\in\Theta_0$)	& Correct decision 					& Type II error \\ 
+Reject $H_0$ ($T\in\Theta_1$)	& Type I error 						& Correct decision \\ \hline
+\end{tabular}
+\end{center}
+
+%\begin{center}
+%\begin{tabular}{|c|c|c|} \hline
+%							& \multicolumn{2}{c|}{Reality} \\ 
+%Decision					& $\theta\in\Theta_0$		& $\theta\in\Theta_1$ \\ \hline
+%$T\in\Theta_0$	& Correct decision 	& Type II error \\ 
+%$T\in\Theta_1$	& Type I error 		& Correct decision \\ \hline
+%\end{tabular}
+%\end{center}
+%
+% example
+Different applications use different terminology. A decision table for a radar system, where the null hypothesis asserts the absence of a target, might be as follows:
+%Here is decision table for a radar systems, where the null hypothesis asserts the absence of a target:
+\begin{center}
+\begin{tabular}{|c|c|c||c|} \hline
+				& \multicolumn{2}{c||}{Reality} & \\
+Decision		& 	Target Absent	& Target Present 	& Action\\  \hline
+Target Absent	&	Clear			& Miss 				& Stay silent \\
+Target Present	&	False alarm 	& Hit 				& Sound alarm \\  \hline
+\end{tabular}
+\end{center}
+Here is a decision table for a medical diagnosis, where the null hypothesis asserts the absence of a disease:
+\begin{center}
+\begin{tabular}{|c|c|c||c|} \hline
+				& \multicolumn{2}{c||}{Reality} &  \\
+Decision		& Disease Absent	& Disease Present	& Action \\  \hline
+Disease Absent	& True negative		& False negative	& Do nothing  \\
+Disease Present	& False positive 	& True positive 	& Prescribe \\  \hline
+\end{tabular}
+\end{center}
+
+
+%-----------------------------
+\subsection{Critical regions}
+
+\begin{definition}
+Let $\mathbf{X}=(X_1,X_2,\ldots,X_n)$ be a random sample from the distribution of $X$. 
+The set of all possible realisations of $\mathbf{X}$ is called the \emph{sample space} which we denote by $D\subseteq\R^n$.
+\end{definition}
+
+\begin{center}
+%\begin{table*}[ht]
+%\centering
+\begin{tabular}{lcl}\hline
+Model ($\mathcal{M}$)	& & Sample space ($D$) \\ \hline
+Bernoulli				& & binary vectors (of length $n$)\\
+Poisson					& & vectors of non-negative integers \\
+Normal					& & vectors of real numbers \\ \hline
+\end{tabular}
+%\caption*{Examples of sample spaces}
+%\end{table*}
+\end{center}
+
+%\bigskip
+%It can be shown that for every $\theta\in\Theta$, there exits a unique probability measure 
+%\[\begin{array}{rccl}
+%\prob_{\theta}:	& \mathcal{B}_n	& \to 		& [0,1] \\
+%				& A				& \mapsto	& \prob(\mathbf{X}\in A)
+%\end{array}\]
+%(where $\mathcal{B}_n$ is the Borel $\sigma$-field over $\R^n$) for which the component variables $X_i$ are independent and identically distribted according to $F(x;\theta)$. This is called the \emph{probability measure induced by $\mathbf{X}$} on the sample space.
+%
+% defn: critical region
+\begin{definition}
+A \emph{hypothesis test} of a null hypothesis $H_0$ against an alternative hypothesis $H_1$ is defined by a subset of the sample space called the \emph{critical region} of the test: we \emph{reject} $H_0$ if $\mathbf{X}\in C$ but \emph{retain} $H_0$ if $\mathbf{X}\notin C$.
+\end{definition}
+
+Critical regions can be specified in terms of a \emph{test statistic} say $T:D\to\R$, in which case the critical region is specified by one or more \emph{critical values}. For example, we might define
+\[
+C = \{\mathbf{x}\in D : c_1\leq T(\mathbf{x})\leq c_2\}
+\]
+in which case we reject $H_0$ if $T(\mathbf{x})$ falls between the critial values $c_1$ and $c_2$.
+
+%% simple example
+%\begin{example}
+%Let $X_1,X_2,\ldots,X_n$ be a random sample from the $N(\mu,\sigma^2)$ distribution, where $\mu$ is unknown but $\sigma^2$ is known. Using the sample mean as a test statistic, define a suitable critical region for testing the null hypothesis $H_0:\mu=\mu_0$ against the alternative hypothesis $H_1:\mu\neq\mu_0$.
+%\begin{solution}
+%If we assume that $H_0$ is true, then $X_i\sim N(\mu_0,\sigma^2)$ and
+%\[
+%\frac{1}{n}\sum_{i=1}^n X_i \sim N\left(\mu_0, \frac{\sigma^2}{n}\right).
+%\]
+%For a particular realisation $\boldx=(x_1,x_2,\ldots,x_n)$ of the sample, if
+%\bit
+%\it $\displaystyle\frac{1}{n}\sum_{i=1}^n x_i\approx\mu_0$, we might decide to retain the null hypothesis $H_0:\mu=\mu_0$, but if
+%\it $\displaystyle\frac{1}{n}\sum_{i=1}^n x_i\not\approx\mu_0$, we might decide to reject $H_0$ in favour of the alternative $H_1:\mu\neq\mu_0$.
+%\eit
+%Thus we define the critical region
+%\[
+%C = \left\{\boldx\in D: \left|\frac{1}{n}\sum_{i=1}^n x_i - \mu_0\right| > c\right\},
+%\]
+%where the critical value $c$ is chosen appropriately. 
+%\end{solution}
+%\end{example}
+
+%-----------------------------
+\subsection{The size (or significance level) of a test}
+
+We would like to choose a critical region $C$ that minimises the probability of making both Type I and Type II errors. These are conflicting objectives, as illustrated by the following extreme cases.
+\bit
+\it If we choose $C=\emptyset$ we will never reject $H_0$ (because the random sample never falls into $C$), so we never make Type I errors when $\theta\in\Theta_0$ but always make Type II errors when $\theta\in\Theta_1$.
+\it If we choose $C=D$ we will always reject $H_0$ (because the random sample always falls into $C$), so we never make Type II errors when $\theta\in\Theta_1$ but always make Type I errors when $\theta\in\Theta_0$.
+\eit
+
+% remark: status quo
+\begin{remark}[Conservatie testing]
+The null hypothesis represents the \textit{status quo}. From a conservative standpoint, rejecting the status quo incorrectly (Type I error) is worse than retaining the status quo incorrectly (Type II error). As a result, hypothesis tests usually proceed in two stages:
+\ben
+\it find a set of tests for which $\prob(\text{Type I error})$ is bounded above by some acceptable value, then
+\it choose one of these tests so that $\prob(\text{Type II error})$ is as small as possible.
+\een
+\end{remark}
+
+%We compute these probabilities over all possible realisations of the sample $\mathbf{X}=(X_1,X_2,\ldots,X_n)$. If $F(x;\theta)$ is the common CDF of the $X_i$, it can be shown that for every $\theta\in\Theta$, there exits a unique probability measure 
+\begin{definition}
+Let $\mathbf{X}=(X_1,X_2,\ldots,X_n)$ be a random sample and let $F_{\theta}(x)$ be the common CDF of the component variables $X_i$. It can be shown that for every $\theta\in\Theta$ there exits a unique probability measure $\prob_\theta$ on subsets of $\R^n$ for which the component variables $X_i$ are independent and identically distribted according to $F_{\theta}(x)$. This is called the \emph{probability distribution induced by $\mathbf{X}$} on the sample space and is denoted by $\prob_{\theta}(A)=\prob_{\theta}(\mathbf{X}\in A)$, which is the probability that %$\mathbf{X}$
+the random sample falls into the set $A\subseteq\R^n$ when the parameter value is $\theta$.%: we often write $\prob_{\theta}(\mathbf{X}\in A)$ instead of $\prob_{\theta}(A)$.
+\end{definition}
+
+% defn: size
+\begin{definition}
+The \emph{size} of a critical region (also called the \emph{significance level} of the test) is the maximum probability of making a Type I error. This is usually denoted by $\alpha$,
+\[
+\alpha = \max_{\strut\theta\in\Theta_0}\ \prob_{\theta}(\mathbf{X}\in C).
+\]
+If $H_0$ is a simple hypothesis, say $H_0:\theta=\theta_0$, this reduces to $\alpha = \prob_{\theta_0}(\mathbf{X}\in C)$.
+\end{definition}
+
+\begin{remark}[$p$-values]
+Let $T:D\to\R$ be a test statistic, let $C = \{\mathbf{x} : T(\mathbf{x}) \leq c\}$ be a critical region and suppose that $\mathbf{x}_{\text{obs}}$ is the observed sample realisation. Then the \emph{empirical size} (or $p$-value) of the test is defined to be
+\[
+p = \max_{\theta\in\Theta_0}\,\prob_{\theta}\big[ T(\mathbf{X})\leq T(\mathbf{x}_{\text{obs}})\big].
+\]
+If $H_0$ is a simple hypothesis, say $H_0:\theta=\theta_0$, this reduces to 
+\[
+p = \prob_{\theta_0}\big[ T(\mathbf{X})\leq T(\mathbf{x}_{\text{obs}})\big].
+\] 
+For a test of size $\alpha$, we reject $H_0$ if the empirical size satisfies $p\leq\alpha$.
+\end{remark}
+
+
+%-----------------------------
+\subsection{The power of a test} 
+
+Among all critical regions of size $\alpha$ we would like to choose one that minimises the probability $\prob_{\theta}(\mathbf{X}\notin C)$ of making Type II errors for every $\theta\in\Theta_1$, or equivalently a critical region that maximises $\prob_{\theta}(\mathbf{X}\in C)$ for every $\theta\in\Theta_1$. 
+
+\begin{definition}
+Let $C$ be a critical region for testing $H_0:\theta\in\Theta_0$ against $H_1:\theta\in\Theta_1$. 
+The \emph{power function} of the associated test is 
+\[
+\gamma(\theta) = \prob_{\theta}(\mathbf{X}\in C) \quad\text{which is defined for all $\theta\in\Theta_1$.}
+\]
+The value $\gamma(\theta)$ is called the \emph{power of the test to detect the alternative hypothesis at $\theta\in\Theta_1$}.
+\end{definition}
+
+% remark: beta
+\begin{remark}
+The probability of making Type II errors is often denoted by $\beta$:
+\begin{align*}
+\beta(\theta) 
+	& = \prob_{\theta}(\mathbf{X}\notin C) \\
+	& = 1-\gamma(\theta).% \quad \text{for $\theta\in\Theta_1$.}
+\end{align*}
+To maximise the power $\gamma(\theta)$ is to minimise the probability $\beta(\theta)$ of making a Type II error.
+\end{remark}
+
+%% more powerful
+%Let $C_1$ and $C_2$ be two critical regions of size $\alpha$, and let $\gamma_1$ and $\gamma_2$ respectively denote the power functions of the associated tests. If $\gamma_1(\theta) > \gamma_2(\theta)$ for all $\theta\in\Theta_1$, we say that $C_1$ is a \emph{more powerful test} than $C_2$. Later we prove that the \emph{simple likelihood ratio test} is at least as powerful as any other test of a simple null hypothesis against a simple alternative.
+%
+\begin{example}
+Let $X_1,X_2,\ldots,X_8$ be a random sample from the $\text{Poisson}(\theta)$ distribution, where $\theta>0$ is unknown. We reject the simple null hypothesis $H_0:\theta=0.5$ in favour of the alternative $H_1:\theta>0.5$ whenever the observed sum satisfies $\sum_{i=1}^8 X_i \geq 8$.
+\ben
+\it Compute the size of the test.
+\it Compute the power of the test at $\theta = 0.75$, $\theta = 1.0$ and $\theta = 1.25$.
+\een
+Use the fact that if $X\sim\text{Poisson}(\theta_1)$ and $Y\sim\text{Poisson}(\theta_2)$ then $X+Y\sim\text{Poisson}(\theta_1+\theta_2)$.
+\end{example}
+
+\begin{solution}
+The critical region of the test is 
+\[
+C = \big\{\mathbf{x} : T(\mathbf{x}) \geq 8\big\}
+\text{\quad where\quad}
+T(\mathbf{X}) = \sum_{i=1}^8 X_i.
+\]
+By the hint, if $X_i\sim\text{Poisson}(\theta)$, then $T(\boldX)\sim\text{Poisson}(8\theta)$. This is our test statistic.
+\ben
+\it % << (i)
+Under $H_0:\theta=0.5$, we have $T\sim\text{Poisson}(4)$ so
+\begin{align*}
+\alpha	= \prob_{0.5}\big(\boldX\in C\big) 
+		& = \prob(T\geq 8) \text{ where } T\sim\text{Poisson}(4) \\
+		& = 1 - \prob(T\leq 7) \text{ where } T\sim\text{Poisson}(4) \\
+		& = 1 - 0.9489 = 0.0511 \quad\text{(from tables).}
+\end{align*}
+\it % << (ii)
+Under $H_1:\theta=0.75$, we have $T\sim\text{Poisson}(6)$ so
+\begin{align*}
+\gamma(0.75) = \prob_{0.75}\big(\boldX\in C\big) 
+			& = \prob(T\geq 8)\text{ where }T\sim\text{Poisson}(6) \\
+			& = 1 - \prob\big(T\leq 7)\text{ where }T\sim\text{Poisson}(6) \\
+			& = 1 - 0.7440 = 0.2560 \quad\text{(from tables).}
+\end{align*}
+Under $H_1:\theta=1$, we have $T\sim\text{Poisson}(8)$ so
+\begin{align*}
+\gamma(1.0)	= \prob_{1.0}\big(\boldX\in C\big) 
+			& = \prob(T\geq 8)\text{ where }T\sim\text{Poisson}(8) \\
+			& = 1 - \prob\big(T\leq 7)\text{ where } T\sim\text{Poisson}(8) \\
+			& = 1 - 0.4530 = 0.4570 \quad\text{(from tables).}
+\end{align*}
+Under $H_1:\theta=1.25$, we have $T\sim\text{Poisson}(10)$ so
+\begin{align*}
+\gamma(1.25) = \prob_{1.25}\big(\boldX\in C;\theta\big)
+			& = \prob(T\geq 8)\text{ where } T\sim\text{Poisson}(10) \\
+			& = 1 - \prob(T\leq 7)\text{ where } T\sim\text{Poisson}(10) \\
+			& = 1 - 0.2202 = 0.7798 \quad\text{(from tables).}
+\end{align*}
+Notice that the power of the test to detect the alternative hypothesis \emph{increases} as $\theta$ moves away from the value $\theta=0.5$ specified by the null hypothesis.
+\een
+\end{solution}
+
+

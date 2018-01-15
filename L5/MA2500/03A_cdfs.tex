@@ -1,0 +1,234 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Random variables}\label{sec:rvs}
+
+Let $(\Omega,\prob)$ be a probability space associated with some random experiment. Random experiments with numerical outcomes lend themselves to mathematical analysis; for more abstract sample spaces we introduce the notion of \emph{random variables}, which map sample spaces to the real numbers. Random variables are typically represented by uppercase letters.
+
+\begin{definition}
+A \emph{random variable} is a function which maps a sample space $\Omega$ to the real numbers,
+\[
+\begin{array}{rccl}
+	X:	& \Omega	& \to		& \R \\
+		& \omega	& \mapsto	& X(\omega)
+\end{array}
+\]
+\end{definition}
+
+We are often not directly interested in the outcome of a random experiment, but rather in some consequence of the outcome: a gambler might be more interested in his losses than in the outcomes of the individual games which led to them. Random variables can be used to pick out particular features of an experiment that are of interest.
+
+
+\begin{example}
+A fair coin is tossed until a head is observed. Suppose we win \pounds 3 if the coin is tossed an odd number of times and lose \pounds 5 if the coin is tossed an even number of times. The sample space is the countably infinite set $\Omega=\{H,TH,TTH,TTTH,\ldots\}$. We win if event $A=\{H,TTH, TTTTH,\ldots\}$ occurs and lose if event $A^c=\{TH, TTTH, TTTTH,\ldots\}$ occurs. Because the coin is fair,
+\[\begin{array}{lll}
+\prob(A) 	& = \frac{1}{2} + \frac{1}{8} + \frac{1}{32} + \ldots	& = \frac{2}{3}, \\ 
+\prob(A^c) 	& = \frac{1}{4} + \frac{1}{16} + \frac{1}{64} + \ldots 	& =  \frac{1}{3}.
+\end{array}\]
+Our situation can be represented more concisely by the random variable $X:\Omega\to\R$ defined by
+\[
+X(\omega) =
+  \begin{cases}
+   +3 & \text{if } \omega\in \{H, TTH, TTTTH, \ldots\}, \\
+   -5 & \text{if } \omega\in \{TH, TTTH, TTTTTH, \ldots\}.
+  \end{cases}
+\]
+From here it follows that $\prob(X=3)=2/3$ and $\prob(X=-5)=1/3$.
+\end{example}
+
+%-----------------------------
+\subsection{Distributions}\label{ss:dist}
+
+Let $B$ be a subset of $\R$. We use the notation $\{X\in B\}$ as shortand for the event $\{\omega: X(\omega)\in B\}$ and $\prob(X\in B)$ as shorthand for the probability of this event. Thus $\{X\in B\}$ is the event consisting of those outcomes that are mapped by $X$ into $B$, and $\prob(X\in B)$ is therefore the probability that $X$ takes a value in the set $B$.
+
+\begin{definition}\label{def:distribution}
+The \emph{distribution} of $X$ is the function $\prob_X$ defined on subsets of $\R$ by 
+\[
+\prob_X(B) = \prob(X\in B) 
+\]
+\end{definition}
+
+\begin{theorem}\label{th:distribution}
+$\prob_X$ is a probability measure on subsets of $\R$.
+\begin{proof}
+First we check that $\prob_X(\R) = 1$:
+\[
+\prob_X(\R) = \prob(X\in\R) = \prob\big(\big\{\omega:X(\omega)\in\R\big\}\big) = \prob(\Omega) = 1. 
+\]
+Next we show that $\prob_X$ is countably additive. Let $B_1,B_2,\ldots$ be a sequence of pairwise disjoint subsets of $\R$. Then
+\begin{align*}
+\prob_X\big(\textstyle\bigcup_{i=1}^{\infty} B_i\big)
+	& = \prob\big(\big\{\omega : X(\omega)\in \textstyle\bigcup_{i=1}^{\infty} B_i\big\}\big) \\
+	& = \prob\big(\textstyle\bigcup_{i=1}^{\infty} \{\omega : X(\omega)\in B_i\}\big) \\
+	& = \sum_{i=1}^{\infty} \prob\big(\{\omega : X(\omega)\in B_i\}\big) \quad\text{because the $B_i$ are disjoint,} \\
+	& = \sum_{i=1}^{\infty} \prob_X(B_i),
+\end{align*}
+as required.
+\end{proof}
+\end{theorem}
+
+
+%-----------------------------
+\subsection{Indicator variables}
+Every event can be represented by its \emph{indicator} variable, which \textit{indicates} whether or not the event occurs. Indicator variables provide an explicit link between random events and random variables. 
+
+\begin{definition}\label{def:indicator}
+The \emph{indicator variable} of an event $A$ is the function $I_A:\Omega\to\R$ defined by
+\[
+I_A(\omega) =
+  \begin{cases}
+   1 & \text{if } \omega\in A, \\
+   0 & \text{if } \omega\notin A.
+  \end{cases}
+\]
+\end{definition}
+
+\begin{exercise}
+Let $A$ and $B$ be any two events. Show that $I_{A^c} = 1 - I_A$, $I_{A\cap B} = I_A I_B$ and $I_{A\cup B} = I_A + I_B - I_{A\cap B}$. Note that two functions are equal if and only if they are equal at every point.
+\end{exercise}
+
+
+%-----------------------------
+\section{CDFs}\label{sec:cdfs}
+
+A probability distribution $\prob_X$ is uniquely determined by the values it takes on intervals of the form $(-\infty, x\,]$, and hence by its \emph{cumulative distribution function} (CDF).
+
+%\begin{definition}
+%The CDF of a random variable $X:\Omega\to\R$ is the function
+%\[
+%\begin{array}{cccl}
+%F:	& \R	& \longrightarrow	& [0,1] \\
+%	& x 			& \mapsto			& \prob(X\leq x).
+%\end{array}
+%\]
+%\end{definition}
+
+\begin{definition}
+The CDF of a random variable $X$ is the function $F:\R\to[0,1]$ given by
+\[
+F(x) =  \prob(X\leq x).
+\]
+\end{definition}
+
+%\begin{remark}
+%In the probability space $(\R,\prob_X)$, the measure of the interval $(a,b\,]$ is
+%\[
+%\prob_X\big[(a,b\,]\big] = \prob(a < X\leq b) = \prob(X\leq b)-\prob(X\leq a) 
+%= F(b) - F(a).
+%\]
+%Compare this to the usual measure of its length, $\mathbb{L}\big[(a,b\,]\big] = b - a$.
+%\end{remark}
+
+%-----------------------------
+%\subsection{Properties of CDFs}
+
+We can use the properties of probability measures to derive some properties of CDFs. 
+
+\begin{theorem}[Properties of CDFs]\label{thm:props_cdfs}
+Let $F:\R\to[0,1]$ be a CDF. Then
+\ben
+\it $F$ is an increasing function, 
+\it $F(x)\to 0$ as $x\to-\infty$,
+\it $F(x)\to 1$ as $x\to+\infty$, and
+\it $F(x+h)\to F(x)$ as $h\downarrow 0$ (right continuity).
+\een
+\end{theorem}
+
+
+\begin{proof}
+Let $X:\Omega\to\R$ be a random variable and let $F$ be its CDF.
+\ben
+\it % (i): increasing
+To show that $F$ is increasing, let $x < y$ and consider the events $A = \{X\leq x\}$ and $B = \{X\leq x'\}$, i.e.
+\[
+A	= \{\omega: X(\omega)\leq x\}
+\quad\text{and}\quad
+B	= \{\omega: X(\omega)\leq x'\}.
+\]
+By construction, $F(x)=\prob(A)$ and $F(x')=\prob(B)$, and because $x < x'$ we have $A\subseteq B$. By the monotonicity of probability measures, $\prob(A)\leq \prob(B)$ or equivalently $F(x) \leq F(x')$, so $F$ is an increasing function.
+
+\it % (ii): F(x) -> 0 as x -> -\infty
+To show that $F(x)\to 0$ as $x\to-\infty$, let $B_n = \{X\leq -n\}$ for $n=1,2,\ldots$. Then $F(-n)= \prob(B_n)$, and $B_1,B_2,\ldots$ is a decreasing sequence ($B_{n+1}\subseteq B_n$), with 
+\[
+\bigcap_{n=1}^{\infty} B_n = \emptyset.
+\]
+(This is because for any $x$, there exists an $n$ such that $x\notin (-\infty,-n]$.) By the continuity of probability measures,
+\[
+\lim_{n\to\infty}F(-n) = \lim_{n\to\infty}\prob(B_n) = \prob\left(\bigcap_{n=1}^n B_n\right) = \prob(\emptyset) = 0.
+\]
+Because $F(x)$ is an increasing function, we conclude that $\lim_{x\to-\infty}F(x)=0$.
+
+
+\it % (iii): F(x) -> 1 as x -> \infty
+To show that $F(x)\to 1$ as $x\to\infty$, let $A_n = \{X\leq n\}$ for $n=1,2,\ldots$. Then $F(n)= \prob(A_n)$, and $A_1,A_2,\ldots$ is an increasing sequence ($A_n\subseteq A_{n+1}$), with 
+\[
+\bigcup_{n=1}^{\infty} A_n = \Omega.
+\]
+(This is because for any $x$, there exists an $n$ such that $x\in (-\infty,n]$).  By the continuity of probability measures,
+\[
+\lim_{n\to\infty}F(n) = \lim_{n\to\infty}\prob(A_n) = \prob\left(\bigcup_{n=1}^{\infty} A_n\right) = \prob(\Omega) = 1,
+\]
+Because $F(x)$ is an increasing function, we conclude that $\lim_{x\to\infty}F(x)=1$.
+
+\it % (iv): right continuity
+To show that $F(x)$ is right-continuous, let $B_n = \{X\leq x+1/n\}$ for $n=1,2,\ldots$. Then $F\left(x+1/n\right) = \prob(B_n)$, and $B_1,B_2,\ldots$ is a decreasing sequence ($B_{n+1}\subseteq B_n$), with \[
+\bigcap_{n=1}^{\infty} B_n = (-\infty,x]. 
+\]
+By the continuity of probability measures,
+\[
+F(x) = \prob\left(\bigcap_{n=1}^{\infty} B_n\right) = \lim_{n\to\infty} \prob(B_n) = \lim_{n\to\infty}F\left(x+\frac{1}{n}\right).
+\]
+Because $F(x)$ is an increasing function, we conclude that $\lim_{h\downarrow 0}F(x+h)=F(x)$.
+\een
+\end{proof}
+
+\begin{exercise}
+%\begin{questions}
+%\question % GS 2.1.4
+It can be shown that any function $F:\R\to[0,1]$ which has the four properties listed in Theorem~\ref{thm:props_cdfs} is a CDF. With this in mind, show that if $F$ and $G$ are CDFs and $0<\lambda<1$ is a constant, then $\lambda F + (1-\lambda)G$ is also a CDF.
+\begin{answer}
+Let $H(x) = \lambda F(x) + (1-\lambda)G(x)$. 
+\ben
+\it if $x < x'$ then 
+\[
+H(x) = \lambda F(x) + (1-\lambda)G(x) \leq \lambda F(x') + (1-\lambda)G(x') = H(x').
+\]
+\it
+\[
+\lim_{x\to-\infty} H(x) 
+	= \lim_{x\to-\infty}\left[\lambda F(x)+(1-\lambda)G(x)\right]
+	=  \lambda\lim_{x\to-\infty} F(x) + (1-\lambda)\lim_{x\to-\infty} G(x) 
+	= 0.
+\]
+\it
+\[
+\lim_{x\to\infty} H(x) 
+	= \lim_{x\to\infty}\left[\lambda F(x)+(1-\lambda)G(x)\right]
+	=  \lambda\lim_{x\to\infty} F(x) + (1-\lambda)\lim_{x\to\infty} G(x) 
+	= \lambda + (1-\lambda)
+	= 1.
+\]
+\it
+\begin{align*}
+\lim_{\epsilon\downarrow 0} H(x+\epsilon) 
+	& = \lim_{\epsilon\downarrow 0}\left[\lambda F(x+\epsilon)+(1-\lambda)G(x+\epsilon)\right] \\
+	& = \lambda\lim_{\epsilon\downarrow 0} F(x+\epsilon) + (1-\lambda)\lim_{\epsilon\downarrow 0} G(x+\epsilon) \\
+	& = \lambda F(x) + (1-\lambda)G(x) 
+	= H(x).
+\end{align*}
+\een
+Thus $H$ satisfies the four properties of Theorem~\ref{thm:props_cdfs}, and is therefore a CDF.
+\end{answer}
+
+%\question % GS 2.2.3
+%Let $X_1,X_2,\ldots,X_n$ be independent and identically distributed random variables, and let $F$ denote their common CDF. If $F$ is unknown, find a way of estimating $F$ by considering the indicator variables of the events $\{X_i\leq x\}$.
+%\begin{answer}
+%Let $X$ be a random variable with same CDF, and let $I_i(x)$ the indicator variable of the event $\{X_i\leq x\}$. Then
+%\[
+%\prob(X\leq x) \approx \frac{1}{n}\sum_{i=1}^{n} I_i(x),
+%\]
+%which is the proportion of observations that are at most equal to $x$. This is called the \emph{empirical CDF} of $X$.
+%\end{answer}
+%\end{questions}
+\end{exercise}
+
+

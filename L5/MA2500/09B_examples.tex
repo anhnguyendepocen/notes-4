@@ -1,0 +1,317 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{One-sample tests}\label{sec:nhst_one_sample_tests}
+
+%-----------------------------
+\begin{example}[Binomial test]
+ Let $X_1,X_2,\ldots,X_n$ be a random sample from the $\text{Bernoulli}(\theta)$ distribution, where $\theta$ is unknown.
+\ben
+\it Find a critical region of size $\alpha$ to test $H_0:\theta=\theta_0$ against $H_1:\theta<\theta_0$.
+\it Find the power function of the test.
+\een
+\end{example}
+
+\begin{solution}
+\bit
+\it The sample space is $D = \{0,1\}^n$, which consists of all binary vectors of length $n$.
+\eit
+Let $\mathbf{X}=(X_1,X_2,\ldots,X_n)$ denote the random sample, and consider the test statistic 
+\[
+\begin{array}{rccl}
+S: & D & \to & \R \\
+ & \mathbf{x} & \mapsto & \sum_{i=1}^n x_i
+\end{array}
+\]
+\bit
+\it $S(\mathbf{X})$ is the total number of successes in the sample.
+\it Under the null hypothesis, $S(\mathbf{X})\sim\text{Binomial}(n,\theta_0)$,
+\eit
+
+\ben
+\it % size
+To test $H_0:\theta=\theta_0$ against $H_1:\theta<\theta_0$, we define the critical region
+\[
+C = \{\mathbf{x} : S(\mathbf{x}) \leq k\},
+\]
+where $k$ is chosen so that $\prob_{\theta_0}\big(S(\mathbf{X})\leq k\big) = \alpha$.
+
+\bit
+\it Because $S$ is \emph{discrete}, it is unlikely that $\prob_{\theta_0}\big(S(\mathbf{X})\leq k\big) = \alpha$ has an integer solution $k$.
+\it The cautious approach would be to take the largest value of $k$ satisfying $\prob_{\theta_0}\big(S(\mathbf{X})\leq k\big) \leq \alpha$.
+\eit
+
+\it % power
+The power function of the test is
+\[
+\gamma(\theta) 
+	= \prob_{\theta}(S\leq k) 
+	= \sum_{j=1}^k\binom{n}{j}\theta^j(1-\theta)^{n-j} \quad\text{for all $\theta < \theta_0$.}
+\]	
+%\begin{align*}
+%\gamma(\theta) 
+%	& = \prob_{\theta}\big[S(\mathbf{X})\leq k\big] \\
+%	& = \sum_{j=1}^k\binom{n}{j}\theta^j(1-\theta)^{n-j}\text{\quad for\quad $\theta\in [0,\theta_0]$.}
+%\end{align*}
+\een
+If we increase the size of the test, its power also increases: for example, if we take the critical region
+\[
+C^{*} = \{\mathbf{x} : S(\mathbf{x}) \leq k+1 \}
+\]
+then $\gamma^{*}(\theta) > \gamma(\theta)$ for all $\theta\in(0,1)$:
+\[
+\gamma^{*}(\theta) 
+	= \prob(S\leq k+1;\theta)
+	> \prob(S\leq k;\theta) 
+	= \gamma(\theta) \text{\quad for all $\theta\in(0,1)$.}
+\]
+\end{solution}
+
+%-----------------------------
+\begin{example}[$z$-test]
+Let $X\sim N(\mu,\sigma^2)$ where $\mu$ is unknown but $\sigma^2$ is known. 
+\ben
+\it Find a critical region for testing $H_0:\mu=\mu_0$ against $H_1:\mu > \mu_0$
+\it Find the power function $\gamma(\mu)$ of the test.
+\it Show that the power function is strictly increasing for $\mu>\mu_0$. %Comment on your answer.
+\een
+\end{example}
+
+\begin{solution}
+\ben
+\it % size
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the distribution of $X$
+\bit
+\it The sample mean $\bar{X}$ is an unbiased estimator for $\mu$.
+\it If $\bar{X}-\mu_0$ is large, we would be inclined to reject $H_0$ in favour of $H_1$.
+\eit
+An appropriate test statistic $Z:\R^n\to\R$ is given by
+\[
+Z(X_1,X_2,\ldots,X_n) = \sqrt{n}\left(\frac{\bar{X}-\mu_0}{\sigma}\right)
+\]
+Because the $X_i$ are normally distributed, under $H_0$ we have that $Z\sim N(0,1)$. 
+
+\bigskip
+The critical region for the test is
+$C=\{\mathbf{x}:Z(\mathbf{x})> z_c\}$, i.e.
+\[
+C=\left\{\mathbf{x}: \sqrt{n}\left(\frac{\bar{x}-\mu}{\sigma}\right) > z_c\right\}
+\]
+where $z_c$ is the solution of $\prob_{\mu_0}(Z > z)=\alpha$, or equivalently the solution of $\Phi(z)=1-\alpha$ where $\Phi$ is the CDF of the standard normal distribution.
+
+\it % power
+For $\mu > \mu_0$, the power function is
+\begin{align*}
+\gamma(\mu) 
+%	& = \prob_{\mu}(Z\geq z_c) \\
+	= \prob_{\mu}\left[\sqrt{n}\left(\frac{\bar{X}-\mu_0}{\sigma}\right) > z_c\right] 
+	& = \prob_{\mu}\left[\bar{X} > \frac{\sigma}{\sqrt{n}}z_c+\mu_0\right] \\
+	& = \prob_{\mu}\left[\bar{X}-\mu > \frac{\sigma}{\sqrt{n}}z_c + (\mu_0-\mu)\right] \\
+	& = \prob_{\mu}\left[\sqrt{n}\left(\frac{\bar{X}-\mu}{\sigma}\right) > z_c + \frac{\sqrt{n}(\mu_0-\mu)}{\sigma}\right] \\
+	& = 1 - \prob_{\mu}\left[\sqrt{n}\left(\frac{\bar{X}-\mu}{\sigma}\right) \leq z_c + \frac{\sqrt{n}(\mu_0-\mu)}{\sigma}\right] \\
+	& = \prob\left[Z \geq \frac{\sqrt{n}(\mu_0-\mu)}{\sigma} + z_c\right] \text{\quad where $Z\sim(0,1)$},\\
+	& = 1 - \Phi\left(z_c + \frac{\sqrt{n}(\mu_0-\mu)}{\sigma}\right)
+\end{align*}	
+where $\Phi$ is the CDF of the standard normal distribution $N(0,1)$.
+
+\it % power
+$\gamma(\mu)$ is an increasing function for $\mu>\mu_0$, because
+\[
+\gamma'(\mu) = \frac{\sqrt{n}}{\sigma} \phi\left(z_c + \frac{\sqrt{n}(\mu_0-\mu)}{\sigma}\right) > 0,
+\]
+where $\phi$ is the PDF of the standard normal distribution $N(0,1)$. This shows that the power to detect the simple alternative $H_1:\mu=\mu_1$ increases as $\mu_1$ increases away from $\mu_0$.
+\een
+\end{solution}
+
+%-----------------------------
+\begin{example}[$t$-test]
+Let $X\sim N(\mu,\sigma^2)$ where $\mu$ and $\sigma^2$ are both unknown. Find a critical region of size $\alpha$ for testing $H_0:\mu=\mu_0$ against $H_1:\mu < \mu_0$
+\end{example}
+
+\begin{solution}
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the distribution of $X$, and let $\bar{X}$ and $S^2$ denote the sample mean and sample variance respectively.
+
+\bigskip
+The appropriate test statistic $T:\R^n\to\R$ is given by
+\[
+T(X_1,X_2,\ldots,X_n) = \sqrt{n}\left(\frac{\bar{X}-\mu_0}{S}\right)
+\]
+
+Under the null hypothesis $H_0:\mu=\mu_0$, this has \emph{Student's $t$-distribution} with $n-1$ degrees of freedom.
+
+The critical region for our test is
+\[
+C=\left\{\mathbf{x}:\sqrt{n}\left(\frac{\bar{x}-\mu}{s}\right) \leq t_c\right\}
+\]
+where $t_c$ is the $\alpha$th quantile of Student's $t$ distribution with $n-1$ degrees of freedom.
+\end{solution}
+
+
+%-----------------------------
+\begin{example}[Normal approximation]
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $\text{Bernoulli}(\theta)$ distribution, where $\theta$ is unknown. We reject the null hypothesis $H_0:\theta=1/2$ in favour of $H_1:\theta>1/2$ if the observed number of successes exceeds some constant value $c>0$. Using a normal approximation, find values of $n$ and $c$ for which the size of the test is $0.1$ and whose power at $\theta=2/3$ is $0.95$. 
+\end{example}
+
+\begin{solution}
+Let $X\sim\text{Binomial}(n,\theta)$ be the number of successes. 
+\bit
+\it By the central limit theorem, $X\sim N\big[n\theta,n\theta(1-\theta)\big]$ approx. provided $n$ is sufficiently large.
+\eit
+
+(1) If $H_0:\theta=1/2$ is correct, then $X\sim N(n/2,n/4)$ approx, so under $H_0$ we have
+\[
+Z 	= \frac{X-\expe(X)}{\sqrt{\var(X)}} 
+	= \frac{X-n/2}{\sqrt{n/4}} 
+	= \frac{2X-n}{\sqrt{n}} \sim N(0,1) \text{\quad approx.}
+\]
+
+For a test of size $\prob_{1/2}(X>c) = 0.1$ we need that 
+\[
+\prob\left(Z > \frac{2c-n}{\sqrt{n}}\right) = 0.1,
+\quad\text{and hence}\quad
+\frac{2c-n}{\sqrt{n}} = 1.282 \text{\quad (from tables).}
+\]
+
+(2) If $H_1:\theta=2/3$ is correct, then $X\sim N(2n/3,2n/9)$ approx, so under $H_1$ we have
+\[
+Z 	= \frac{X-2n/3}{\sqrt{2n/9}} 
+	= \frac{3X-2n}{\sqrt{2n}} \sim N(0,1) \text{ approx.}
+\]
+For a test with power $\prob_{2/3}(X>c) = 0.95$  we need that
+\[
+\prob\left(Z > \frac{3c-2n}{\sqrt{2n}}\right) = 0.95,
+\quad\text{and hence}\quad
+\frac{3c-2n}{\sqrt{2n}} = -1.645 \text{\quad (from tables).}
+\]
+
+Thus we have two equations in two unknowns:
+\[
+2c = n + 1.282\sqrt{n} \text{\quad and\quad} 3c = 2n - 1.645\sqrt{2n}.
+\]
+
+\bit
+\it Solving for $n$ and $c$, we find that $n=72.24$ and $c=41.56$.
+\it Thus a sample of size $72$ and a rejection threshold of $42$ would approximately meet the stated requirements.
+\eit
+\end{solution}
+
+%-----------------------------
+\begin{exercise}
+\begin{questions}
+\question
+Let $X\sim\text{Binomial}(10,\theta)$ where $\theta$ is either equal to $0.25$ or $0.5$. The simple mull hypothesis $H_0:\theta=0.5$ is rejected in favour of the simple alternative $H_1:\theta=0.25$ if the observed value of $X$ is at most equal to $3$. Find the size and power of the test.
+\begin{answer}
+\bit
+\it The critical region is $C = \{X\leq 3\}$. Under the null hypothesis, $X\sim\text{Binomial}(10,0.5)$. The significance level of the test is therefore
+\[
+\alpha = \prob_{0.5}(X\leq 3) = \prob\big[X\leq 3\text{ when } X\sim\text{Binomial}(10,0.5)\big] = 0.1719 \quad\text{(from tables).}
+\]
+\it Under the alternative hypothesis $H_1:\theta=0.25$ we have $X\sim\text{Binomial}(10,0.25)$. The power of the test to detect $H_1$ is therefore
+\[
+\gamma(0.25) = \prob_{0.25}(X\leq 3) = \prob\big[X\leq 3\text{ when } X\sim\text{Binomial}(10,0.25)\big] = 0.7759 \quad\text{(from tables).}
+\]
+\eit
+\end{answer}
+
+\question
+Adult males diagnosed with lung cancer have a mortality rate of $70\%$ within one year of the initial diagnosis. A research laboratory claims that a new treatment reduces this rate. Based on a random sample of $20$ patients, find a critical region of size $\alpha=0.15$ to test the claim, and compute the power of the test to detect a $20\%$ reduction in the mortality rate.
+\begin{answer}
+Let $\theta$ be the probability that a patient dies within one year of the initial diagnosis.
+\bit
+\it We wish to test the null hypothesis $H_0:\theta=0.7$ against the alternative $H_1:\theta<0.7$.
+\eit
+Let $X_1,X_2,\ldots,X_{20}$ be a random sample from the $\text{Bernoulli}(\theta)$ distribution
+\bit
+\it In this context, `success' corresponds to death within one year of the initial diagnosis!
+\eit
+Let $S=\sum_{i=1}^{20} X_i$ be the total number of deaths within one year of the initial diagnosis.
+\bit
+\it Under the null hypothesis, $S\sim\text{Binomial}(20,0.7)$.
+\eit
+A critical region for the test is $C=\{\mathbf{x}:S(\mathbf{x})\leq k\}$, where $k$ is chosen so that 
+\[
+\prob_{0.7}(S\leq k) = 0.15.
+\]
+Tabulated values of the $\text{Binomial}(20,0.7)$ distribution yield
+\[
+\prob_{0.7}(S\leq 11) = 0.1133 \text{\quad and\quad}\prob_{0.7}(S\leq 12) = 0.2277.
+\]
+\bit
+\it It is not possible to find a critical region of size $\alpha=0.15$ exactly.
+\eit
+The conservative approach would be to take $k=11$ and $\alpha=0.1133$.
+\bit
+\it A $20\%$ reduction in the mortality rate corresponds to $H_1:\theta=0.5$.
+\eit
+For the test of size $\alpha=0.1133$, its power to detect $H_1:\theta=0.5$ is
+\begin{align*}
+\prob_{0.5}(S\leq 11) 
+	& = \prob(S\leq 11) \text{ where } S\sim\text{Binomial}(20,0.5) \\
+	& = 0.7483 \text{\quad (from tables)}.
+\end{align*}
+For the test of size $\alpha=0.2277$, its power to detect $H_1:\theta=0.5$ is
+\begin{align*}
+\prob_{0.5}(S\leq 12) 
+	& = \prob(S\leq 12) \text{ where } S\sim\text{Binomial}(20,0.5) \\
+	& = 0.8684 \text{\quad (from tables)}.
+\end{align*}
+\end{answer}
+
+\question
+Let $X_1,X_2,\ldots,X_5$ be a random sample from the $\text{Bernoulli}(\theta)$ distribution. We wish to test the null hypothesis $H_0:\theta\leq 0.5$ against the alternative $H_1:\theta> 0.5$. $H_0$ is rejected by test $A$ only if all five trials result in `success', and rejected by test $B$ if at least at least three trials result in `success'. Find the size and power function of each test.
+\begin{answer}
+The sample space is $D=\{0,1\}^5$, the set of binary vectors of length $5$. \\
+Let $Y=\sum_{i=1}^5 X_i$ be the number of successes: $Y\sim\text{Binomial}(5,\theta)$.
+\ben
+\it For test $A$, 
+\begin{align*}
+\alpha 			& = \max_{0\leq\theta\leq 0.5}\prob_{\theta}(Y=5) = 0.5^5 = 0.0312. \\[2ex]
+\gamma(\theta)	& = \prob_{\theta}(Y=5) = \theta^5.
+\end{align*}
+\it For test $B$, 
+\begin{align*}
+\alpha 			& = \max_{0.5\leq\theta\leq 1}\prob(Y\geq 5) 
+				= 10(0.5)^3(0.5)^2 + 5(0.5)^4(0.5) + (0.5)^5 = 16(0.5)^5 = 0.5, \\
+\gamma(\theta)	& = \prob(Y\geq 3;\theta) 
+				= 10\theta^3(1-\theta)^2 + 5\theta^4(1-\theta) + \theta^5.
+\end{align*}
+Thus Test B is more powerful than Test A, but its size is greater that of Test A.
+\een
+\end{answer}
+
+\question 
+Let $X$ be a random sample of size $1$ from the $\text{Exponential}(\theta)$ distribution, where $\theta>0$ is a rate parameter. The null hypothesis $H_0:\theta=1/2$ is rejected in favour of the simple alternative $H_1:\theta = 1$ if the observed value $x$ is such that
+\[
+\frac{f(x;1/2)}{f(x;1)} \leq \frac{3}{4}.
+\]
+where $f(x;\theta)$ is the PDF of $X$. (This is defined to be $f(x;\theta) = \theta e^{-\theta x}$ for $x>0$, and zero otherwise.)
+\ben
+\it Show that the size of the test is $\alpha=1/3$.
+\it Find the power of the test at $\theta=1$.
+\een
+\begin{answer}
+Let $T$ denote the test statistic:
+\[
+T(X) = \frac{f(X;1/2)}{f(X;1)} = \frac{1}{2}e^{X/2}
+\]
+\ben
+\it The size of the test is
+\begin{align*}
+\alpha = \prob_{H_0}(T\leq 3/4)
+	& = \prob_{H_0}(e^{X/2} \leq 3/2) \\
+	& = \prob_{H_0}\big[X\leq 2\log(3/2)\big] \\
+	& = 1 - e^{-\log 3/2} \\
+	& = 1 - 2/3 = 1/3.
+\end{align*}
+\it The power of the test when $\theta=1$ is
+\begin{align*}
+\gamma(1) = \prob_{H_1}(T\leq 3/4)
+	& = \prob_{H_1}\big[X\leq 2\log(3/2)\big] \\
+	& = 1 - e^{-2\log 3/2} \\
+	& = 1 - (2/3)^2 = 5/9.
+\end{align*}
+\een
+\end{answer}
+\end{questions}
+\end{exercise}
+

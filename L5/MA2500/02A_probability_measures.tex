@@ -1,0 +1,258 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Probability measures}\label{sec:}
+
+%Let $\Omega$ be the sample space of some random experiment.
+
+\begin{definition}[Kolmogorov's axioms]\label{def:prob_meas}
+A \emph{probability measure} on a set $\Omega$ is a function which maps subsets of $\Omega$ to numbers in the interval $[0,1]$ such that $\prob(\emptyset) = 0$, $\prob(\Omega) = 1$ and for any sequence of pairwise disjoint events $A_1,A_2,\ldots$,
+\[
+\prob\left(\bigcup_{i=1}^\infty A_i\right) = \sum_{i=1}^{\infty} \prob(A_i)
+\qquad\text{(countable additivity)}.
+\]
+The pair $(\Omega,\prob)$ is called a \emph{probability space}.
+\end{definition}
+
+\begin{theorem}[Properties of probability measures]\label{thm:props_pmeas}
+Probability measures have the following properties.
+\ben
+\it Complementarity: $\prob(A^c) = 1 - \prob(A)$.
+\it Monotonicity: if $A\subseteq B$ then $\prob(A)\leq \prob(B)$.
+\it Addition rule: $\prob(A\cup B) = \prob(A) + \prob(B) - \prob(A\cap B)$.
+\een
+ \end{theorem}
+
+% proof
+\begin{proof}
+\ben
+\it Because $A\cup A^c=\Omega$ is a disjoint union and $\prob(\Omega)=1$, it follows by additivity that 
+\[
+1 = \prob(\Omega) = \prob(A\cup A^c) = \prob(A) + \prob(A^c).
+\]
+\it Let $A\subseteq B$. We can write $B$ as the disjoint union $A\cup(B\setminus A)$, so by additivity
+\[
+\prob(B) = \prob\big[A\cup (B\setminus A)\big] = \prob(A) + \prob(B\setminus A).
+\]
+Thus because $\prob(B\setminus A)\geq 0$ we have $\prob(B) \geq \prob(A)$.
+\it We can write the three sets as disjoint unions:
+\bit
+\it $A\cup B = (A\setminus B) \cup (B\setminus A) \cup (A\cap B)$
+\it $A 		 = (A\setminus B) + (A\cap B)$
+\it $B 		 = (B\setminus A) + (A\cap B)$
+\eit
+By additivity, 
+\bit
+\it $\prob(A\cup B) = \prob(A\setminus B) + \prob(B\setminus A) + \prob(A\cap B)$
+\it $\prob(A) 		= \prob(A\setminus B) + \prob(A\cap B)$
+\it $\prob(B)		= \prob(B\setminus A) + \prob(A\cap B)$
+\eit
+Hence $\prob(A\cup B) = \prob(A) + \prob(B) - \prob(A\cap B)$, as required.
+\een
+\end{proof}
+
+%-----------------------------
+%\subsection{Continuity}
+
+\begin{theorem}[Continuity of probability measures]\label{thm:cont_pms}
+Let $\prob$ be a probability measure on $\Omega$.
+\ben
+\it If $A_1\subseteq A_2\subseteq \ldots$ is an increasing sequence of subsets then 
+$\displaystyle\prob\left(\medcup_{n=1}^{\infty} A_n\right) = \lim_{n\to\infty}\prob(A_n)$.
+\it If $B_1\supseteq B_2\supseteq \ldots$ is a decreasing sequence of subsets then
+$\displaystyle\prob\left(\medcap_{n=1}^{\infty} B_n\right) = \lim_{n\to\infty}\prob(B_n)$.
+\een
+\end{theorem}
+
+% proof
+\begin{proof}
+\ben
+\it Let $A=\bigcup_{n=1}^{\infty} A_n$. We can write $A$ as a disjoint union:
+\[
+A = A_1 \cup (A_2\setminus A_1) \cup (A_3\setminus A_2) \cup \ldots
+\]
+Because the sets $A_{n+1}\setminus A_n$ are disjoint, by countable additivity we have
+\begin{equation}\label{eq:onion}
+\prob(A) = \prob(A_1) + \prob(A_2\setminus A_1) + \prob(A_3\setminus A_2) + \ldots \tag{*}
+\end{equation}
+
+Furthermore, $A_n\subseteq A_{n+1}$ means that $A_{n+1}=(A_{n+1}\setminus A_n)\cup A_n$ is a disjoint union, so
+\[
+\prob(A_{n+1}\setminus A_n)=\prob(A_{n+1})-\prob(A_n).
+\]
+Substituting this into Eq. (\ref{eq:onion}), 
+\begin{align*}
+\prob(A) 
+	& = \prob(A_1) + \big[\prob(A_2) - \prob(A_1)\big] + \big[\prob(A_3) - \prob(A_2)\big] + \ldots \\
+	& = \big[\prob(A_1) - \prob(A_1)\big] + \big[\prob(A_2) - \prob(A_2)\big] + \big[\prob(A_3) - \prob(A_3)\big] + \ldots \\
+	& = \lim_{n\to\infty} \prob(A_n).
+\end{align*}
+
+\it Let $B=\bigcap_{i=1}^{\infty} B_i$. Then $B_1^c\subseteq B_2^c\subseteq\ldots$ and by De Morgan's laws,
+\[
+B^c = \medcup_{n=1}^{\infty} B_n^c. 
+\]
+By the first part of the theorem, $\prob(B^c) = \lim_{n\to\infty}\prob(B_n^c)$, so
+\[
+\prob(B) 
+	= 1 - \prob(B^c)
+	= 1 - \lim_{n\to\infty} \prob(B_n^c) 
+	= \lim_{n\to\infty} [1-\prob(B_n^c)] 
+	= \lim_{n\to\infty} \prob(B_n)
+\]
+as required.
+\een
+\end{proof}
+
+\begin{example}
+A fair coin is tossed repeatedly. Show that a head eventually occurs with probability one.
+\begin{solution}
+Let $A_n$ be the event that a head occurs during the first $n$ tosses, and let $A$ be the event that a head eventually occurs. Then $A_1\subset A_2\subset A_3,\ldots$ is an increasing sequence with 
+\[
+A=\bigcup_{n=1}^{\infty} A_n.
+\]
+By the continuity property of probability measures,
+\[
+\prob(A) 
+	= \prob\left(\bigcup_{n=1}^{\infty}A_n\right)
+	= \lim_{n\to\infty} \prob(A_n)
+	= \lim_{n\to\infty} \left(1 - \frac{1}{2^n}\right) = 1,
+\]
+where we have assumed that the tosses are independent, so that
+\[
+\prob(A_n) = 1 - \prob(\text{no heads in the first $n$ tosses}) = 1 - (1/2)^n.
+\]
+\end{solution}
+\end{example}
+
+%-----------------------------
+\begin{exercise}
+\begin{questions}
+% inclusion-exclusion
+\question
+\begin{parts}
+\part
+For any finite collection of events $A_1,A_2,\ldots,A_n$ (where $n\geq 2$), use proof by induction to show that
+\small
+\[
+\prob\left(\bigcup_{i=1}^{n} A_i\right)
+	= \sum_i\prob(A_i) - \sum_{i<j}\prob(A_i\cap A_j) + \sum_{i<j<k}\prob(A_i\cap A_j\cap A_k)
+		+ \ \ldots\  + (-1)^{n+1}\prob(A_1\cap A_2\cap\ldots\cap A_n).
+\]
+\normalsize
+This is called the \emph{inclusion-exclusion principle}. 
+\begin{answer}
+By Theorem~\ref{thm:props_pmeas} the result is true for $n=2$. Let $m\geq 2$ and suppose the result is true for all $n\leq m$. 
+Because Theorem~\ref{thm:props_pmeas} result holds for pairs of events it holds for the pair $\cup_{i=1}^n A_i$ and $A_{n+1}$ so 
+\begin{align*}
+\prob\left(\bigcup_{i=1}^{m+1} A_i\right)
+	& = \prob\left(\bigcup_{i=1}^{m} A_i\right) +\prob(A_{m+1}) - \prob\left[\left(\bigcup_{i=1}^{m} A_i\right)\cap A_{m+1}\right] \\
+	& = \prob\left(\bigcup_{i=1}^{m} A_i\right) +\prob(A_{m+1}) - \prob\left[\bigcup_{i=1}^{m} (A_i\cap A_{m+1})\right].
+\end{align*}
+By the inductive hypothesis, we can expand the first and last terms on the right-hand side to obtain the result.
+\end{answer}
+\part
+Suppose that at least one of the events $A_1,A_2,\ldots,A_n$ is certain to occur, and that more than two will certainly not occur. If $\prob(A_i)=p$ and $\prob(A_i\cap A_j) = q$ for $i\neq j$, use the inclusion-exclusion principle to show that $p\geq 1/n$ and $q\leq 2/n$.
+\begin{answer}
+We know that $\prob(\cup_{i=1}^{n} A_i) = 1$ and $\prob(A_i\cap A_j\cap A_k)=0$ whenever $i\neq j\neq k$. By the inclusion-exclusion principle,
+\[
+1 = \prob\left(\bigcup_{i=1}^{n} A_i\right)
+	= \sum_i\prob(A_i) - \sum_{i<j}\prob(A_i\cap A_j) 
+	= np - \frac{1}{2}n(n-1)q.
+\]
+The second term is negative so we must have $np\geq 1$, which shows that $p\geq 1/n$. Hence
+\[
+\frac{1}{2}n(n-1)q = np - 1 \leq n-1, \text{ so } \frac{nq}{2} \leq 1 \text{ and thus $q\leq 2/n$, as required}.
+\]
+\end{answer}
+\end{parts}
+
+% subadditivity
+\question
+For any countable collection of events $A_1,A_2,\ldots$ show that
+\[
+\displaystyle
+\mathbb{P}\left(\bigcup_{i=1}^{\infty} A_i\right) \leq \sum_{i=1}^{\infty} \mathbb{P}(A_i).
+\]
+This property is called (countable) \emph{subadditivity}.
+\begin{answer}
+We will find a sequence of sets $B_1,B_2,\ldots$ whose union coincides with the union of $A_1,A_2,\ldots$, but which are disjoint so that the countable additivity property of probability measures can be applied.
+
+Let $B_1 = A_1$, $B_2 = A_2\setminus A_1$, $B_3 = A_3\setminus(A_1\cup A_2)$, and in general
+\[
+B_i = A_i \setminus \left(\bigcup_{j=1}^{i-1} A_j\right).
+\]
+
+\textbf{Claim 1}: $\cup_{i=1}^{\infty} A_i = \cup_{i=1}^{\infty} B_i$.
+To see this, let $\omega\in\cup_{i=1 }^{\infty} B_i$. Then there exists some $B_j$ with $\omega\in B_j$, which implies that $\omega\in A_j$ and hence $\omega\in\cup_{i=1}^{\infty} A_i$. Thus $\cup_{i=1}^{\infty} B_i \subseteq \cup_{i=1}^{\infty} A_i$. Conversely, let $\omega\in\cup_{i=1 }^{\infty} A_i$. Then there exists some $A_j$ with $\omega\in A_j$, which implies that $\omega\in \cup_{i=1}^{j} B_i$ and hence $\omega\in\cup_{i=1}^{\infty} B_i$. Thus $\cup_{i=1}^{\infty} A_i \subseteq \cup_{i=1}^{\infty} B_i$. 
+\begin{itemize}
+\item
+This means that $\mathbb{P}\left(\cup_{i=1}^{\infty} A_i\right) = \mathbb{P}\left(\cup_{i=1}^{\infty} B_i\right)$.
+\end{itemize}
+
+\textbf{Claim 2}: $B_i \subseteq A_i$. This follows because
+\[
+B_i = A_i \setminus \left(\bigcup_{j=1}^{i-1} A_j\right) = A_i \cap\left(\bigcup_{j=1}^{i-1} A_j\right)^{c} \subseteq A_i.
+\]
+By the monotonicity of probability measures, this means that $\mathbb{P}(B_i)\leq\mathbb{P}(A_i)$ for all $i=1,2,\ldots$.
+
+\textbf{Claim 3}: the sets $B_1,B_2,\ldots$ are pairwise disjoint. To see this, consider any two sets $B_i$ and $B_j$ and suppose, without loss of generality, that $i<j$. Then for any $\omega\in B_i$ it follows that $\omega\in A_i$, so $\omega\notin B_j$ (because $i<j$, and $B_j$ excludes all outcomes contained in $A_1,A_2,\ldots,A_{j-1}$). Hence $B_i$ and $B_j$ are disjoint.
+
+Thus, by the countable additivity of probability measures,
+\[
+\mathbb{P}\left(\bigcup_{i=1}^{\infty} A_i\right) 
+	= \mathbb{P}\left(\bigcup_{i=1}^{\infty} B_i\right)
+	= \sum_{i=1}^{\infty} \mathbb{P}(B_i)%	\qquad\text{by countable additivity}
+	\leq \sum_{i=1}^{\infty} \mathbb{P}(A_i),
+\]
+as required.
+\end{answer}
+
+% continuity (GS 1.3.2)
+\question
+A fair coin is tossed repeatedly. Using the continuity of probability measures show that
+\begin{parts}
+\part a head eventually occurs with probability one,
+\begin{answer}
+Let $B_n$ be the event that no heads occur in the first $n$ tosses, and let $B$ be the event that no heads occur at all. Then $B_1\supseteq B_2\supset \ldots$ is a decreasing sequence and $B=\cap_{i=1}^{\infty} B_n$. THence by continuity,
+\[
+\prob(B) = \prob\left(\bigcap_{n=1}^{\infty}B_n\right)
+	= \lim_{n\to\infty} \prob(B_n)
+	= \lim_{n\to\infty} \left(\frac{1}{2}\right)^n = 0,
+\]
+Thus we are certain of eventually observing a head.
+\end{answer}
+%--------------------
+\part a sequence of 10 consecutive tails eventually occurs with probability one, and
+\begin{answer}
+Let us think of the first $10n$ tosses as disjoint groups of consecutive outcomes, each group of length $10$. The probability any one of the $n$ groups consists of 10 consecutive tails is $2^{-10}$, independently of the other groups. The event that one of the groups consists of 10 consecutive tails is a subset of the event that a sequence of 10 consecutive tails appears anywhere in the first $10n$ tosses. Hence, using the continuity of probability measures,
+\begin{align*}
+\prob(\text{$10T$ eventually appears}) 
+	& = \lim_{n\to\infty} \prob(\text{$10T$ occurs somewhere in the first $10n$ tosses)} \\
+	& \geq \lim_{n\to\infty} \prob(\text{$10T$ occurs as one of the first $n$ groups of $10$}) \\
+	& = 1 - \lim_{n\to\infty} \prob(\text{$10T$ does not occur as one of the first $n$ groups of 10}) \\
+ 	& = 1 - \lim_{n\to\infty} \left(1-\frac{1}{2^{10}}\right)^n = 1.
+\end{align*}
+Thus we are certain of eventually observing sequence of 10 consecutive tails.
+\end{answer}
+%--------------------
+\part any finite sequence of heads and tails eventually occurs with probability one.
+\begin{answer}
+Let $s$ be a fixed sequence of length $k$. As in the previous part, we think of the first $kn$ tosses as $n$ distinct groups of length $k$. The event that the one of these groups is exactly equal to $s$ is a subset of the event that first $kn$ tosses contains at least one instance of $s$. Hence
+\begin{align*}
+\prob(\text{$s$ eventually appears}) 
+	& = \lim_{n\to\infty} \prob(\text{$s$ occurs somewhere in the first $kn$ tosses)} \\
+	& \geq \lim_{n\to\infty} \prob(\text{$s$ occurs as one of the first $n$ groups of $k$}) \\
+	& = 1 - \lim_{n\to\infty} \prob(\text{$s$ does not occur as one of the first $n$ groups of $k$}) \\
+ 	& = 1 - \lim_{n\to\infty} \left(1-\frac{1}{2^{k}}\right)^n = 1.
+\end{align*}
+Thus we are certain of eventually observing the sequence $s$.
+\bit
+\it In an infinite sequence of coin tosses, anything that can happen, does happen!
+\eit
+\end{answer}
+\end{parts}
+
+\end{questions}
+\end{exercise}
+

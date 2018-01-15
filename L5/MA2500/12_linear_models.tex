@@ -1,0 +1,1167 @@
+% !TEX root = main.tex
+%=====================================================================
+\chapter{General linear models}\label{chap:bivariate_analysis}
+\startcontents[chapters]
+\chapcontents
+
+%-------------------------------------------------
+\section{The chi-squared distribution}\label{sec:chi-squared}
+
+If $Z_1,Z_2,\ldots,Z_n$ are independent standard normal %$N(0,1)$ 
+variables, the sum-of-squares
+$\displaystyle\sum_{i=1}^n Z_i^2$
+has the \emph{chi-squared distribution} with $n$ degrees of freedom, which plays a central role in statistics.
+
+%--------------------------------------------------
+\subsection{The gamma distribution}
+%--------------------------------------------------
+\begin{definition}\label{def:gamma_distribution}
+The \emph{gamma distribution} with parameters $k>0$ and $\theta>0$ is defined by the PDF
+\[
+f(x) = \begin{cases}
+	\displaystyle\frac{1}{\Gamma(k)\theta^k}\,x^{k-1} e^{-x/\theta} & \text{for $x>0$}, \\
+	0																& \text{otherwise.}
+\end{cases}
+\]
+where $\Gamma(k)$ is the so-called \emph{gamma function},
+\[
+\Gamma(k) = \int_0^{\infty} t^{k-1}e^{-t}\,dt.
+\]
+%which is defined for all $k>0$.
+\end{definition}
+
+Note that if $X\sim\text{Exponential}(\theta)$ where $\theta$ is a scale parameter, then $X\sim\text{Gamma}(1,\theta)$.
+
+\begin{lemma}
+The MGF of the $\text{Gamma}(k,\theta)$ distribution is $M(t) = \displaystyle\frac{1}{(1-\theta t)^k}$, defined for $t<\displaystyle\frac{1}{\theta}$.
+%for $t<\theta^{-1}$.
+\end{lemma}
+
+\begin{proof} % leave as exercise
+Let $X\sim\text{Gamma}(k,\theta)$. Then
+\begin{align*}
+M_X(t) = \expe(e^{tX})
+	& = \int_0^\infty e^{tx} \frac{1}{\Gamma(k)\theta^k}\,x^{k-1} e^{-x/\theta}\,dx \\
+	& = \int_0^\infty \frac{1}{\Gamma(k)\theta^k}\,x^{k-1} e^{-x(1-\theta t)/\theta}\,dx 
+\end{align*}
+Changing the variable of integration, let $y=x(1-\theta t)/t$ where $t<1/\theta$. Then $x=\theta y/(1-\theta t)$ so
+\begin{align*}
+M_X(t)
+	& = \int_0^\infty \frac{\theta/(1-\theta t)}{\Gamma(k)\theta^k}\left(\frac{\theta y}{1-\theta t}\right)^{k-1} e^{-y}\,dy \\
+	& = \left(\frac{1}{1-\theta t}\right)^{k} \int_0^\infty \frac{1}{\Gamma(k)}y^{k-1} e^{-y}\,dy \\
+	& = \left(\frac{1}{1-\theta t}\right)^{k} \qquad\text{for } t < \frac{1}{\theta}.
+\end{align*}
+\end{proof}
+
+% corollary: mean and variance
+\begin{corollary}
+If $X\sim\text{Gamma}(k,\theta)$, then $\expe(X) = k\theta$ and $\var(X) = k\theta^2$.
+\end{corollary}
+% proof
+\begin{proof}
+\begin{align*}
+M'(t)	& = (-k)(1-\theta t)^{-k-1}(-\theta) \\
+M''(t)	& = (-k)(-k-1)(1-\theta t)^{-k-2}(-\theta)^2
+\end{align*}
+Hence,
+\begin{align*}
+\expe(X)	& = M'(0) = k\theta, \\
+\var(X)		& = M''(0)- M'(0)^2 = k(k+1)\theta^2 - k^2\theta^2 = k\theta^2.
+\end{align*}
+\end{proof}
+
+We now derive two useful properties of the gamma disribution.
+% lemma: sum of two independent 
+\begin{lemma}\label{lem:properties_of_gamma_distribution}
+\ben
+\it If $X\sim\text{Gamma}(k,\theta)$ and $a\in\R$ is a constant, then $aX\sim\text{Gamma}(k,a\theta)$.
+\it If $X_1\sim\text{Gamma}(k_1,\theta)$ and $X_2\sim\text{Gamma}(k_2,\theta)$ are independent, then $X_1+X_2\sim\text{Gamma}(k_1+k_2,\theta)$.
+\een
+\end{lemma}
+\begin{proof}
+\ben
+\it
+\[
+M_{aX}(t) = \expe(e^{t(aX)}) = \expe(e^{(at)X}) = M_X(at) = \frac{1}{\big(1-\theta (at)\big)^k} = \frac{1}{\big(1-(a\theta)t\big)^k} 
+\]
+whidh is the MGF of the $\text{Gamma}(k,a\theta)$ distribution.
+\it
+The $MGFs$ of $X_1$ and $X_2$ are:
+\[
+M_{X_1}(t) = \frac{1}{(1-\theta t)^{k_1}}
+\quad\text{and}\quad
+M_{X_2}(t) = \frac{1}{(1-\theta t)^{k_2}},
+\]
+and since $X_1$ and $X_2$ are independent, 
+\[
+M_{X_1+X_2}(t) 
+=	M_{X_1}(t)M_{X_2}(t) 
+= \frac{1}{(1-\theta t)^{k_1+k_2}}
+\]
+which is the MGF of the $\text{Gamma}(k_1+k_2,\theta)$ distribution.
+\een
+\end{proof}
+
+
+%-----------------------------
+\subsection{The $\chi^2$ distribution}
+
+% defn: chi-squared distribution
+\begin{definition}\label{defn:chisquared_dist}
+The $\chi^2_{n}$ distribution is defined by the PDF
+\[
+f(x) = \begin{cases}
+	\displaystyle\frac{1}{\Gamma(n/2)2^{n/2}}\,x^{n/2-1} e^{-x/2} & \text{for $x>0$}, \\
+	0																	& \text{otherwise,}
+\end{cases}
+\]
+where the parameter $n$ is called the \emph{degrees of freedom}.
+\end{definition}
+
+The $\chi^2_{n}$ distribution is a special case of the $\Gamma(k,\theta)$ distribution, with $k=n/2$ and $\theta=2$. Thus if $X\sim\chi^2_{n}$, it follows that 
+\bit
+\it $M_X(t) = (1-2t)^{-n/2}$ for $t<1/2$;
+\it $\expe(X) = n$ and $\var(X)=2n$.
+\eit
+
+% corollary
+We also have the following corollary of Lemma~\ref{lem:properties_of_gamma_distribution}.
+\begin{corollary}\label{cor:sum_of_two_independent_chisquared}
+If $X_1\sim\chi^2_{m}$ and $X_2\sim\chi^2_{n}$ are independent, then $X_1+X_2\sim\chi^2_{m+n}$.
+\end{corollary}
+
+Next we show that the square of a standard normal variable has $\chi^2_1$ distribution.
+% lemma
+\begin{lemma}\label{lem:standard_normal_squared}
+If $Z\sim N(0,1)$ then $Z^2\sim\chi^2_{1}$.
+\end{lemma}
+\begin{proof}
+Let $U=Z^2$. Then the CDF of $U$ (for $u\geq 0$) is
+\[
+F(u) = \prob(U\leq u) = \prob(-\sqrt{u}\leq Z \leq \sqrt{u})
+\]
+which (by symmetry) we can write as
+\[
+F(u) = \int_{0}^{\sqrt{u}}\frac{1}{\sqrt{2\pi}} e^{-u^2/2}\,du	
+\]
+for $u\geq 0$ (and zero otherwise). Now change the variable of integration by writing $y=u^2$:
+\[
+F(u) = \int_{0}^{\sqrt{y}}\frac{1}{\sqrt{2\pi}}\frac{1}{\sqrt{y}} e^{-y/2}\,dy \quad(v\geq 0).
+\]
+Hence the PDF $f(u) = F'(u)$ is 
+\[
+f(u) = \frac{1}{\sqrt{2\pi}} u^{1/2} e^{-u/2}
+\]
+for $u\geq 0$ (and zero otherwise). Since $\Gamma(1/2)=\sqrt{\pi}$, this is the PDF of the $\chi^2_1$ distribution.
+\end{proof}
+
+% corollary
+Corollary~\ref{cor:sum_of_two_independent_chisquared} and Lemma~\ref{lem:standard_normal_squared} combine to yield the following.
+\begin{corollary}
+If $Z_1,Z_2,\ldots,Z_n$ are independent standard normal variables, then $\displaystyle\sum_{i=1}^n Z_i^2\sim\chi^2_n$.
+\end{corollary}
+
+%--------------------------------------------------
+\subsection{The non-central chi-squared distribution}
+%--------------------------------------------------
+\begin{definition}
+Let $X_1,X_2,\ldots,X_n$ be independent random variables with $X_i\sim N(\mu_i,1)$. The distribution of the sum-of-squares
+\[
+W=\sum_{i=1}^n X_i^2
+\]
+is called the \emph{non-central chi-squared distribution}, with $n$ degrees of freedom and non-centrality parameter 
+\[
+\lambda = \sum_{i=1}^n \mu_i^2.
+\]
+\end{definition}
+We write this as $W\sim\chi^2_n(\lambda)$, in which case
+\[
+\expe(W)=n+\lambda \quad\text{and}\quad \var(W)=2(n+2\lambda).
+\]
+
+When $\lambda=0$, all $\mu_i$ must be zero and the $\chi^2_n(\lambda)$ distribution reduces to the ordinary $\chi^2_n$ distribution. Any non-zero mean $\mu_i$ increases the value of $\lambda$, and hence increases $\expe(W)$ and $\var(W)$ compared to those of the ordinary $\chi^2_n$ distribution. 
+
+%--------------------------------------------------
+\subsubsection{One-sample test of variance}
+%--------------------------------------------------
+Let $X_1,X_2,\ldots,X_n$ be a random sample from the $N(\mu,\sigma^2)$ distribution, and consider the null hypothesis $H_0:\sigma^2=\sigma_0^2$ against a suitable alternative, where $\sigma_0>0$ is fixed. If $\mu$ is known, we use the test statistic
+\[
+T = \sum_{i=1}^n \left(\frac{X_i-\mu}{\sigma_0}\right)^2 \sim \chi^2_n \quad\text{under $H_0$.}
+\]
+If $\mu$ is unknown, we replace it by the sample mean $\bar{X}$, in which case $T\sim\chi^2_{n-1}$.
+
+%Under the alternative hypothesis $H_1:\sigma^2\neq\sigma^2_0$, 
+%\[
+%T(\mathbf{X}) = \left(\frac{\sigma}{\sigma_0}\right)^2\sum_{i=1}^n\left(\frac{X_i-\mu}{\sigma}\right)^2  
+%\]
+%Because the $\chi^2_n$ distribution is a special case of the $\text{Gamma}(k,\theta)$ distribution with $k=n/2$ and $\theta=2$, it follows by Lemma\ref{lem:properties_of_gamma_distribution} that $T\sim\text{Gamma}(n/2, 2(\sigma/\sigma_0)^2)$, for which $\expe(T)=n(\sigma/\sigma_0)^2$ and $\var(T)=2n(\sigma/\sigma_0)^4$. Thus,
+%\bit
+%\it for $H_1:\sigma<\sigma_0$, the probability mass shifts to the left, so we need a lower-tail test;
+%\it for $H_1:\sigma>\sigma_0$, the probability mass shifts to the right, so we need an upper-tail test.
+%\eit.
+
+\begin{exercise} %[One-sample test of variance]
+A quality control supervisor at a paint factory knows that the exact amount each tin contains will vary due to certain uncontrollable factors that affect the amount of fill. The mean fill is important, but equally important is the variation of each fill. If the variance $\sigma^2$ of the fill is large, some tins will contain too much and others too little. A regulatory agency specifies that the variance of the amount of fill in 250ml tins should be less than $3$. To determine whether or not the process is meeting this specification, the supervisor randomly selects 10 tins and measures the contents of each tin. The mean fill over the sample is found to be $250.78$, and the sample variance is $s^2 = 1.03$. Does the data indicate that the factory is operating within the regulatory limits?
+\begin{answer}
+We wish to test the null hypothesis $H_0:\sigma^2 = 3$ against the alternative $H_1:\sigma^2 < 3$. We assume that the distribution of the fill amounts is approximately normal, and consider the test statistic 
+\[
+T = \sum_{i=1}^{n} \left(\frac{X_i-\bar{X}}{\sigma}\right)^2 = \frac{(n-1)s^2}{\sigma^2},
+\]
+where $s^2$ is the sample variance of the fill amounts. Taking $n=10$, the distribution of our test statistic under the null hypothesis $H_0:\sigma^2 = 3$ is
+\[
+T \sim \chi^2_9.
+\]
+\bit
+\it From tables, the critical value for a lower-tailed test at $\alpha=0.05$ is $T_{0.95} = 3.326$.
+\it The observed value of the test statistic (under the null hypothesis) is
+\[
+T = \frac{(n-1)s^2}{\sigma^2} = \frac{9\times 1.03}{3} = 3.09.
+\]
+\eit 
+The test statistic lies in the rejection region, so the supervisor can reject $H_0:\sigma^2=3$ and conclude that the variance of the fill amounts is less than $3$. The supervisor can be confident that the factory is operating within the desired limits of variability. 
+\end{answer}
+\end{exercise}
+%%--------------------------------------------------
+%\subsubsection{One-sample tests}
+%%--------------------------------------------------
+%Let $X\sim N(\mu,\sigma^2)$.
+%
+%\ben
+%\it % \mu unknown, \sigma^2 known
+%If $\mu$ is unknown but $\sigma^2$ is known, a test statistic for $H_0:\mu=\mu_0$ against a suitable alternative is the standardized sum
+%\[
+%Z(\mathbf{X}) = \frac{1}{\sqrt{n}}\sum_{i=1}^n\left(\frac{X_i-\mu_0}{\sigma}\right) \quad\sim N(0,1) \text{ under $H_0:\mu=\mu_0$.}
+%\]
+%\bit
+%If $\sigma^2$ also unknown, we replace it by the sample variance $s^2$, in which case $Z\sim t_{n-1}$ under $H_0$.
+%\eit
+%
+%If $\mu\neq\mu_0$, then $X -\mu_0\sim N(\mu-\mu_0,\sigma^2)$, so 
+%\[
+%Z(\mathbf{X}) 
+%%	= \frac{1}{\sqrt{n}}\sum_{i=1}^n\left(\frac{X_i-\mu_0}{\sigma}\right)
+%	= \frac{1}{\sqrt{n}}\sum_{i=1}^n\left(\frac{X_i-\mu}{\sigma} + \frac{\mu-\mu_0}{\sigma}\right)
+%\]
+%in which case $Z\sim N(\mu-\mu_0,1)$.
+%
+%Another test statistic for $H_0:\mu=\mu_0$ is the standardized \emph{sum-of-squares},
+%\[
+%T(\mathbf{X}) = \sum_{i=1}^n\left(\frac{X_i-\mu_0}{\sigma}\right)^2  \quad\sim\chi^2_n \text{ under $H_0:\mu=\mu_0$.}
+%\]
+%
+%\bit
+%\it If $\mu\neq\mu_0$, $T\sim\chi^2_n(\lambda)$ where $\lambda= n(\mu-\mu_0)^2$.
+%\eit
+%
+%\it % \mu known, \sigma^2 unknown
+%If $\mu$ is known but $\sigma^2$ is unknown, the standardized sum-of-squares can also be used as a test statistic for $H_0:\sigma^2=\sigma^2_0$ against a suitable alternative,
+%\[
+%T(\mathbf{X}) = \sum_{i=1}^n\left(\frac{X_i-\mu}{\sigma_0}\right)^2  \quad\sim\chi^2_n \text{ under $H_0:\sigma^2=\sigma^2_0$.}
+%\]
+%\bit
+%\it If $\mu$ is also unknown we replace it by the sample mean $\bar{X}$, in which case $T\sim\chi^2_{n-1}$ under $H_0$.
+%\eit
+%
+%Under the alternative $H_1:\sigma^2\neq\sigma^2_0$, 
+%\[
+%T(\mathbf{X}) 
+%%	= \sum_{i=1}^n\left(\frac{X_i-\mu}{\sigma_0}\right)^2  
+%	= \left(\frac{\sigma}{\sigma_0}\right)^2\sum_{i=1}^n\left(\frac{X_i-\mu}{\sigma}\right)^2  
+%\]
+%in which case $T\sim\text{Gamma}(n/2, 2(\sigma/\sigma_0)^2)$, for which $\expe(T)=n(\sigma/\sigma_0)^2$ and $\var(T)=2n(\sigma/\sigma_0)^4$.
+%
+%%\begin{remark}
+%%If $\sigma^2$ unknown, we replace it by the sample variance $s^2$, in which case $Z\sim t_{n-1}$ under $H_0$.
+%%If $\mu$ is unknown, we replace it by the sample mean $\bar{X}$, in which case $T\sim\chi^2_{n-1}$ under $H_0$.
+%%\end{remark}
+%
+%%--------------------------------------------------
+%\subsubsection{Two-sample tests}
+%%--------------------------------------------------
+%Let $X\sim N(\mu_1,\sigma^2)$ and $Y\sim N(\mu_2,\sigma^2)$ 
+%
+
+%====================================================================
+\subsection{The $F$ distribution}
+%====================================================================
+\begin{definition}
+Let $T_1$ and $T_2$ be independent random variables with $T_1\sim\chi^2_m$ and $T_2\sim\chi^2_n$. The distribution of the ratio
+\[
+F = \frac{T_1/m}{T_2/n}.
+\]
+is called the \emph{$F$-distribution with $m$ and $n$ degrees of freedom}, and denoted by $F\sim F_{m,n}$.
+\end{definition}
+
+%--------------------------------------------------
+\subsubsection{Two-sample tests of variance}
+%--------------------------------------------------
+Let $X_1,X_2,\ldots,X_m$ be a random sample from the $N(\mu_1,\sigma_1^2)$ distribution, let $Y_1,Y_2,\ldots,Y_n$ be an independent random sample from the $N(\mu_2,\sigma_2^2)$ distribution, and consider the null hypothesis $H_0:\sigma_1^2 = \sigma_2^2$ against a suitable alternative. 
+
+%If $\mu_1$ and $\mu_2$ are known, we use the ratio of the sample mean estimatorss of variance:
+
+\ben
+\it % known means
+If $\mu_1$ and $\mu_2$ are known, we use the ratio of the sample mean estimators of variance as a test statistic,
+\[
+F 	= \frac{\hat{\sigma}_1^2}{\hat{\sigma}_2^2}
+	= \frac{\displaystyle\frac{1}{m}\sum_{i=1}^m (X_i-\mu_1)^2}{\displaystyle\frac{1}{n}\sum_{j=1}^n (Y_i-\mu_2)^2}
+	= \frac{
+		\displaystyle\sigma_1^2\left[\frac{1}{m}\sum_{i=1}^m \left(\frac{X_i-\mu_1}{\sigma_1}\right)^2\right]
+	}{
+		\displaystyle\sigma_2^2\left[\frac{1}{n}\sum_{j=1}^n \left(\frac{Y_j-\mu_2}{\sigma_2}\right)^2\right]
+	}.
+\]
+Under $H_0:\sigma_1^2 = \sigma_2^2$, this statistic has the $F_{m,n}$ distribution.
+\it % unknown means
+If $\mu_1$ and $\mu_2$ are unknown, we use the ratio of the sample variances as a test statistic,
+\[
+F 	= \frac{s_1^2}{s_2^2}
+	= \frac{\displaystyle\frac{1}{m-1}\sum_{i=1}^m (X_i-\bar{X})^2}{\displaystyle\frac{1}{n-1}\sum_{j=1}^n (Y_i-\bar{Y})^2}
+	= \frac{
+		\displaystyle\sigma_1^2\left[\frac{1}{m-1}\sum_{i=1}^m \left(\frac{X_i-\bar{X}}{\sigma_1}\right)^2\right]
+	}{
+		\displaystyle\sigma_2^2\left[\frac{1}{n-1}\sum_{j=1}^n \left(\frac{Y_j-\bar{Y}}{\sigma_2}\right)^2\right]
+	}.
+\]
+Under $H_0:\sigma_1^2 = \sigma_2^2$, this ratio has the $F_{m-1,n-1}$ distribution.
+\een
+
+\bit
+\it For $H_1:\sigma_1<\sigma_2$, the probability mass shifts to the left so we need a lower-tail test;
+\it for $H_1:\sigma_1>\sigma_2$, the probability mass shifts to the right so we need an upper-tail test.
+\eit.
+
+Note that statistical tables usually only give upper-tail percentage points: if necessary, we can convert between the two using the fact that if $F\sim F_{m,n}$, then $1/F\sim F_{n,m}$.
+
+\begin{exercise}%[two-sample test of variance]
+A researcher wants to compare the metabolic rates of white mice subjected to different drugs. The weights of the mice may affect their metabolic rates, so the researcher wishes to obtain mice that are relatively homogeneous with respect to weight. Five hundred mice will be needed to complete the study. Currently, 18 mice from supplier 1 and another 13 mice from supplier 2 are available for comparison. The researcher weighs these mice and finds that the sample standard deviations are $s_1=0.2021$ and $s_2=0.0982$ respectively. Is there sufficient evidence to indicate a significant difference in the variability of the weight of mice obtained from the two suppliers at the $\alpha=0.1$ level?
+\begin{answer}
+Let $\sigma^2_1$ and $\sigma^2_2$ be the population variances for mice from Supplier 1 and Supplier 2 respectively. The null hypothesis is $H_0:\sigma^2_1=\sigma^2_2$, and our test statistic is the ratio of the sample variances,
+\[
+F = \frac{s^2_1}{s^2_2}
+\]
+\bit
+\it We reject $H_0$ if the observed $F$-ratio exceeds the tabulated value $F_{1-\alpha/2}=F_{0.95} = 2.38$.
+\it The observed value is $F=(0.2021)^2/(0.0982)^2=4.24$.
+\eit
+The observed value lies in the rejection region, so we reject the null hypothesis and conclude that the weights of mice from Supplier 2 tend to be more homogeneous that the weights of mice from Supplier 1.
+\end{answer}
+\end{exercise}
+
+%-------------------------------------------------
+\section{Analysis of variance}\label{sec:anova}
+
+Analysis-of-variance (ANOVA) is a way of testing hypotheses about means by looking at sample variances. Consider a population consisting of $k$ groups. We assume that all observations are independent and normally distributed with the same variance, but whose means might be different depending on the group to which they belong. 
+
+\medskip
+Let $\mu_i$ denote the mean of the $i$th group. We wish to test the null hypothesis that all group means are equal, against the alternative that they are not:
+\begin{align*}
+& H_0:\ \mu_1=\mu_2=\ldots=\mu_k, \\
+& H_1:\ \mu_i\neq\mu_j \text{ for some } i\neq j.
+\end{align*}
+
+\medskip
+Suppose we obtain an independent random sample of observations from each group:
+\bit
+\it $(Y_{11}, Y_{12}, \ldots, Y_{1n_1})$ where $Y_{1j}\sim N(\mu_1,\sigma^2)$,
+\it $(Y_{21}, Y_{22}, \ldots, Y_{2n_2})$ where $Y_{2j}\sim N(\mu_2,\sigma^2)$,
+\it[] $\ldots$
+\it $(Y_{k1}, Y_{k2}, \ldots, Y_{kn_k})$ where $Y_{kj}\sim N(\mu_k,\sigma^2)$.
+\eit
+
+%\bit
+%\it Groups are indexed by $i=1,2,\ldots,k$.
+%\it Observations within the $i$th group are indexed by $j=1,2,\ldots,n_i$.
+%\it We assume that all observations are independent and have equal variance.
+%\eit
+
+%====================================================================
+\subsection{The test statistic}
+%====================================================================
+
+\bit
+\it Let $N=\sum_{i=1}^k n_i$ be the total number of observations. 
+\it Let $\bar{Y}_i = \frac{1}{n_i}\sum_{j=1}^{n_i} Y_{ij}$ be the sample mean of the $i$th group.% (for $i=1,2,\ldots k$).
+\it Let $\bar{Y} = \frac{1}{N}\sum_{i=1}^k\sum_{j=1}^{n_i} Y_{ij}$ be the overall sample mean.
+\eit
+
+The total deviation of a single observation from the overall sample mean can be divided into two components:
+\[
+\begin{array}{ccccc}
+(Y_{ij}-\bar{Y})		& = & (Y_{ij}-\bar{Y}_i)			& + & (\bar{Y}_i-\bar{Y})  \\[1ex]
+\text{Total deviation} 	& 	& \text{Unexplained deviation}	& 	& \text{Explained deviation} 	
+\end{array}
+\]
+
+To test the null hypothesis $H_0:\mu_1=\mu_2=\ldots=\mu_k$, we define the following sums-of-squares:
+
+%Under $H_0$, we have independent estimates of $\sigma^2$:
+%\bit
+%\it Between groups: $\frac{1}{k-1}\sum_{i=1}^{k}(\bar{Y}_{i\cdot} - \bar{Y}_{..})^2$
+%\it Within groups: $\frac{1}{n_i-1}\sum_{j=1}^{n_i}(Y_{ij} - \bar{Y}_{i\cdot})^2$
+%\eit
+%
+%
+%
+%
+\[
+\begin{array}{lll}
+SST	& = \displaystyle\sum_{i=1}^k\sum_{j=1}^{n_i} (Y_{ij}-\bar{Y})^2.
+\qquad\qquad & \text{The \textbf{total} sum-of-squares.} \\
+SSG	& = \displaystyle\sum_{i=1}^k n_i (\bar{Y}_i-\bar{Y})^2.
+\qquad & \text{The \textbf{between-groups} sum-of-squares.} \\
+SSE	& = \displaystyle\sum_{i=1}^k\sum_{j=1}^{n_i} (Y_{ij}-\bar{Y}_i)^2.
+\qquad & \text{The \textbf{error} sum-of-squares.} \\
+\end{array}
+\]
+
+The following lemma is easily proved.
+\begin{lemma}
+$SST = SSG + SSE$.
+\end{lemma}
+%\begin{proof}
+%Exercise.
+%\begin{align*}
+%S_T
+%	& = \sum_{i=1}^k\sum_{j=1}^{n_i} (Y_{ij}-\bar{Y}_{\cdot\cdot})^2 \\
+%	& = \sum_{i=1}^k\sum_{j=1}^{n_i} (Y_{ij}-\bar{Y}_{i\cdot}+\bar{Y}_{i\cdot}-\bar{Y}_{\cdot\cdot})^2 \\
+%	& = \sum_{i=1}^k\sum_{j=1}^{n_i} \big[(Y_{ij}-\bar{Y}_{i\cdot})^2 + 2(Y_{ij}-\bar{Y}_{i\cdot})(\bar{Y}_{i\cdot}-\bar{Y}_{\cdot\cdot})+ (\bar{Y}_{i\cdot}-\bar{Y}_{\cdot\cdot})^2\big] \\
+%	& = \sum_{i=1}^k\sum_{j=1}^{n_i} (Y_{ij}-\bar{Y}_{i\cdot})^2 + \sum_{i=1}^k n_i(\bar{Y}_{i\cdot}-\bar{Y}_{\cdot\cdot})^2 \\
+%	& = S_E + S_G.
+%\end{align*}
+%\end{proof}
+
+%\bit
+%\it $S_T$ is the total squared deviation,
+%\it $S_G$ is the squared deviation explained by group membership,
+%\it $S_E$ is the residual squared deviation.
+%\it Note that $SST = SSG + SSE$.
+%\it[]
+%\it If the ratio $SS_G/SS_E$ is large, we might be inclined to reject the null hypothesis that all group means are equal.
+%\eit
+Intuitively, if the ratio $SSG/SSE$ is large, we might be inclined to reject the null hypothesis that all group means are equal.
+
+% lemma: distribution of SS_E
+\begin{lemma}[The distribution of $SSE$]
+\[
+%\frac{SS_E}{\sigma^2} = 
+\frac{1}{\sigma^2}\sum_{i=1}^k\sum_{j=1}^{n_i}(Y_{ij}-\bar{Y}_i)^2 \sim \chi^2_{N-k}.
+\]
+\end{lemma}
+
+\begin{proof}
+For the $i$th group we have $Y_{ij}\sim N(\mu_i,\sigma^2)$ so by independence,
+\[
+\frac{1}{\sigma^2}\sum_{j=1}^{n_i}(Y_{ij}-\mu_i)^2 \sim \chi^2_{n_i}.
+\]
+Replacing the unknown expectation $\mu_i$ by the sample mean $\bar{Y}_i$, we obtain
+\[
+\frac{1}{\sigma^2}\sum_{j=1}^{n_i}(Y_{ij}-\bar{Y}_i)^2 \sim \chi^2_{n_i-1}.
+\]
+By Corollary~\ref{cor:sum_of_two_independent_chisquared}, if $U\sim\chi^2_m$ and $V\sim\chi^2_n$ then $U+V\sim\chi^2_{m+n}$, so
+\[
+\frac{1}{\sigma^2}\sum_{i=1}^k\sum_{j=1}^{n_i}(Y_{ij}-\bar{Y}_i)^2 \sim \chi^2_{N-k}.
+\]
+%as required.
+\end{proof}
+
+% lemma: distribution of SS_G
+\begin{lemma}[The distribution of $SSG$]\label{lem:ssg}
+Let $\mu$ be the expected value of the $Y_{ij}$ across the entire population. Then
+\[
+\frac{1}{\sigma^2}\sum_{i=1}^k n_i (\bar{Y}_i - \bar{Y})^2 \sim \chi^2_{k-1}(\lambda)
+\quad\text{where}\quad\lambda = \sum_{i=1}^k n_i(\mu_i-\mu)^2.
+\]
+\end{lemma}
+
+% proof
+\begin{proof}
+For the $i$th group we have $\bar{Y}_i \sim N(\mu_i,\sigma^2/n_i)$, so
+\[ 
+\sqrt{n_i}\left(\frac{\bar{Y}_i - \mu}{\sigma}\right) \sim N(\mu_i-\mu,1)
+\]
+Because all observations are independent of each other the $\bar{Y}_i$ are also independent, so
+\[
+\sum_{i=1}^k n_i\left(\frac{\bar{Y}_i - \mu}{\sigma}\right)^2 \sim \chi^2_{k}(\lambda) 
+\quad\text{where}\quad \lambda = \sum_{i=1}^k(\mu_i-\mu)^2.
+\]
+Finally, replacing the unknown expectation $\mu$ by the sample mean $\bar{Y}$, we obtain 
+\[
+\frac{1}{\sigma^2}\sum_{i=1}^k n_i (\bar{Y}_i - \bar{Y})^2 \sim \chi^2_{k-1}(\lambda).
+\]
+%as required.
+\end{proof}
+
+% remark
+\begin{remark}
+Under the null hypothesis, each group mean $\mu_i$ is equal to the population mean $\mu$, in which case $\lambda=0$ and hence $SS_G/\sigma^2 \sim \chi^2_{k-1}$. Otherwise we must have $SS_G/\sigma^2 \sim \chi^2_{k-1}(\lambda)$ where $\lambda>0$, in which case $SS_G/\sigma^2$ is likely to be larger than it would be if $H_0$ is true.
+\end{remark}
+
+\begin{theorem}[Test Statistic for ANOVA]
+Let
+\[
+s^2_G = \frac{1}{k-1}\sum_{i=1}^k n_i (\bar{Y}_i-\bar{Y})^2
+\quad\text{and}\quad
+s^2_E = \frac{1}{N-k}\sum_{i=1}^k\sum_{j=1}^{n_i} (Y_{ij}-\bar{Y}_i)^2,
+\]
+and define the test statistic $F = s^2_G/s^2_E$. Under the null hypothesis $H_0:\mu_1=\mu_2=\ldots=\mu_k$, %this has the $F_{k-1,N-k}$ distribution.
+\[
+%F = \displaystyle\frac{s^2_G}{s^2_E} \sim F_{k-1,N-k}.
+%F = s^2_G/s^2_E \sim F_{k-1,N-k}.
+F \sim F_{k-1,N-k}.
+\]
+\end{theorem}
+
+\begin{remark}
+%By Lemma~\ref{lem:ssg}, if $H_0$ does not hold then $SSG/\sigma^2\sim\chi^2(\lambda)$ where $\lambda>0$, so $F$ is likely to be larger than it would be if $H_0$ is true. 
+By the previous remark, we see that an upper-tail test is required: $H_0$ is rejected whenever $F > F_{\alpha}$, where $F_{\alpha}$ is the upper-tail critical value of the $F_{k-1,N-k}$ distribution at significance level $\alpha$. 
+\end{remark}
+
+The various statistics computed during a one-way analysis of variance are usually reported in tabular form:
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|} \hline
+Source 			& \qquad df\qquad\mbox{}& \qquad SS\qquad\mbox{}& \qquad MS\qquad\mbox{}& \qquad F\qquad\mbox{}	\\ \hline
+Between Groups	& $k-1$					& $SSG$					& $s^2_G$				& $F = s^2_G/s^2_E$		\\ \hline
+Error 			& $N-k$					& $SSE$					& $s^2_E$				&						\\ \hline
+Total			& $N-1$					& $SST$					& 						& 						\\ \hline
+\end{tabular}\par
+\end{center}
+
+\begin{example}
+The data below are the yields (per hectare) of eight types of wheat, recorded over four independent trials. 
+\[
+\begin{array}{|c|cccc|}\hline
+\text{Type}	& \multicolumn{4}{c|}{\text{Yield}} \\ \hline
+1 &  182 & 214 & 216 & 231 \\
+2 &  196 & 202 & 208 & 224 \\
+3 &  203 & 212 & 221 & 242 \\
+4 &  198 & 203 & 207 & 222 \\
+5 &  171 & 192 & 197 & 204 \\
+6 &  194 & 218 & 223 & 232 \\
+7 &  208 & 216 & 218 & 239 \\
+8 &  183 & 188 & 193 & 198 \\ \hline
+\end{array}
+\]
+Perform an analysis-of-variance to determine whether there are significant differences among the mean yields of the eight types.
+\end{example}
+
+\begin{solution}
+%\[
+%\begin{array}{|c|cccc|r|r|}\hline
+%\text{Type} (i)	& \multicolumn{4}{c|}{\text{Yield}} & \sum_j X_{ij} &  \sum_j X_{ij}^2 \\ \hline
+%1 				&  182 & 214 & 216 & 231 	&  843 &  178937 \\
+%2 				&  196 & 202 & 208 & 224 	&  830 &  172660 \\
+%3 				&  203 & 212 & 221 & 242 	&  878 &  193558 \\
+%4 				&  198 & 203 & 207 & 222 	&  830 &  172546 \\
+%5 				&  171 & 192 & 197 & 204 	&  764 &  146530 \\
+%6 				&  194 & 218 & 223 & 232 	&  867 &  188713 \\
+%7 				&  208 & 216 & 218 & 239 	&  881 &  194565 \\
+%8 				&  183 & 188 & 193 & 198 	&  762 &  145286 \\ \hline
+%\text{Overall}	&      &     &     &    		& 6655 & 1392795 \\ \hline
+%\end{array}
+%\]
+Tedious calculations yield the following sums-of-squares:
+\[
+SST = 8762.9688,\quad SSG = 3848.71875 \text{\quad and\quad} SSE = 4914.2.
+\]
+
+%The sums of squares are computed as follows:
+%\begin{align*}
+%S_T
+%	& = \sum_{i=1}^k \sum_{j=1}^{n_i} (X_{ij}-\bar{X}_{\cdot\cdot})^2 \\
+%	& = \sum_{i=1}^k \sum_{j=1}^{n_i} X_{ij}^2 - \frac{1}{N}\left(\sum_{i=1}^k\sum_{j=1}^{n_i} X_{ij}\right)^2 \\
+%	& = (182^2 + 214^2 + \ldots + 762^2) - \frac{6655^2}{32} \\
+%	& = 1392795 - 1384032.03125 = 8762.96875 \\ 
+%\end{align*}
+%
+%\begin{align*}
+%S_G
+%	& = \sum_{i=1}^k n_i(\bar{X}_{i\cdot}-\bar{X}_{\cdot\cdot})^2 \\
+%	& = \sum_{i=1}^k \frac{1}{n_i}\left(\sum_{j=1}^{n_i} X_{ij}\right)^2 
+%			- \frac{1}{N}\left(\sum_{i=1}^k\sum_{j=1}^{n_i} X_{ij}\right)^2 \\
+%	& \left(\frac{843^2}{4} + \frac{830^2}{4} +\ldots+ \frac{762^2}{4}\right) - \frac{6655^2}{32} \\
+%	& = 1387880.75 - 1384032.03125 = 3848.71875. 
+%\end{align*}
+%\begin{align*}
+%S_E
+%	& = \sum_{i=1}^k \sum_{j=1}^{n_i} (X_{ij}-\bar{X}_{i\cdot})^2  \\
+%	& = \sum_{i=1}^k \sum_{j=1}^{n_i} X^2_{ij} - \sum_{i=1}^k \frac{1}{n_i}\left(\sum_{j=1}^{n_i} X_{ij}\right)^2 \\ 
+%	& = (182^2 + 214^2 + \ldots + 762^2) - \left(\frac{843^2}{4} + \frac{830^2}{4} +\ldots+ \frac{762^2}{4}\right) \\
+%	& = 1392795 - 1387880.75 = 4914.25 \\
+%\end{align*}
+%Check: $S_G + S_E = 3848.77 + 4914.20 = 8762.9 = S_0$.
+
+The ANOVA table is:
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|} \hline
+Source			& df	& SS		& MS		& F 			\\ \hline
+Between-Groups	& 7		& 3848.72	& 549.8170	& 2.6852		\\ \hline
+Error			& 24	& 4914.25	& 204.7604 	& 			\\ \hline
+Total			& 31	& 8762.97 	& 			&			\\ \hline
+\end{tabular}\par
+\end{center}
+
+From tables of the $F_{7,24}$ distribution, 
+\bit
+\it The 95th percentile is $F_{0.05} = 2.42$.
+\it The 99th percentile is $F_{0.01} = 3.50$.
+\eit
+The observed value of the test statistic lies between these two values: we would reject the null hypothesis at $\alpha=0.05$, but not at $\alpha=0.01$.
+\end{solution}
+
+
+%-------------------------------------------------
+\section{Linear regression I}\label{sec:slr1}
+
+%-----------------------------
+%\subsection{}
+We wish to investigates how one random variable $X$ influences the behaviour of another random variable $Y$.
+
+\bit
+\it $X$ is called the \emph{explanatory variable}, or the \emph{independent} variable.
+\it $Y$ is called the \emph{response variable}, or the \emph{dependent} variable.
+\eit
+
+Suppose we observe that $X$ takes the value $x$. Unless $Y$ is completely determined by $X$, we cannot predict its value with certainty, so we focus on the problem of estimating its conditional expectation $E(Y|X=x)$. This leads us to represent $Y$ as the sum of two random variables:
+\[
+Y = \mu(X) + \epsilon
+\]
+where 
+\bit
+\it $\mu(x) = \expe(Y|X=x)$ is called the \emph{regression function}, and
+\it $\epsilon = Y - \expe(Y|X)$ is called the \emph{error variable} (whose distribution may depend on $X$).
+\eit
+ 
+% lemma
+%By the law of total expectation, the expected value of the error variable is zero.
+\begin{lemma}
+The expected value of the error variable is zero.
+%$\expe(\epsilon) = 0$.
+\end{lemma}
+\begin{proof}
+By the law of total expectation, 
+\[
+\expe(\epsilon) = \expe\big[Y - \expe(Y|X)\big] = \expe(Y) - \expe\big[\expe(Y|X)\big] = \expe(Y)-\expe(Y) = 0.
+\]
+\end{proof}
+
+% lemma
+%The law of total variance divides the variance of $Y$ into a component attributed to the explanatory variable $X$, and a component attributed to the error variable $\epsilon$.
+The following lemma shows that the variance of $Y$ can be divided into a component attributed to the explanatory variable $X$, and a component attributed to the error variable $\epsilon$.
+\begin{lemma}
+%$\var(Y) = \var(\mu) + \expe\big[\var(\epsilon|X)\big]$.
+If the error variable $\epsilon$ is independent of the explanatory variable $X$,
+\[\var(Y) = \var(\mu) + \var(\epsilon).
+\]
+\end{lemma}
+\begin{proof}
+$\epsilon = Y - \expe(Y|X)$, so (by the definition of conditional variance),
+\[
+\var(Y|X) = \expe\big(\big[Y-\expe(Y|X)\big]^2|X\big) = \expe(\epsilon^2|X) = \var(\epsilon|X) = \var(\epsilon).
+\]
+By the law of total variance,
+\begin{align*}
+\var(Y) 
+	& = \var\big[\expe(Y|X)\big] + \expe\big[\var(Y|X)\big] \\
+	& = \var\big[\mu(X)\big] + \expe\big[\var(\epsilon)\big]
+	& = \var\big[\mu(X)\big] + \var(\epsilon).
+\end{align*}
+\end{proof}
+
+\begin{remark}
+\bit
+\it $\var(\mu) = \var\big[\expe(Y|X)\big]$ is the \emph{explained} variance.
+%\it $\expe\big[\var(\epsilon|X)\big] = \expe\big[\var(Y|X)\big]$ is the \emph{unexplained} variance.
+\it $\var(\epsilon) = \var(Y|X)$ is the \emph{unexplained} variance.
+\eit
+\end{remark}
+
+
+%-----------------------------
+\subsection{Linear models}
+
+\begin{definition}
+A regression function $\mu(x)=\expe(Y|X=x)$ is called a \emph{linear model} if it is linear in its parameters:
+\end{definition}
+%For example,
+\bit
+\it $\mu(x) = \alpha + \beta x + \gamma x^2$ is a linear model.
+\it $\mu(x) = \alpha e^{\beta x}$ is not a linear model.
+\eit
+
+\begin{definition}
+A \emph{simple} linear model is a model of the form $\mu(x) = \alpha + \beta x$.
+\end{definition}
+
+The simple linear model yields
+\[
+Y = \alpha + \beta X + \epsilon \quad\text{where}\quad \epsilon\sim N(0,\sigma^2).
+\]
+\fbox{\begin{minipage}{\linewidth}\centering We assume that the error variable $\epsilon$ is \emph{independent} of the explanatory variable $X$.\end{minipage}}
+
+\bigskip
+If we observe that $X=x$, we see that $Y\sim N(\alpha+\beta x, \sigma^2)$ and in particular,
+\[
+\expe(Y|X=x) = \alpha + \beta x
+\quad\text{and}\quad
+\var(Y|X=x) = \sigma^2.
+\]
+
+%-----------------------------
+\subsection{Parameter estimation}
+Let $(X_1,Y_1),(X_2,Y_2),\ldots,(X_n,Y_n)$ be a random sample of observations from the joint distribution of $X$ and $Y$. 
+% theorem: mle of alpha and beta
+\begin{theorem}
+The maximum likelihood estimators of $\alpha$ and $\beta$ are given by
+\[
+\hat{\alpha} = \bar{Y}-\hat{\beta}\bar{X}
+\text{\qquad and\qquad}
+\hat{\beta} = \frac{\sum_{i=1}^n (X_i-\bar{X})(Y_i-\bar{Y})}{\sum_{i=1}^n (X_i-\bar{X})^2}
+\text{\qquad respectively.}
+\]
+\end{theorem}
+
+% proof
+\begin{proof}
+Let $\{(x_1,y_1),(x_2,y_2),\ldots,(x_n,y_n)\}$ be a realisation of the sample. The likelihood function is:
+\begin{align*}
+L(\alpha,\beta,\sigma^2)
+	& = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left[-\frac{1}{2}\left(\frac{y_i-(\alpha+\beta x_i)}{\sigma}\right)^2\right] \\
+	& = \left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^n \exp\left[-\frac{1}{2\sigma^2}\sum_{i=1}^n \big[y_i-(\alpha+\beta x_i)\big]^2\right].
+\end{align*}
+The log-likelihood function is:
+\[
+\ell(\alpha,\beta,\sigma^2)
+	= - \frac{n}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}\sum_{i=1}^n \big[y_i-(\alpha+\beta x_i)\big]^2.
+\]
+
+The MLE estimates of $\alpha$ and $\beta$ are those values that minimise the sum of squared errors:
+\[
+H(\alpha,\beta) = \sum_{i=1}^n \big[y_i-(\alpha+\beta x_i)\big]^2
+\]
+\bit
+\it To minimize $H(\alpha,\beta)$ is known as the \emph{method of least squares}.
+\eit
+
+% partial derivatives
+The partial derivatives of $H(\alpha,\beta)$ with respect to $\alpha$ and $\beta$ are
+\begin{align*}
+\frac{\partial H}{\partial\alpha} 
+	& = 2\sum_{i=1}^n \big[y_i-(\alpha+\beta x_i)\big] (-1) \\
+\frac{\partial H}{\partial\beta} 
+	& = 2\sum_{i=1}^n \big[y_i-(\alpha+\beta x_i)\big] (-x_i) \\
+\end{align*}
+
+To find the MLEs of $\alpha$ and $\beta$, we set the partial derivatives to equal zero.
+% alpha
+\begin{align*}
+\frac{\partial H}{\partial\alpha} = 0
+	& \ \Rightarrow\  \sum_{i=1}^n y_i- n\alpha -\beta\sum_{i=1}^n x_i = 0 \\
+	& \ \Rightarrow\  n\alpha  = \sum_{i=1}^n y_i- \beta\sum_{i=1}^n x_i \\
+	& \ \Rightarrow\  \alpha = \bar{y}-\beta\bar{x}.
+\end{align*}
+
+% beta
+\begin{align*}
+\frac{\partial H}{\partial\beta} =0
+	& \ \Rightarrow\  \sum_{i=1}^n x_i y_i - \alpha\sum_{i=1}^n x_i -\beta\sum_{i=1}^n x_i^2 = 0 \\
+	& \ \Rightarrow\  \sum_{i=1}^n x_i y_i - (\bar{y}-\beta\bar{x})\sum_{i=1}^n x_i -\beta\sum_{i=1}^n x_i^2 = 0 \\
+	& \ \Rightarrow\  \sum_{i=1}^n x_i(y_i-\bar{y}) - \beta\sum_{i=1}^n x_i(x_i-\bar{x}) = 0 \\
+	& \ \Rightarrow\  \sum_{i=1}^n (x_i-\bar{x})(y_i-\bar{y}) - \beta\sum_{i=1}^n (x_i-\bar{x})^2 = 0 \\
+	& \ \Rightarrow\  \beta = \frac{\sum_{i=1}^n (x_i-\bar{x})(y_i-\bar{y})}{\sum_{i=1}^n (x_i-\bar{x})^2}
+\end{align*}
+
+The maximum-likelihood estimators of $\alpha$ and $\beta$ are therefore
+\[
+\hat{\alpha} = \bar{Y}-\hat{\beta}\bar{X}
+\text{\quad and\quad}
+\hat{\beta} = \frac{\sum_{i=1}^n (X_i-\bar{X})(Y_i-\bar{Y})}{\sum_{i=1}^n (X_i-\bar{X})^2}.
+\]
+\end{proof}
+
+%-----------------------------
+\subsection{Residual variance}
+
+\begin{definition}
+%Let $(x_1,x_2,\ldots,x_n)$ be a realisation of the marginal sample $(X_1,X_2,\ldots,X_n)$.
+%Given $X=x$,
+
+\ben
+\it $\hat{y} = \hat{\alpha} + \hat{\beta}X$ is called the \emph{predicted value of $Y$} at $X$.
+\it $\hat{\epsilon} = Y - \hat{y}$ is called the \emph{residual variable} at $X$.
+\een
+\end{definition}
+
+% theorem: mle of alpha and beta
+\begin{theorem}
+The maximum likelihood estimator of the error variance $\sigma^2$ is the sample mean of the squared residuals,
+\[
+\hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n \hat{\epsilon}_i^2 
+\text{\quad where\quad} 
+\hat{\epsilon}_i = Y_i-(\hat{\alpha}+\hat{\beta} X_i).
+\]
+\end{theorem}
+
+% proof
+\begin{proof}
+Recall the log-likelihood function:
+\[
+\ell(\alpha,\beta,\sigma^2)
+	= \frac{n}{2}\log(2\pi\sigma^2) + \frac{1}{2\sigma^2}\sum_{i=1}^n \big[y_i-(\alpha+\beta x_i)\big]^2.
+\]
+The first partial derivative of $\ell(\alpha,\beta,\sigma^2)$ with respect to $\sigma^2$ is
+\[
+\frac{\partial\ell}{\partial(\sigma^2)} 
+	= \frac{n}{2\sigma^2} - \frac{1}{2(\sigma^2)^2}\sum_{i=1}^n \big[y_i-(\alpha+\beta x_i)\big]^2.
+\]
+Setting this equal to zero,
+\[
+\sigma^2 = \frac{1}{n}\sum_{i=1}^n \big[y_i-(\alpha+\beta x_i)\big]^2.
+\]
+Substituting our estimates for $\alpha$ and $\beta$, we obtain the MLE
+\[
+\hat{\sigma^2} = \frac{1}{n}\sum_{i=1}^n \hat{\epsilon}_i^2 \text{\quad where\quad} \hat{\epsilon}_i = Y_i-(\hat{\alpha}+\hat{\beta} x_i)
+\]
+as required.
+
+\end{proof}
+
+\begin{remark}[Residual Analysis]
+Our model assumes that $\epsilon\sim N(0,\sigma^2)$ and that $\epsilon$ is independent of $X$. To test whether these assumptions hold, we plot the points $(x_i,\hat{\epsilon}_i)$ on a scatter diagram. If the assumptions do indeed hold, the points should be evenly spread about the horizontal axis, and the extent of their spread should not depend on the $x$-coordinate. 
+This is an example of \emph{residual analysis}. 
+\end{remark}
+
+% exercise
+\begin{exercise}
+Following a class test, 10 students were asked about the number of hours they had revised for the test. The data is shown in the table below.
+\begin{center}
+\begin{tabular}{|l|cccccccccc|} \hline
+Hours studied ($x$)	&  4	 &  9 & 10 & 14 &  4 &  7 & 12 & 22 &  1 & 17 \\ 
+Test score ($y$)		& 31 & 58 & 65 & 73 & 37 & 44 & 60 & 91 & 21 & 84 \\ \hline
+\end{tabular}
+\end{center}
+Perform a simple linear regression to estimate the relationship between the number of hours studied and the score achieved in the test.
+\begin{answer}
+%It is easy to show that 
+%\begin{align*}
+%\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})	
+%		& = \sum_{i=1}^n x_iy_i - \frac{1}{n}\left(\sum_{i=1}^n x_i\right)\left(\sum_{i=1}^n y_i\right) \text{ and} \\
+%\sum_{i=1}^n (x_i - \bar{x})^2				
+%		& = \sum_{i=1}^n x_i^2 - \frac{1}{n}\left(\sum_{i=1}^n x_i\right)^2.
+%\end{align*}
+%
+%From the table,
+%\bit
+%\it $n=10$,
+%\it $\sum_i x_i = 100$ and $\sum_i y_i = 564$,
+%\it $\sum_i x_i^2 = 1376$ and $\sum_i x_iy_i = 6945$.
+%\eit
+%This yields
+Tedious calculations yield
+\[
+\sum_{i=1}^n(x_i-\bar{x})^2  = 376 \text{\quad and\quad} \sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y}) = 1305.
+\]
+Thus
+\begin{align*}
+\hat{\beta}	
+	& = \displaystyle\frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^n(x_i-\bar{x})^2} 
+	= \displaystyle\frac{1305}{376}	= 3.47,\\	
+\intertext{and}
+\hat{\alpha}
+	& = \displaystyle\bar{y} - \hat{\beta}\bar{x} 
+	= \displaystyle\frac{564}{10} - \left(\frac{1305}{376}\right)\left(\frac{100}{10}\right) = 21.69.
+\end{align*}
+The estimated relationship is therefore $\hat{y} = 21.69 + 3.471 x$.
+\end{answer}
+\end{exercise}
+
+%-------------------------------------------------
+\section{Linear regression II}\label{sec:slr2}
+
+%-----------------------------
+%\subsection{}
+For a fixed realisation $(x_1,x_2,\ldots,x_n)$ of the marginal sample $(X_1,X_2,\ldots,X_n)$, the maximum likelihood estimators $\hat{\alpha}$, $\hat{\beta}$ and $\hat{\epsilon}_i$ are linear functions of $Y_1,Y_2,\ldots,Y_n$. Because the $Y_i$ are independent normal variables, it thus follows that $\hat{\alpha}$, $\hat{\beta}$ and $\hat{\epsilon}_i$ are also normal variables.
+
+
+% lemma: intercept
+\begin{lemma}
+The MLE of the intercept $\alpha$ satisfies
+$$\hat{\alpha} \sim N(\alpha,\sigma^2/n)$$
+\end{lemma}
+\begin{proof}
+The expected value of $\hat{\alpha}$ is 
+\begin{align*}
+\expe(\hat{\alpha})
+	= \expe(\bar{Y}-\beta\bar{x})
+	& = \expe\left(\frac{1}{n}\sum_{i=1}^n Y_i - \frac{\beta}{n}\sum_{i=1}^n x_i\right) \\
+	& = \frac{1}{n}\sum_{i=1}^n \expe(Y_i) - \frac{\beta}{n}\sum_{i=1}^n x_i \\
+	& = \frac{1}{n}\sum_{i=1}^n (\alpha+\beta x_i) - \frac{\beta}{n}\sum_{i=1}^n x_i \\
+	& = \alpha.
+\end{align*}
+%This shows that $\hat{\alpha}$ is an \emph{unbiased} estimator for $\alpha$.
+Because $\var(Y_i)=\sigma^2$, the variance of $\hat{\alpha}$ is 
+\begin{align*}
+\var(\hat{\alpha})
+	& = \var\left(\frac{1}{n}\sum_{i=1}^n Y_i - \frac{\beta}{n}\sum_{i=1}^n x_i\right) \\
+	& = \frac{1}{n^2}\sum_{i=1}^n \var(Y_i)
+	= \frac{\sigma^2}{n}.
+\end{align*}
+Hence $\hat{\alpha} \sim N(\alpha,\sigma^2/n)$, as required.
+\end{proof}
+
+% lemma: gradient
+\begin{lemma}%[Gradient]
+The MLE of the gradient $\beta$ satisfies
+$$\hat{\beta}\sim N\left(\beta,\frac{\sigma^2}{\sum_{i=1}^n(x_i-\bar{x})^2}\right)$$
+\end{lemma}
+\begin{proof}
+Since $\expe(Y_i) = \alpha + \beta x_i$ and $\expe(\bar{Y}) = \alpha + \beta\bar{x}$, the expected value of $\hat{\beta}$ is therefore
+\begin{align*}
+\expe(\hat{\beta})
+	& = \expe\left[\frac{\sum_{i=1}^n (x_i-\bar{x})(Y_i-\bar{Y})}{\sum_{i=1}^n (x_i-\bar{x})^2}\right] \\
+	& = \frac{\sum_{i=1}^n (x_i-\bar{x})\expe(Y_i-\bar{Y})}{\sum_{i=1}^n (x_i-\bar{x})^2} 
+`	= \frac{\sum_{i=1}^n \beta(x_i-\bar{x})^2}{\sum_{i=1}^n (x_i-\bar{x})^2} = \beta.
+\end{align*}
+Using the fact that $\sum_{i=1}^n x_i = n\bar{x}$, it is easy to see that $\hat{\beta}$ can be rewritten as
+\[
+\hat{\beta} = \frac{\sum_{i=1}^n (x_i-\bar{x})Y_i}{\sum_{i=1}^n (x_i-\bar{x})^2}.
+\]
+Because $\var(Y_i)=\sigma^2$, the variance of $\hat{\beta}$ is
+\begin{align*}
+\var(\hat{\beta})
+	= \var\left[\frac{\sum_{i=1}^n (x_i-\bar{x})Y_i}{\sum_{i=1}^n (x_i-\bar{x})^2}\right]
+	& = \frac{1}{\left[\sum_{i=1}^n(x_i-\bar{x})^2\right]^2}\sum_{i=1}^n(x_i-\bar{x})^2\var(Y_i) \\
+	& = \frac{\sigma^2}{\sum_{i=1}^n(x_i-\bar{x})^2}.
+\end{align*}
+Hence $\hat{\beta}\sim N\left(\beta,\frac{\sigma^2}{\sum_{i=1}^n(x_i-\bar{x})^2}\right)$, as required.
+\end{proof}
+
+The residuals $\hat{\epsilon}_i$ are normal variables, and the estimated error variance $\hat{\sigma}^2$ is the sample mean of the \emph{squared} residuals. It follows therefore that under a suitable scaling, $\hat{\sigma}^2$ has a chi-squared distribution.
+
+\begin{lemma}%[Error variance]
+The MLE of the error variance $\sigma^2$ satisfies
+\[
+\frac{n\hat{\sigma}}{\sigma} \sim \chi^2_{n-2}
+\]
+\end{lemma}
+\begin{proof}
+Recall that
+\[
+\hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n \hat{\epsilon_i}^2
+\quad\text{where}\quad
+\hat{\epsilon}_i = Y_i-(\hat{\alpha}+\hat{\beta} x_i).
+\]
+Consider
+\begin{align*}
+\frac{1}{\sigma^2}\sum_{i=1}^n\big[Y_i-(\alpha+\beta x_i)\big]^2 
+	& = \frac{1}{\sigma^2}\sum_{i=1}^n\big[(\hat{\alpha}-\alpha) + (\hat{\beta}-\beta)x_i + (Y_i-(\hat{\alpha}+\hat{\beta}x_i))\big]^2 \\
+	& = \frac{n(\hat{\alpha}-\alpha)^2}{\sigma^2} + \frac{(\hat{\beta}-\beta)^2}{\sigma^2}\sum_{i=1}^n x_i^2 + \frac{n\hat{\sigma}^2}{\sigma^2}.
+\end{align*}
+The first three terms in this expression all have chi-squared distribution.
+\bit
+\it
+Because $Y_i\sim N(\alpha+\beta x_i,\sigma^2)$ it follows that $\big[Y_i-(\alpha+\beta x_i)\big]/\sigma\sim N(0,1)$, so
+\[
+\displaystyle\frac{1}{\sigma^2}\sum_{i=1}^n\big[Y_i-(\alpha+\beta x_i)\big]^2\sim\chi^2_{n}.
+\]
+\it
+Because $\hat{\alpha}\sim N(\alpha,\sigma^2/n)$ it follows that $\sqrt{n}(\hat{\alpha}-\alpha)/\sigma\sim N(0,1)$, so
+\[
+\displaystyle\frac{n(\hat{\alpha}-\alpha)^2}{\sigma^2} \sim \chi^2_1.
+\]
+\it 
+Because $\hat{\beta}\sim N\left(\beta,\sigma^2/\sum_{i=1}^n(x_i-\bar{x})^2\right)$ it follows that $(\hat{\beta}-\beta)\sqrt{\sum_{i=1}^n x_i^2}/\sigma \sim N(0,1)$, so
+\[
+\frac{(\hat{\beta}-\beta)^2}{\sigma^2}\sum_{i=1}^n x_i^2 \sim \chi^2_1.
+\]
+\eit
+It is easy to see that if $U\sim\chi^2_a$ and $V\sim\chi^2_b$ are independent, then $U+V\sim\chi^2_{a+b}$. It thus follows that $n\hat{\sigma}/\sigma\sim \chi^2_{n-2}$ as required.
+\end{proof}
+
+%-----------------------------
+\subsection{Test statistics for $\alpha$ and $\beta$}
+
+We have shown that $\hat{\alpha} \sim N(\alpha,\sigma^2/n)$ and $\hat{\beta}\sim N\Big[\beta,\sigma^2 / \sum_{i=1}^n(x_i-\bar{x})^2\Big]$. The error variance $\sigma^2$ is usually unknown, and we use instead the following (unbiased) estimator for $\sigma^2$, based on the squared residuals:
+\[
+\hat{\sigma}^2 = \frac{1}{n-2}\sum_{i=1}^n \hat{\epsilon}_i^2 
+\quad\text{where}\quad
+\hat{\epsilon}_i = Y_i-(\hat{\alpha}+\hat{\beta} x_i).
+\]
+This estimator for $\sigma^2$ yields the following test statistics:
+%\begin{align*}
+%T_1 & = \frac{\hat{\alpha}-\alpha}{\sqrt{\hat{\sigma}^2/(n-2)}} \\[2ex]
+%T_2 & = \frac{\hat{\beta}-\beta}{\sqrt{n\hat{\sigma}^2/[(n-2)\sum_{i=1}^n(x_i-\bar{x})^2]}}
+%\end{align*}
+\[
+T_1 = \frac{\hat{\alpha}-\alpha}{\sqrt{\hat{\sigma}^2/(n-2)}}
+\quad\text{and}\quad
+T_2 = \frac{\hat{\beta}-\beta}{\sqrt{n\hat{\sigma}^2/[(n-2)\sum_{i=1}^n(x_i-\bar{x})^2]}}.
+\]
+
+\bit
+\it Under the null hypothesis $H_0:\alpha=0$, 
+\[
+T_1 = \frac{\hat{\alpha}-\alpha}{\sqrt{\hat{\sigma}^2/(n-2)}} \sim t_{n-2}.
+\]
+\it Uhder the null hypothesis $H_0:\beta=0$,
+\[
+T_2 = \frac{\hat{\beta}-\beta}{\sqrt{n\hat{\sigma}^2/[(n-2)\sum_{i=1}^n(x_i-\bar{x})^2]}} \sim t_{n-2}.
+\]
+\eit
+
+$T_2$ can be used to test whether or not $Y$ depends (linearly) on $X$:
+\begin{align*}
+H_0: 	&\ Y = \alpha+\epsilon, \\
+H_1:	&\ Y = \alpha+\beta X + \epsilon.
+\end{align*}
+
+%-----------------------------
+\subsection{ANOVA for regression}
+
+%For a fixed realisation $(x_1,x_2,\ldots,x_n)$ of the marginal sample $(X_1,X_2,\ldots,X_n)$, 
+Recall that the \emph{predicted value} of $Y_i$ is 
+\[
+\hat{Y}_i = \hat{\alpha} + \hat{\beta}X_i.
+\]
+The total deviation of $Y_i$ from the overall mean $\bar{Y}$ can be divided into two components:
+\[
+Y_i - \bar{Y} = (Y_i-\hat{Y}_i) + (\hat{Y}_i - \bar{Y}),
+\]
+from which it follows that
+\[
+\sum_{i=1}^n(Y_i - \bar{Y})^2 = \sum_{i=1}^n(Y_i-\hat{Y}_i)^2 + \sum_{i=1}^n(\hat{Y}_i - \bar{Y})^2.
+\]
+As with ANOVA, we define the following sums-of-squares.
+\[
+\begin{array}{lll}
+SST	& = \displaystyle\sum_{i=1}^n (Y_i-\bar{Y})^2
+\qquad & \text{The \emph{total} sum-of-squares.} \\
+SSR	& = \displaystyle\sum_{i=1}^n (\hat{Y}_i-\bar{Y})^2
+\qquad & \text{The \emph{regression} (or \emph{model}) sum-of-squares.} \\
+SSE	& = \displaystyle\sum_{i=1}^n (Y_i-\hat{Y}_i)^2
+\qquad & \text{The \emph{error} sum-of-squares.} 
+\end{array}
+\]
+
+The total sum-of-squares $SST$ is determined the marginal sample $(Y_1,Y_2,\ldots,Y_n)$, and substituting for $\hat{Y}_i = \hat{\alpha} + \hat{\beta}X_i$ we see that the regression sum-of-squares satisfies
+\[
+SSR = \frac{\big[\sum_{i=1}^n (X_i-\bar{X})(Y_i-\bar{Y})\big]^2}{\sum_{i=1}^n (X_i-\bar{X})^2}
+\]
+The error sum-of-squares is then given by $SSE = SST - SSR$.
+
+\bigskip
+Under $H_0:\beta=0$,
+\[
+\frac{1}{\sigma^2}\sum_{i=1}^n (\hat{Y}_i-\bar{Y})^2	\sim \chi^2_1
+\text{\quad and\quad}
+\frac{1}{\sigma^2}\sum_{i=1}^n (Y_i-\hat{Y}_i)^2		\sim \chi^2_{n-2}.
+\]
+Thus we have the test statistic
+\[
+F 
+%	= \frac{SSR}{\frac{1}{n-2}SSE} 
+	= \frac{\sum_{i=1}^n (\hat{Y}_i-\bar{Y})^2}{(n-2)^{-1}\sum_{i=1}^n (Y_i-\hat{Y}_i)^2} 
+	\sim F_{1,n-2} \quad\text{under $H_0:\beta=0$.}
+\]
+which provides an alternative meathod of testing whether or not $Y$ depends linearly on $X$.
+
+\begin{exercise}
+The table below shows the deaths due to bronchitis ($x$) and corresponding daily temperatures ($y$), averaged over a long period.
+\begin{center}
+\begin{tabular}{lcccccccccc}\hline
+$x$ & 253 & 232 & 210 & 200 & 191 & 187 & 134 & 102 & 81 & 25 \\
+$y$ & 35 & 37 & 39 & 41 & 43 & 45 & 47 & 49 & 51 & 53 \\ \hline
+\end{tabular}
+\end{center}
+Use the simple linear model $y = \alpha + \beta x + \epsilon$ to perform a least-squares regression of $y$ on $x$. Test whether the slope of the regression line is significantly different from zero at the 5\% significance level.
+\begin{answer}
+The various quantities of interest are computed here:
+\bit
+\it $n = 10$.
+\it $\sum x_{i} = 1615$.
+\it $\sum x_{i}^{2}	= 308929$.
+\it $\sum (x_i-\bar{x})^2	= 308929 - (1615)^{2}/10 = 48106.5$.
+\it $\sum y_{i} =  440$.
+\it $\sum y_{i}^{2}  = 19690$.
+\it $\sum (y_i-\bar{y})^2 = 19690 - (440)^{2}/10 = 330$.
+\it $\sum x_{i}y_{i}	= 67209$.
+\it $\sum (x_i-\bar{x})(y_i-\bar{y})	= 67209 - (1615){\times}(440)/10 = -3851$.
+\eit
+
+The OLS estimates of the regression coefficients are
+\begin{align*}
+\hat{\beta}		&\quad = \frac{\sum (x_i-\bar{x})(y_i-\bar{y})}{\sum (x_i-\bar{x})^2} = \frac{-3851}{48106.5} = -0.080052 \\
+\hat{\alpha}	&\quad = \bar{y}-\hat{\beta}\bar{x} = 44 + 0.080052{\times}161.5 = 56.928326
+\end{align*}
+
+The least squares regression line is 
+\[
+y = 56.928326 - 0.080052x.
+\]
+To test the null hypothesis $H_0:\beta=0$, we compute the model sum-of-squares:
+\[
+SSM 
+	= \frac{\big[\sum (x_i-\bar{x})(y_i-\bar{y})\big]^{2}}{\sum (x_i-\bar{x})^2} 
+	=\frac{(-3851)^{2}}{48106.5} 
+	= 308.2785
+\]
+and the error sum-of-squares,
+\[
+SSE
+	= \sum (y_i-\bar{y})^2 - S_R = 330.0 - 308.2785 =  21.7215.
+\]
+The test statistic is
+\[
+F = \frac{SSM}{\frac{1}{n-2}SSE} = \frac{308.2785}{21.7215/8} = 113.54.
+\]
+
+Critical values of the $F_{1,8}$-distribution are
+\bit
+\it $5.318$ at sig. level $0.05$
+\it $7.570$ at sig. level $0.025$
+\it $11.25$ at sig. level $0.001$
+\it $14.68$ at sig. level $0.005$
+\eit
+Thus the null hypothesis ${\beta} = 0$ is strongly rejected at the $5\%$ significance level.
+\end{answer}
+\end{exercise}
+
+
+%-----------------------------
+\subsection{The coefficient of determination}
+
+Recall that, for any pair of random variables $X$ and $Y$, the \emph{correlation coefficient} is defined by
+\[
+\rho(X,Y) 
+	= \frac{\cov(X,Y)}{\sqrt{\var(X)\var(Y)}}
+	= \frac{\expe\big[(X-\expe X)(Y-\expe Y)\big]}
+			{\sqrt{\expe\big[(X-\expe X)^2\big]\expe\big[(Y-\expe Y)^2\big]}}
+\]
+
+For a bivariate random sample $(X_1,Y_1),(X_2,Y_2),\ldots,(X_n,Y_n)$, the \emph{sample correlation coefficient} (also called the Pearson correlation) is defined by
+\[
+R = \frac{\sum_{i=1}^n(X_i-\bar{X})(Y_i - \bar{Y})}{\sqrt{\sum_{i=1}^n(X_i-\bar{X})^2\sum_{i=1}^n(Y_i-\bar{Y})^2}} 
+\]
+
+For the simple linear regression model $Y=\alpha+\beta X + \epsilon$, the MLE of $\beta$ can be written as,
+\begin{align*}
+\hat{\beta}
+	& = \frac{\sum_{i=1}^n (X_i-\bar{X})(Y_i-\bar{Y})}{\sum_{i=1}^n (X_i-\bar{X})^2} 
+	= R\sqrt{\frac{\sum_{i=1}^n(Y_i-\bar{Y})^2}{\sum_{i=1}^n(X_i-\bar{X})^2}}.
+\end{align*}
+
+%The square of the empirical correlation coefficient is called the \emph{coefficient of determination}, denoted by $R^2$:
+The \emph{coefficient of determination} is the square of the sample correlation, and denoted by $R^2$:
+\[
+R^2 
+	= \frac{\big[\sum_{i=1}^n(X_i-\bar{X})(Y_i - \bar{Y})\big]^2}{\sum_{i=1}^n(X_i-\bar{X})^2\sum_{i=1}^n(Y_i-\bar{Y})^2}
+	= \frac{SSR}{SST}.
+\]
+
+where $SSR$ and $SST$ are the model sum-of-squares and total sum-of-squares respectively. Thus $R^2$ is the proportion of the total variation explained by the regression model: it quantifies how well the regression line fits the data points, and accordingly is often referred to as a \emph{goodness-of-fit} statistic.
+
+
+
+%=====================================================================
+\stopcontents[chapters]
+\endinput

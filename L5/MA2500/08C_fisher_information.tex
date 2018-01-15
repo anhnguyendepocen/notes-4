@@ -1,0 +1,441 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Fisher information}\label{sec:fisher}
+
+
+Let $X$ be a continuous random variable and let $\mathcal{M}=\{f(x;\theta):\theta\in\Theta\}$ be a statistical model for its distribution. How can we quantify the amount of information that $X$ carries about $\theta$?
+
+We assume that our statistical model $\mathcal{M}$ satisfies Condition~\ref{cond:regularity1} along with the following additional requirements:
+\begin{condition}\label{cond:regularity2}
+\ben
+\setcounter{enumi}{3}
+\it The PDFs $f(x;\theta)$ are twice differentiable as functions of $\theta$.
+\it The integral $\displaystyle\int f(x;\theta)\,dx$ is twice differentiable under the integral sign as a function of $\theta$.
+\een
+\end{condition}
+We shalll not consider these in detail.
+
+%----------------------------------------------------------------------
+\subsection{The score function}
+
+Let $X$ be a single observation.% and consider the log-likelihood function $\ell(\theta) = \ell(\theta;X) = \log f(X;\theta)$.
+
+% defn: score function
+\begin{definition}
+The first derivative of the log-likelihood function is called the \emph{score function}, 
+\[
+u(\theta;x) = \frac{\partial}{\partial\theta}\log f(x;\theta)
+\]
+\end{definition}
+
+\bit
+\it Given a fixed observation $X=x$, we think of $u(\theta;x)$ as a function of $\theta$.
+\it Given a fixed value of $\theta$, we think of $u(\theta;X)$ as a random variable. This is a transformation of $X$ which we denote by 
+	\[
+		U = \frac{\partial}{\partial\theta}\log f(X;\theta)
+	\]
+\eit
+% random variable (a transformation of $X$):
+%\[
+%U(X) = u(\theta,X) = = \frac{\partial}{\partial\theta}\log f(X;\theta)
+%\]
+%
+%For a fixed realisation $X=x$, we think of $u(\theta;x)$ as a function of $\theta$. If $X$ is allowed to vary on the other hand, and $\theta$ is fixed, we think of $u(\theta;X)$ as a transformation of $X$:
+%\[
+%U(X) = u(\theta,X) = = \frac{\partial}{\partial\theta}\log f(X;\theta)
+%\]
+
+
+%
+%\begin{remark}
+%The score function $u(\theta;\mathbf{X})$ is the gradient of the log-likelihood function $\ell(\theta;\mathbf{X})$ at $\theta$, and thus quantifies the extent to which the log-likelihood depends on $\theta$. 
+%\end{remark}
+
+%\begin{remark}
+%\bit
+%\it If $\theta$ is a vector of parameters, $u(\theta)$ is a vector of partial derivatives (one for each component).
+%\it Given $\theta$, we can think of u(\theta;\boldX) as a random variable (a transformation of $\boldX$).
+%%\it $V$ is the gradient of the log-likelihood function at $\theta$
+%%\it Thus it quantifies the extent to which the log-likelihood depends on $\theta$.
+%\eit
+
+% lemma: expected score is zero
+\begin{lemma}\label{lem:expe_score_function}
+%Let $X$ be a random variable, and let $f(x;\theta)$ be its PMF/PDF, where $\theta$ is an unknown parameter. Under the regularity conditions stated above, the expected value of the score function $u(\theta;X)$ is zero:
+%\[
+%\expe\left(\frac{\partial}{\partial\theta}\log f(X;\theta)\right) = 0.
+%\]
+Under the regularity conditions stated above,
+%\[
+%%\expe\big[u(\theta,X)\big] = 0.
+%\expe\big[U] = 0.
+%\]
+\[
+\expe(U) = \expe\left(\frac{\partial}{\partial\theta}\log f(X;\theta)\right) = 0.
+\]
+\begin{proof}
+We prove the lemma for the case where $X$ is a continuous random variable. For every value of $\theta$, the integral of $f(x;\theta)$ with respect to $x$ satisfies
+\[
+\int_{-\infty}^{\infty} f(x;\theta)\,dx = 1.
+\]
+Taking the derivative with respect to $\theta$ (and applying the regularity conditions), we see that
+\[
+\frac{\partial}{\partial\theta}\left(\int_{-\infty}^{\infty} f(x;\theta)\,dx\right)
+	= \int_{-\infty}^{\infty} \frac{\partial f(x;\theta)}{\partial\theta} \,dx 
+	= 0.
+\]
+By the chain rule, the first partial derivative of $\log f(x;\theta)$ with respect to $\theta$ is given by
+\[
+\frac{\partial}{\partial\theta}\log f(x;\theta)  
+	= \frac{1}{f(x;\theta)}\frac{\partial}{\partial\theta} f(x;\theta).
+\]
+Hence
+\begin{align*}
+\expe\left(\frac{\partial}{\partial\theta}\log f(X;\theta)\right)
+	= \int_{-\infty}^{\infty} \left(\frac{\partial}{\partial\theta}f(x;\theta)\right) f(x;\theta)\,dx 
+	= \int_{-\infty}^{\infty} \frac{\partial}{\partial\theta}f(x;\theta)\,dx 
+	= 0
+\end{align*}
+as required.
+\end{proof}
+\end{lemma}
+
+% example: geometric
+\begin{example}\label{ex:score_geometric}
+Find the score function of a single observation from the $\text{Geometric}(\theta)$ distribution whose PMF is $\prob(X=k)=\theta(1-\theta)^{k-1}$ for $k=1,2,3,\ldots$ where $0<\theta<1$ is unknown. 
+\begin{solution}
+\bit
+\it The likelihood function is $L(\theta;x) = \theta(1-\theta)^{x-1}$.
+\it The log-likelihood function is $\ell(\theta;x) = \log\theta + (x-1)\log(1-\theta)$.
+\eit
+The score function is therefore equal to
+\begin{align*}
+u(\theta;x) = \ell'(\theta,x)
+	& = \frac{\partial}{\partial\theta} \big(\log\theta + (x-1)\log(1-\theta)\big) \\
+	& = \frac{1}{\theta} - \frac{x-1}{1-\theta}
+	= \frac{1-\theta x}{\theta(1-\theta)}
+\end{align*}
+so $U = \displaystyle\frac{1-\theta X}{\theta(1-\theta)}$. Note that because $\expe(X)=1/\theta$,
+\[
+\expe(U)
+	= \expe\left(\frac{1-\theta X}{\theta(1-\theta)}\right)
+	= \frac{1-\theta\expe(X)}{\theta(1-\theta)}
+	= 0,
+\]
+which verifies Lemma~\ref{lem:expe_score_function}.
+\end{solution}
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Fisher information}
+%----------------------------------------------------------------------
+% defn
+\begin{definition}
+The variance of the score function is called the \emph{Fisher information}, 
+\[
+I(\theta) = \var(U) = \var\left(\frac{\partial}{\partial\theta}\log f(X;\theta)\right).
+\]
+\end{definition}
+
+The following lemma gives a conveient way of computing $I(\theta)$ in terms of the derivative of the score function.
+% lemma
+\begin{lemma}\label{lem:fisher}
+Under the regularity conditions stated above, the Fisher information satisfies
+\[
+I(\theta) = -\expe(U')= -\expe\left(\frac{\partial^2}{\partial\theta^2}\log f(X;\theta)\right).
+\]
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:expe_score_function}, the expected value of the score function is zero:
+\[
+\expe(U) = \int_{-\infty}^{\infty} \left(\frac{\partial}{\partial\theta}\log f(x;\theta)\right) f(x;\theta) \,dx = 0.
+\]
+Taking the derivative of both sides with respect to $\theta$,
+\[
+\int_{-\infty}^{\infty} \left(\frac{\partial^2}{\partial\theta^2}\log f(x;\theta)\right)\,f(x;\theta) \,dx 
++
+\int_{-\infty}^{\infty} \left(\frac{\partial}{\partial\theta}\log f(x;\theta)\right)\,\frac{\partial f(x;\theta)}{\partial\theta} \,dx 
+= 0.
+\]
+By the chain rule, 
+\[
+\frac{\partial}{\partial\theta}\log f(x;\theta)  = \frac{1}{f(x;\theta)}\frac{\partial}{\partial\theta}f(x;\theta).
+%\frac{\partial f(x;\theta)}{\partial\theta} = \frac{\partial\log f(x;\theta)}{\partial\theta}\,f(x;\theta).
+\]
+Thus we have
+\[
+\int_{-\infty}^{\infty} \left(\frac{\partial^2}{\partial\theta^2}\log f(x;\theta)\right)\,f(x;\theta) \,dx 
++
+\int_{-\infty}^{\infty} \left(\frac{\partial}{\partial\theta}\log f(x;\theta)\right)^2 f(x;\theta)\,dx 
+= 0.
+\]
+This can be written as
+\[
+\expe\left(\frac{\partial^2}{\partial\theta^2}\log f(x;\theta)\right)
++
+\expe\left[\left(\frac{\partial}{\partial\theta}\log f(x;\theta)\right)^2 \right]
+= 0.
+\]
+
+Because the expected value of the score function is zero, the second term is the variance of the score function. Hence
+\[
+\expe\left(\frac{\partial^2}{\partial\theta^2}\log f(x;\theta)\right)
++
+I(\theta) = 0
+\]
+and the result follows.
+%
+%\[
+%I(\theta) + \int_{-\infty}^{\infty} \left(\frac{\partial\log f(x;\theta)}{\partial\theta}\right)^2\,f(x;\theta)\,dx = 0.
+%\]
+%Hence
+%\[
+%I(\theta)	= -\expe\left(\frac{\partial^2\log f(X;\theta)}{\partial\theta^2}\right),
+%\]
+%as required.
+\end{proof}
+
+% example: bernoulli
+\begin{example}
+Find the Fisher information of an observation from the $\text{Bernoulli}(\theta)$ distribution.
+\begin{solution}
+Let $X\sim\text{Bernoulli}(\theta)$. The PMF of $X$ can be written as
+\[
+f(x;\theta)=\theta^x(1-\theta)^{1-x} \text{\quad for $x\in\{0,1\}$, and zero otherwise.}
+\]
+To compute the Fisher information, we need the following:
+\begin{align*}
+\log f(x;\theta)
+	& = \ x\log\theta + (1-x)\log(1-\theta), \\[2ex]
+%\frac{\partial}{\partial\theta} \log f(x;\theta),
+%	& = \ \frac{x}{\theta} - \frac{1-x}{1-\theta} \\[2ex]
+%\frac{\partial^2}{\partial\theta^2} \log f(x;\theta),
+%	& = \ -\frac{x}{\theta^2} - \frac{1-x}{(1-\theta)^2}.
+\frac{\partial}{\partial\theta}\log f(x;\theta)
+	& = \ \frac{x}{\theta} - \frac{1-x}{1-\theta}, \\[2ex]
+\frac{\partial^2}{\partial\theta^2} \log f(x;\theta)
+	& = \ -\frac{x}{\theta^2} - \frac{1-x}{(1-\theta)^2}.
+\end{align*}
+%\bit
+%\it $\displaystyle\log f(x;\theta)
+%	= x\log\theta + (1-x)\log(1-\theta)$.
+%\it $\displaystyle\frac{\partial}{\partial\theta} \log f(x;\theta)
+%	= \frac{x}{\theta} - \frac{1-x}{1-\theta}$.
+%\it $\displaystyle\frac{\partial^2}{\partial\theta^2} \log f(x;\theta)
+%	= -\frac{x}{\theta^2} - \frac{1-x}{(1-\theta)^2}$.
+%\eit
+Note that because $\expe(X)=\theta$, the expected value of the score is zero:
+\[
+\expe(U) = \expe\left(\frac{\partial}{\partial\theta}\log f(X;\theta)\right) 
+	= \expe\left(\frac{X}{\theta} - \frac{1-X}{1-\theta}\right)
+	= \frac{\theta}{\theta} - \frac{1-\theta}{1-\theta}
+	= 0.
+\]
+The Fisher information is 
+\begin{align*}
+I(\theta)
+	& = -\expe\left(-\frac{X}{\theta^2}-\frac{1-X}{(1-\theta)^2}\right) \\
+	& = \frac{\theta}{\theta^2}+\frac{1-\theta}{(1-\theta)^2}
+	= \frac{1}{\theta}+\frac{1}{1-\theta}
+	= \frac{1}{\theta(1-\theta)}
+\end{align*}
+Recall that if $X\sim\text{Bernoulli}(\theta)$, then $\var(X)=\theta(1-\theta)$:
+\bit
+\it If the variance is small ($\theta\approx 0 \text{ or } \theta\approx 1$), $X$ carries a lot of information about $\theta$.
+\it If the variance is large ($\theta\approx 1/2$), $X$ carries relatively little information about $\theta$.
+\eit
+\end{solution}
+\end{example}
+
+
+%%% example
+%\begin{example}
+%Find the Fisher information of an observation $X\sim\text{Geometric}(\theta)$.
+%\begin{solution}
+%From Example~\ref{ex:score_geometric}, the score function of $X$ is
+%\[
+%u(\theta;x) = \frac{1-\theta x}{\theta(1-\theta)}
+%\]
+%The derivative of $u(\theta;x)$ with respect to $\theta$ (which is also the second derivative of the log-likelihood function), is
+%\begin{align*}
+%\frac{\partial}{\partial\theta} u(\theta,X)
+%	& = \frac{\theta(1-\theta)(-X) - (1-\theta X)(1-2\theta)}{\theta^2(1-\theta)^2} \\
+%	& = -\frac{1 - 2\theta +\theta^2X}{\theta^2(1-\theta)^2}
+%\end{align*}
+%Because $\expe(X)=1/\theta$, the Fisher information is therefore
+%\begin{align*}
+%I(\theta)
+%	& = -\expe\left(\frac{\partial}{\partial\theta} u(\theta,X)\right) \\
+%	& = \frac{1 - 2\theta +\theta^2\expe(X)}{\theta^2(1-\theta)^2} \\
+%	& = \frac{1 - \theta}{\theta^2(1-\theta)^2} \\
+%	& = \frac{1}{\theta^2(1-\theta)}
+%\end{align*}
+%Note that $I(\theta)$ reaches a mainimum at $\theta=2/3$, which 
+%\end{solution}
+%\end{example}
+%
+
+
+% example: normal
+\begin{example}\label{example:fisher_information_normal}
+Find the Fisher information of an observation from the $N(\theta,\sigma^2)$ distribution, whose mean $\theta$ is unknown but whose variance $\sigma^2$ is known. 
+
+\begin{solution}
+Let $X\sim N(\theta,\sigma^2)$. Then
+\begin{align*}
+f(x;\theta) 
+	& = \ \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{(x-\theta)^2}{2\sigma^2}\right), \\
+\log f(x;\theta) 
+	& = \ -\frac{1}{2}\log(2\pi\sigma^2) - \frac{(x-\theta)^2}{2\sigma^2}, \\
+\frac{\partial}{\partial\theta} \log f(x;\theta)
+	& = \ \frac{x-\theta}{\sigma^2}, \\
+\frac{\partial^2}{\partial\theta^2} \log f(x;\theta)
+	& = \ -\frac{1}{\sigma^2}.
+\end{align*}
+Hence the Fisher information of $X\sim N(\theta,\sigma^2)$ is 
+\[
+I(\theta)
+	= -\expe\left(\frac{\partial^2}{\partial\theta^2}\log f(X;\theta)\right)
+	= \frac{1}{\sigma^2}.
+\]
+\bit
+\it If the variance is small, $X$ carries a lot of information about $\theta$.
+\it If the variance is large, $X$ carries relatively little information about $\theta$.
+\eit
+\end{solution}
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Random samples}
+%----------------------------------------------------------------------
+The score function and Fisher information of a single observation extend naturally to random samples $X_1,X_2,\ldots,X_n$ from the distribution of $X$.
+
+%Given a random sample $X_1,X_2,\ldots,X_n$, the log-likelihood function of $\theta$ is
+%\[
+%\ell(\theta;X_1,X_2,\ldots,X_n) = \prod_{i=1}^n f(X_i;\theta).
+%\]
+
+% defn: scores
+\begin{definition}
+The \emph{score function} of a random sample $X_1,X_2,\ldots,X_n$ is the first partial derivative of its log-likelihood function with respect to $\theta$. By independence,
+\[
+u(\theta;\mathbf{X}) 
+	= \frac{\partial}{\partial\theta} \log L(\theta;\mathbf{X})
+	= \sum_{i=1}^n \frac{\partial}{\partial\theta} \log L(\theta;X_i)
+	= \sum_{i=1}^n u(\theta;X_i)
+\]
+\end{definition}
+
+% fisher information for random samples
+\begin{definition}
+The \emph{Fisher information} of a random sample $X_1,X_2,\ldots,X_n$ is the variance of its score function:
+\[
+I_n(\theta) 
+	= \var\left(\frac{\partial}{\partial\theta}\log L(\theta;\mathbf{X})\right)
+	= \sum_{i=1}^n\var\left(\frac{\partial}{\partial\theta}\log L(\theta;X_i)\right)
+	= nI(\theta),
+%	= -\expe\left(\frac{\partial^2}{\partial\theta^2}\log L(\theta;\mathbf{X})\right)
+%	= -\sum_{i=1}^n \expe\left(\frac{\partial^2}{\partial\theta^2}\log L(\theta;X_i)\right)
+\]
+where $I(\theta)$ is the Fisher information of a single observation.
+\end{definition}
+
+%By independence, the Fisher information of a random sample is the total Fisher information of the individual observations.
+
+%% lemma
+%\begin{lemma}\label{lem:fisher_random_sample}
+%The Fisher information of a random sample $X_1,X_2,\ldots,X_n$ is the total Fisher information of the individual observations,
+%\[
+%I_n(\theta) = nI(\theta)
+%\]
+%where $I(\theta)$ is the Fisher information of a single observation.
+%\end{lemma}
+%
+%% proof
+%\begin{proof}
+%\begin{align*}
+%I_n(\theta) 
+%	& = \var\left(\frac{\partial}{\partial\theta}\log f(X_1,X_2,\ldots,X_n;\theta)\right) \\
+%	& = \var\left(\frac{\partial}{\partial\theta}\log \prod_{i=1}^n f(X_i;\theta)\right) \\
+%	& = \var\left(\frac{\partial}{\partial\theta}\sum_{i=1}^n \log f(X_i;\theta)\right) \\
+%	& = \var\left(\sum_{i=1}^n \frac{\partial}{\partial\theta}\log f(X_i;\theta)\right) \\
+%	& = \sum_{i=1}^n \var\left(\frac{\partial}{\partial\theta}\log f(X_i;\theta)\right) \quad\text{(because the $X_i$ are independent)} \\
+%	& = nI(\theta).
+%\end{align*}
+%\end{proof}
+
+\begin{remark}
+$I_n(\theta)$ increases with the sample size: the more data we have, the more information we have about $\theta$.
+\end{remark}
+
+%----------------------------------------------------------------------
+\begin{exercise}
+\begin{questions}
+\question % <<< Poisson
+Find the score function of an observation from the $\text{Poisson}(\theta)$ distribution, and verify that its expected value is zero.
+\begin{answer}
+The PMF of the $\text{Poisson}(\theta)$ distribution is
+\[
+f(x;\theta) = \displaystyle\frac{\theta^x\exp(-\theta)}{x!} \text{for $x=0,1,2,3,\ldots$ (zero otherwise)}
+\]
+Let $X\sim\text{Poisson}(\theta)$. The score function for a single observation $X=x$ is
+\[
+u(\theta;x)
+	= \frac{\partial}{\partial\theta}\log f(x,\theta)
+	= \frac{\partial}{\partial\theta}(x\log\theta - \theta - \log x!)
+	= \frac{x-\theta}{\theta}.
+\]
+Since $\expe(X)=\theta$, by the linearity of expectation we have
+\[
+\expe\big[u(\theta;X)\big]
+	= \expe\left(\frac{X-\theta}{\theta}\right)
+	= \frac{\expe(X)-\theta}{\theta}
+	= \frac{\theta-\theta}{\theta}
+	= 0 \quad\text{as required.}
+\]
+\end{answer}
+\question % <<< Geometric
+Find the Fisher information $I(\theta)$ of an observation from the $\text{Geometric}(\theta)$ distribution, and find the value of $\theta$ for which $I(\theta)$ is minimum.
+\begin{answer}
+From Example~\ref{ex:score_geometric}, the score function of $X$ is
+\[
+u(\theta;X) = \frac{1-\theta X}{\theta(1-\theta)}
+\]
+The derivative of $u(\theta;X)$ with respect to $\theta$ is
+\begin{align*}
+\frac{\partial}{\partial\theta} u(\theta,X)
+	= \frac{\theta(1-\theta)(-X) - (1-\theta X)(1-2\theta)}{\theta^2(1-\theta)^2}
+	= -\frac{1 - 2\theta +\theta^2X}{\theta^2(1-\theta)^2}
+\end{align*}
+Because $\expe(X)=1/\theta$, the Fisher information is therefore
+\begin{align*}
+I(\theta)
+	= -\expe\left(\frac{\partial}{\partial\theta} u(\theta,X)\right)
+	& = \frac{1 - 2\theta +\theta^2\expe(X)}{\theta^2(1-\theta)^2} \\
+	& = \frac{1 - \theta}{\theta^2(1-\theta)^2} \\
+	& = \frac{1}{\theta^2(1-\theta)}
+\end{align*}
+To find the minimum, we differentiate $I(\theta)$ and set the resulting expression to zero:
+\[
+I'(\theta) = \frac{3\theta-2}{\theta^3(1-\theta)^2}	= 0.
+\]
+This shows that $I(\theta)$ has a turning point at $\theta=2/3$. The second derivative of $I(\theta)$ is
+\[
+I''(\theta) = \frac{9\theta^2 - 16\theta + 9}{\theta^4(1-\theta)^3}.
+\]
+The discriminant of the quadratic expression on the numerator is negative, which shows that $I''(\theta)>0$ for all $\theta$, and hence $I(\theta)$ has a minimum at $\theta=2/3$.  
+\par\smallskip
+Note that for the $\text{Bernoulli}(\theta)$ distribution, $I(\theta)$ reaches its minimum at $\theta=1/2$:
+\[
+I(\theta) = \frac{1}{\theta(1-\theta)},
+\qquad
+I'(\theta) = \frac{2\theta -1}{\theta^2(1-\theta)^2},
+\qquad
+I''(\theta) = \frac{2\big[\theta(1-\theta)+(2\theta-1)^2\big]}{\theta^3(1-\theta)^3}.
+\]
+\end{answer}
+\end{questions}
+\end{exercise}
+%----------------------------------------------------------------------

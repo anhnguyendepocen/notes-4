@@ -1,0 +1,114 @@
+% main.tex for MA2500
+
+% main.tex for MA2500 Foundations of Probability and Statistics
+
+%\PassOptionsToPackage{noproofs}{camnotes}
+%\PassOptionsToPackage{noanswers}{camnotes}
+%\PassOptionsToPackage{blanksolutions}{camnotes}
+
+%------------------------------------------------
+\documentclass[twoside]{book}
+
+\usepackage{camnotes}
+\usepackage{camstyle}
+
+% module info
+\institution{Cardiff University}
+\department{School of Mathematics}
+\modulecode{MA2500}
+\moduletitle{Foundations of Probability and Statistics}
+\moduleterm{Autumn 2018}
+
+% document info
+\title{Lecture Notes}
+\author{D Evans}
+\newcommand{\version}{\today}
+
+% new commands
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\card}{\text{card}}
+\newcommand{\supp}{\text{supp}}
+\newcommand{\prob}{\mathbb{P}}
+\newcommand{\expe}{\mathbb{E}}
+\newcommand{\var}{\text{Var}}
+\newcommand{\cov}{\text{Cov}}
+\newcommand{\mode}{\text{Mode}}
+\newcommand{\pvalue}{p\text{-value}}
+\newcommand{\lt}{<}
+\newcommand{\gt}{>}
+\newcommand{\bias}{\text{Bias}}
+\newcommand{\mse}{\text{MSE}}
+\newcommand{\stackss}[2]{\textstyle\genfrac{}{}{0pt}{}{{#1}}{{#2}}}
+\newcommand{\Xbar}{\bar{X}}
+\newcommand{\medcup}{{\textstyle\bigcup}}
+\newcommand{\medcap}{{\textstyle\bigcap}}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\DeclareMathOperator*{\argmax}{\arg\!\max}
+
+% naughty macros
+\def\it{\item}
+\def\bit{\begin{itemize}}
+\def\eit{\end{itemize}} 
+\def\ben{\begin{enumerate}}
+\def\een{\end{enumerate}}
+
+% tweaks
+\renewcommand{\emph}[1]{\textbf{#1}}
+\setcounter{tocdepth}{1}
+\setstretchfactor{1.75}
+
+% more stuff
+\usepackage{diagbox}
+\usepackage{mathtools}
+\newcommand{\transpose}[1]{{#1}^{\mathrm{T}}}
+\newcommand{\boldx}{\boldsymbol{x}}
+\newcommand{\boldy}{\boldsymbol{y}}
+\newcommand{\boldX}{\boldsymbol{X}}
+\newcommand{\boldY}{\boldsymbol{Y}}
+\newcommand{\boldbeta}{\boldsymbol{\beta}}
+\newcommand{\boldepsilon}{\boldsymbol{\epsilon}}
+\newcommand{\odds}{\text{odds}}
+\newcommand{\logodds}{\text{log-odds}}
+\newcommand{\logit}{\text{logit}}
+
+%------------------------------------------------
+\begin{document}
+\maketitle
+\tableofcontents
+\cleardoublepage
+\pagestyle{main}
+
+%------------------------------------------------
+\include{00_preface}
+\include{01_introduction}
+\include{02_probability}
+\include{03_distributions}
+\include{04_expectation}
+\include{05_joint_distributions}
+\include{06_sums_of_random_variables}
+\include{07_estimation}
+\include{08_likelihood}
+\include{09_hypothesis_testing}
+\include{10_nonparametric}
+\include{11_bivariate_analysis}
+\appendix
+\include{12_random_processes}
+\include{13_bayesian_inference}
+\include{14_bivariate_normal}
+
+% exam cribsheet
+\include{B1_cribsheet}
+
+% marking form
+\pagestyle{markingform}
+\newgeometry{margin=20mm, bindingoffset=0pt}
+\include{B2_peer_marking_form}
+\restoregeometry
+
+%------------------------------------------------
+\end{document}
+%------------------------------------------------
+

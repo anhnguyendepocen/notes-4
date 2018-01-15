@@ -1,0 +1,122 @@
+% !TEX root = main.tex
+
+%-------------------------------------------------
+\section{Classical probability}\label{sec:classical}
+
+We now return to the question of how we might reasonably assign probabilities to random events. Classical probability deals with finite sample spaces in which all outcomes are equally likely. This means that the probability of an event $A$ is proportional to the number of outcomes it contains, which is called the \emph{cardinality} of the set and denoted by $|A|$. The classical definition of probability can therefore be written as
+\[
+P(A) = |A|/|\Omega|.
+\]
+Problems can be solved by counting the number of ways different events can occur. For example, if a game has $n$ possible outcomes of which $m$ correspond to winning, then the probability of winning is $m/n$.
+
+\begin{example}
+An urn contains $3$ white balls and $5$ black balls. If two balls are drawn at random from the urn, what is the probability that they are both white?
+\begin{solution}
+\bit
+\it The sample space $\Omega$ is the set of all possible pairs:
+$|\Omega|	= \binom{8}{2} = \frac{8!}{6!2!} = 28$. 
+\it Let $A$ be the event that both balls are white: 
+$|A|  = \binom{3}{2} = \frac{3!}{1!2!} = 3$.
+\eit
+The probability that both balls are white is $P(A) = |A|/|\Omega| = 3/28$.
+\end{solution}
+\end{example}
+
+\begin{exercise}[The Division Paradox]
+A \emph{fair game} is one in which the probability of winning is equal to the probability of losing. Two players $A$ and $B$ decide to play a sequence of fair games until one of the players wins 6 games, but they stop when the score is 5:3 in favour of player $A$. How should the prize money be fairly divided?
+\begin{answer}
+Assume that the players carried on playing the sequence of games. The maximum number of additional games is 3, and the sample space can be expressed as
+\[
+\{AAA,AAB,ABA,BAA,ABB,BAB,BBA,BBB\}.
+\]
+The games are fair, so all outcomes are equally likely.
+\bit
+\it Only one outcome is in favour of player $B$, the other seven are in favour of $A$.
+\it The prize money should therefore be divided in the ratio $7:1$ in favour of $A$.
+\eit
+\end{answer}
+\end{exercise}
+
+%The classical method can only be applied to problems which can be broken down into outcomes that are equally likely, which is not always possible. 
+
+%-------------------------------------------------
+\section{Relative frequency}\label{sec:frequentist}
+
+Classical probability exploits the symmetry that exists in many random experiments, for example those involving dice, coins and cards, to choose sensible values for the probabilities of different events. How might we define probability in more general situations? If a random experiment can be repeated many times under the same conditions it is natural to think of probability as the number of times an event occurs as a proportion of the total number times that the experiment is repeated.
+
+\begin{definition}\label{def:relative_frequency}
+Let $N$ be the number of times an experiment is repeated and let $N(A)$ be the number of times event $A$ occurs during these $N$ repetitions. The ratio $N(A)/N$ is called the \emph{relative frequency} of $A$. 
+\end{definition}
+
+\begin{definition}\label{def:frequentist_probability}
+Under the \emph{frequentist model}, the probability of $A$ is the limit of its relative frequency as the number of trials increases to infinity:
+\[
+\prob(A) = \lim_{N\to\infty} \frac{N(A)}{N}.
+\]
+\end{definition}
+
+\begin{exercise}
+Let $\Omega$ be a finite sample space. Show that probability as defined by the frequentist model has the following properties:
+\ben
+\it $P(\emptyset)=0$ and $P(\Omega)=1$.
+\it Complementarity: if $A\subseteq B$ then $P(A^c) = 1 - P(A)$.
+\it Monotonicity: $P(A)\leq P(B)$.
+\it Additivity: If $A$ and $B$ are disjoint, $P(A\cup B) = P(A) + P(B)$.
+\een
+Show also that the conditional probability of $A$ given $B$ is $P(A\cap B)/P(B)$ whenever $P(B)>0$.
+
+\begin{answer}
+\ben
+\it 
+$N(\emptyset)=0$ and $N(\Omega)=N$ for any number of repetitions $N$, so $P(\emptyset)=0$ and $P(\Omega)=1$.
+\it 
+$A^c$ occurs if and only if $A$ does not, so $N(A^c) = N - N(A)$ and thus
+\[
+P(A^c) 
+	= \lim_{N\to\infty}\frac{N(A^c)}{N}
+	= \lim_{N\to\infty}\frac{N - N(A)}{N}
+	= 1 - \lim_{N\to\infty}\frac{N(A)}{N}
+	= 1 - P(A^c).
+\]
+\it
+If $A\subseteq B$ then $A$ occurs whenever $B$ occurs, so $N(A)\leq N(B)$ and hence
+\[
+P(A)
+	= \lim_{N\to\infty}\frac{N(A)}{N}
+	\leq \lim_{N\to\infty}\frac{N(B)}{N}
+	= P(B).
+\]
+\it
+If $A$ and $B$ are disjoint, they cannot both occur together, so $N(A\cup B)=N(A)+N(B)$ and thus
+\[
+P(A\cup B)
+	= \lim_{N\to\infty}\frac{N(A\cup B)}{N}
+	= \lim_{N\to\infty}\frac{N(A)+N(B)}{N}
+	= \lim_{N\to\infty}\frac{N(B)}{N} + \lim_{N\to\infty}\frac{N(B)}{N}
+	= P(A) + P(B).
+\]
+\een
+Let $P(A|B)$ denote the conditional probability of $A$ given $B$. This is the number of trials in which $A$ and $B$ both occur expressed as a proportion of the number of trials in which $B$ occurs. If $N(A,B)$ is the number of times $A$ and $B$ both occur then
+\[
+\prob(A|B)	= \lim_{N\to\infty}\frac{N(A,B)}{N(B)} 
+		= \lim_{N\to\infty}\frac{N(A,B)/N}{N(B)/N} 
+		= \frac{\prob(A\cap B)}{\prob(B)}.
+\]
+as required.
+\end{answer}
+\end{exercise}
+
+The frequentist model is the basis of how probability theory is applied to real-world problems, and dominates in many areas of science (e.g.\ medical trials). It does however have some serious practical and philosophical drawbacks.
+
+\bit
+\it 
+Not all experiments can be repeated many times under the same conditions. For example, it is reasonable to consider the probability that Wales will win the World Cup in 2018. The frequentist model does not provide an adequate definition of such probabilities.
+\it 
+In practical applications, an experiment is repeated finitely many times and the relative frequency of an event is taken as an approximation of its ``true'' probability. If we accept that we can only measure probability with some error of measurement, we find that an error of measurement can itself only be expressed as a probability, which is the very concept we are trying to define. 
+\it
+The frequentist model is also limited when dealing with infinite sample spaces. For example, consider a random experiment where a coin is tossed repeatedly until the first head occurs, and whose the outcome is the total number of times the coin is tossed. The sample space is the countably infinite set $\{1,2,3,\ldots\}$ but no matter how many times we repeat the experiment, there are outcomes which cannot be observed (e.g\ if we repeat the experiment $N$ times, we cannot observe runs of length $N+1, N+2,\ldots$).
+\eit
+
+Frequentist probability is best regarded an informal theory which is useful in many practical applications, but which lacks the mathematical clarity offered by Kolmogorov's axiomatic theory.
+
+
