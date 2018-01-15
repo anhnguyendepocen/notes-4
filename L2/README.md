@@ -1,3 +1,4 @@
-# Level 5
+# Level 2 (GCSE)
 
-- [MA2500](MA2500) Foundations of Probability and Statistics
+# Numbers
+- [Prime Factors](numbers/prime_factors)
