@@ -1,0 +1,102 @@
+% main.tex for MA2500
+
+%\PassOptionsToPackage{noproofs}{camnotes}
+%\PassOptionsToPackage{noanswers}{camnotes}
+%\PassOptionsToPackage{blanksolutions}{camnotes}
+
+%------------------------------------------------
+\documentclass[twoside]{book}
+
+\usepackage{camnotes}
+\usepackage{camstyle}
+
+% module info
+\institution{Cardiff University}
+\department{School of Mathematics}
+\modulecode{MA2003}
+\moduletitle{Complex Analysis I}
+\moduleterm{2017-18}
+
+% document info
+\title{Lecture Notes}
+\author{DMC}
+\date{Summer 2017}
+
+\renewcommand{\thetheorem}{\arabic{chapter}.\arabic{theorem}}
+% load packages
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage[mode=buildnew]{standalone}% requires -shell-escape
+
+
+\graphicspath{{./images/}}
+
+% new commands
+\newcommand{\contint}{\int_{\mathcal{C}}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\conjugate}[1]{\overline{#1}}
+\renewcommand{\Re}{\textsf{Re}}
+\renewcommand{\Im}{\textsf{Im}}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\pd}[2]{\dfrac{\partial #1}{\partial #2}}
+\newcommand{\rlim}[2]{\lim_{\substack{#1, \\ #2}}}
+\newcommand{\reverse}[1]{\widetilde{#1}}
+\newcommand{\id}{\textsf{id}}
+\newcommand{\Res}{\mathrm{Res}}
+\newcommand{\Arg}{\mathrm{Arg}}
+\newcommand{\polar}[2]{#1 \left( \cos \left( #2 \right) + i \sin \left( #2 \right) \right)}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\DeclareMathOperator{\Log}{Log}
+
+\newenvironment{master}{}{}
+\newenvironment{absolutelynopagebreak}{}{}
+\renewcommand{\marginpar}[1]{\footnote{#1}}
+%\makeatletter
+%\newenvironment{master}{
+%  \ifstudent\def\@eqnnum{{\normalfont \color{white} (\theequation)}}\color{white}\setstretch{2.0}
+%  \else\def\@eqnnum{{\normalfont \normalcolor (\theequation)}}\normalcolor
+%  \fi}{}
+%\makeatother
+%
+%\newenvironment{absolutelynopagebreak}
+%  {\par\nobreak\vfil\penalty0\vfilneg
+%   \vtop\bgroup}
+%  {\par\xdef\tpd{\the\prevdepth}\egroup
+%   \prevdepth=\tpd}
+
+%\renewcommand{\emph}[1]{\textbf{#1}}
+
+\newenvironment{note}{\noindent\textbf{Note}:\enspace}{}
+
+%----------------------------------------
+\begin{document}
+\maketitle
+\tableofcontents
+\cleardoublepage
+\pagestyle{main}
+
+\input{Chapter_1}
+\input{Chapter_2}
+\input{Chapter_3}
+\input{Chapter_4}
+\input{Chapter_5}
+\input{Chapter_6}
+
+
+
+\end{document}
+%----------------------------------------
+
+
