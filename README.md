@@ -21,7 +21,6 @@ $ cd MA2500
 
 # get to work!
 $ vim main.tex
-$ etc...
 
 # check status
 $ git status
