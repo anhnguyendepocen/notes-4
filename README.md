@@ -9,6 +9,7 @@ See [here](https://vknight.org/rsd/chapters/05/) for VK's introduction to git.
 
 ## \*nix
 This assumes that git is installed on your system.
+
 ```bash
 # clone the repository 
 $ git clone https://github.com/cardiffmaths/notes 
@@ -28,8 +29,9 @@ $ git status
 # add files to be committed (. adds everything)
 $ git add .
 
-# add files to be committed (. adds everything)
-$ git add .
+# commit files (you will have to type a short message)
+$ git commit
 
+# push files to (the master branch of) the remote repository
+$ git push origin master
 ```
-
