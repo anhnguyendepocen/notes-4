@@ -1,21 +1,25 @@
 % main.tex for MA1001
 
 % uncomment this to produce blank boxes instead of solutions
-%\PassOptionsToPackage{student}{camnotes}
+\PassOptionsToPackage{blanks}{camnotes}
 
 \documentclass[12pt]{book}
+
+\usepackage{amsmath,amsthm}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem*{remark}{Remark}
 
 \usepackage{camnotes}
 \usepackage{camstyle}
 
 \solutioncolour{blue}
+\setboxrule{0.5pt}
 
 \modulecode{MA1001}
 \moduletitle{Elementary Differential Equations}
-
-\usepackage{amsmath}
-\usepackage{graphicx}
-\usepackage{caption}
 
 \title{Examples}
 \author{MM}
