@@ -1,0 +1,43 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{patterns}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.shapes,decorations.markings,decorations.pathreplacing}
+
+\tikzset{
+    set arrow inside/.code={\pgfqkeys{/tikz/arrow inside}{#1}},
+    set arrow inside={end/.initial=>, opt/.initial=},
+    /pgf/decoration/Mark/.style={
+        mark/.expanded=at position #1 with
+        {
+            \noexpand\arrow[\pgfkeysvalueof{/tikz/arrow inside/opt}]{\pgfkeysvalueof{/tikz/arrow inside/end}}
+        }
+    },
+    arrow inside/.style 2 args={
+        set arrow inside={#1},
+        postaction={
+            decorate,decoration={
+                markings,Mark/.list={#2}
+            }
+        }
+    },
+}
+\begin{document}
+
+\begin{tikzpicture}
+\draw[pattern=north west lines,pattern color=gray!50,draw=white] (-2,-1.5) -- (-2,2) -- (3,2) -- (3,-1.5) -- (-2,-1.5);
+\draw[->,thick,gray] (-2,0) -- (3,0);% node[right]{$\mathrm{Re}$};
+\draw[->,thick,gray] (0,-1.5) -- (0,2);% node[above]{$\mathrm{Im}$};
+\draw[fill] (0,0) circle (2pt) (2,1) circle (2pt);
+\draw[fill=white] (0,-1) circle (2pt) (0,1) circle (2pt) ;
+\draw[dashed,thick,pattern=north east lines,pattern color=gray!80] (0,0) circle (0.95);
+\draw (1,-1) node[font=\footnotesize]{$D(0,1)$};
+%\draw[thick] plot [smooth,tension=0.9] coordinates {(-2,-2) (0,-2) (2,-2.5) (2,-1) (1.5,0) (2,1) (1,1) (-2,2) (-2.5,0.5) (-2,0) (-2.5,-1) (-2,-2)} [arrow inside={end=stealth,opt={red,scale=2}}{0.7}];
+%\draw[thick] (0,0) circle (1.5) [arrow inside={end=stealth,opt={red,scale=2}}{0.7}];S
+%\draw (-1.5,-1.5) node[below]{$\mathcal{C}$};
+%\draw[thick,dashed,fill=white] (0,0) circle (2);
+%\draw[fill] (0,0) circle (2pt);
+%\draw[fill] (-4.5,2) circle (2pt);
+%\draw (-4.5,2) -- (0,0);
+\end{tikzpicture}
+
+\end{document}

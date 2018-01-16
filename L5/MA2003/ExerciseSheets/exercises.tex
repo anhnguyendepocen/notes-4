@@ -1,0 +1,130 @@
+% exercises.tex
+
+% uncomment to set options for camnotes
+\PassOptionsToPackage{noanswers}{camnotes}
+%\PassOptionsToPackage{blankanswers}{camnotes}
+
+% uncomment to set draft option for graphicx (already included in camnotes.sty)
+%\PassOptionsToPackage{draft}{graphicx}
+
+% uncomment to typeset exercises individually
+%\includeonly{ex0_source}
+%\includeonly{ex1_source}
+%\includeonly{ex2_source}
+%\includeonly{ex3_source}
+%\includeonly{ex4_source}
+%\includeonly{ex5_source}
+
+% These options/settings can be automated using a script:
+% $echo "\includeonly{ex0_source}\input{exercises.tex}" > main.tex
+% $pdflatex main.tex
+% 
+
+% document class
+\documentclass[oneside, 11pt]{article}
+
+\usepackage{amsthm}
+\usepackage[cm]{fullpage}
+
+\usepackage[margin=30mm]{geometry}
+
+\usepackage{camnotes}
+\answercolour{blue}
+
+% module info
+%\modulecode{MA2003}
+%\moduletitle{Complex Analysis I}
+%\academicyear{2017-18}
+
+%\renewcommand{\thetheorem}{\arabic{chapter}.\arabic{theorem}}
+% load packages
+\usepackage{amsmath}
+\usepackage{comment}
+\usepackage{verbatim}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{wrapfig}
+\usepackage{setspace}
+
+\usepackage{framed}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage[mode=buildnew]{standalone}% requires -shell-escape
+\usepackage{sidecap}
+\usepackage{version}
+\usepackage{todonotes}
+\sidecaptionvpos{figure}{r}
+\renewcommand\sidecaptionsep{2cm}
+
+\setstretchfactor{1.5} 
+\setimagestretchfactor{1}
+\setboxrule{0.5pt}
+
+% document info
+\title{Exercise Sheets}
+\author{D McConnell}
+\date{Summer 2017}
+
+\graphicspath{{./images/}}
+
+% new commands
+\newcommand{\contint}{\int_{\mathcal{C}}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\conjugate}[1]{\overline{#1}}
+\renewcommand{\Re}{\textsf{Re}}
+\renewcommand{\Im}{\textsf{Im}}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\brac}[1]{\left( #1 \right) }
+\newcommand{\pd}[2]{\dfrac{\partial #1}{\partial #2}}
+\newcommand{\rlim}[2]{\lim_{\substack{#1, \\ #2}}}
+\newcommand{\reverse}[1]{\widetilde{#1}}
+\newcommand{\id}{\textsf{id}}
+\newcommand{\Res}{\mathrm{Res}}
+\newcommand{\Arg}{\mathrm{Arg}}
+\newcommand{\polar}[2]{#1 \left( \cos \left( #2 \right) + i \sin \left( #2 \right) \right)}
+\newcommand{\expform}[2]{ #1 \exp \left( #2 \right)}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\cont}{\mathcal{C}}
+\newcommand{\less}[1]{\backslash \set{#1}}
+
+\DeclareMathOperator{\Log}{Log}
+
+\newcommand{\leftimage}[2]{
+\begin{tabular}{c@{\hskip 1cm} m{0.5\textwidth} }
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\begingroup
+#1
+\endgroup
+\end{center}
+\end{minipage}
+&
+\blankson\begingroup
+#2
+\endgroup\blanksoff
+\end{tabular}
+}
+
+\newcommand{\exercisetitle}[1]{\begin{center}{\large\bf MA2003 Complex Analysis \\#1}\end{center}\bigskip}
+
+%\includeonly{ex1_source}
+
+\begin{document}
+\include{ex0_source}
+\setcounter{page}{1}
+\include{ex1_source}
+\setcounter{page}{1}
+\include{ex2_source}
+\setcounter{page}{1}
+\include{ex3_source}
+\setcounter{page}{1}
+\include{ex4_source}
+\setcounter{page}{1}
+\include{ex5_source}
+\setcounter{page}{1}
+\end{document}

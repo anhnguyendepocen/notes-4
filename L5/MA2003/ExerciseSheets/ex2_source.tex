@@ -1,0 +1,228 @@
+% !TEX root = exercises.tex
+
+\exercisetitle{Exercise Sheet 2}
+
+\begin{questions}
+\question For each function $f$ below, write $f$ in the form
+\[
+f(z) = f(x+iy) = u(x,y)+iv(x,y)
+\]
+and determine whether or not the Cauchy-Riemann equations are satisfied:
+\[ (a)\ f(z) = \exp(i\ \conj{z})\quad  (b)\ f(z) = z + \dfrac{1}{z}\quad (c)\ f(z)=z^3.\]
+
+In the cases where $f$ is differentiable, find the derivative of $f$ both using the rules of differentiation and using the Cauchy-Riemann equations.
+\begin{answer}
+\begin{parts}
+\part We have 
+\[
+f(x+iy) = \exp (i (x-iy) ) = \exp (y+ix ) = \underbrace{e^{y} \cos (x) }_{u(x,y)} + i \underbrace{e^{y} \sin (x)}_{v(x,y)}.
+\]
+The corresponding partial derivatives are
+\begin{align*}
+\pd{u}{x} & = -e^{y} \sin(x) & \pd{v}{y} = e^{y} \sin(x) \\
+\pd{u}{y} & = e^{y} \cos (x) &  \pd{v}{x} = e^{y} \cos (x).
+\end{align*}
+The Cauchy Riemann Equations are satisfied at a point $x+iy \in \C$ if and only if both
+\[
+e^y \sin(x) = -e^{y} \sin(x)\quad\text{and}\quad e^{y} \cos (x) = - e^{y} \cos (x).
+\]
+Since $e^y$ is never zero, this can only occur if $\sin(x)=\cos(x)=0$, which is impossible.  
+
+\part For all $x +iy \in \C \backslash \set{0}$, 
+\begin{align*}
+f(x+iy) &= (x+iy) + \frac{1}{x+iy} \\
+& = (x+iy) + \frac{x-iy}{x^2+y^2} \\
+& = \underbrace{\left( x+ \frac{x}{x^2+y^2}  \right)}_{u(x,y)} + i \underbrace{\left( y-\frac{y}{x^2+y^2} \right) }_{v(x,y)}
+\end{align*}
+and the corresponding partial derivatives are
+\begin{align*}
+& \pd{u}{x} = 1+\frac{y^2-x^2}{(x^2+y^2)^2} && \pd{u}{y} = \frac{-2xy}{(x^2+y^2)^2} \\
+& \pd{v}{x} = \frac{2xy}{(x^2+y^2)^2} && \pd{v}{y} = 1 - \frac{x^2-y^2}{(x^2+y^2)^2}.
+\end{align*}
+Hence the Cauchy Riemann equations are satisfied at every $x+iy \in \C \backslash \set{0}$.  Using the Cauchy Riemann equations to find the derivative of $f$, we get
+\begin{align*}
+f'(x+iy ) & = \pd{u}{x} + i \pd{v}{x} \\
+& = \left( 1+\frac{y^2-x^2}{(x^2+y^2)^2} \right) + i \left( \frac{2xy}{(x^2+y^2)^2} \right) \\
+& = 1 + \frac{y^2-x^2+i2xy}{(x^2+y^2)^2} \\
+& = 1 - \frac{x^2-y^2-i2xy}{(x^2+y^2)^2} \\
+& = 1 - \frac{(x-iy)^2}{\left[ (x+iy)(x-iy) \right]^2} \\
+& = 1 - \frac{1}{(x+iy)^2} = 1- \frac{1}{z^2},
+\end{align*}
+which agrees with the derivative of $f$ obtained from the rules of differentiation.
+\part This time
+\[
+u(x,y) = x^3-3xy^2 \quad\text{and}\quad v(x,y)=3x^2y-y^3
+\]
+hence for all $x+iy \in \C$
+\[
+\pd{u}{x} = 3x^2-3y^2=\pd{v}{y} \quad\text{and}\quad \pd{u}{y}=-6xy=-\pd{v}{x}.
+\]
+Thus
+\[
+f'(x+iy) = \pd{u}{x} (x,y)+i\pd{v}{y}(x,y) = 3x^2-3y^2+i(6xy) = 3 \left( (x^2-y^2)+i(2xy) \right) = 3(x+iy)^2
+\]
+which agrees with the derivative obtained from the Chain Rule: $f'(z)=3z^2$.
+\end{parts}
+\end{answer}
+
+\question Show that the Cauchy-Riemann equations are satisfied by the function $f$ defined on the open upper half plane $H_+=\set{ z \in \C: \Im (z) > 0 }$ by
+\[
+f(x+iy) = u(x,y)+iv(x,y) = \log \left( \sqrt{ x^2+y^2 } \right) + i \left( \frac{\pi}{2} - \arctan \left( \frac{x}{y} \right) \right).
+\]
+Assuming that $f$ is indeed holomorphic on $H_+$, show that
+\[
+f'(x+iy) = \frac{1}{x+iy}\quad \text{i.e., that }\quad f'(z) = \frac{1}{z}.
+\]
+\begin{answer}
+We have
+\begin{align*}
+\pd{u}{x} &= \log' \left( \sqrt{ x^2+y^2 } \right) \cdot \pd{}{x} \left[ \sqrt{x^2+y^2} \right] \\
+& = \frac{1}{\sqrt{x^2+y^2}} \cdot \frac{1}{2} (x^2+y^2)^{-\frac{1}{2}}(2x) \\
+&=  \frac{x}{x^2+y^2}
+\shortintertext{ and similarly }
+\pd{u}{y} & = \frac{y}{x^2+y^2}.\\
+\intertext{For the partial derivatives of $v$, we have}
+\pd{v}{x} & = - \arctan ' \left( \frac{x}{y} \right) \cdot \pd{}{x} \left[ \frac{x}{y} \right] \\
+& = \frac{-1}{(1+(\frac{x}{y})^2)} \cdot \frac{1}{y} \\
+& = \frac{-1}{y+\frac{x^2}{y}} = \frac{-y}{x^2+y^2} \\
+\shortintertext{and }
+\pd{v}{y} & = - \arctan ' \left( \frac{x}{y} \right) \cdot \pd{}{y} \left[ \frac{x}{y} \right] \\
+& = \frac{-1}{(1+(\frac{x}{y})^2} \cdot \frac{-x}{y^2} \\
+& = \frac{x}{x^2+y^2}.
+\end{align*}
+Thus the Cauchy-Riemann equations 
+\[
+\pd{u}{x} = \pd{v}{y},\quad \pd{u}{y} = - \pd{v}{x}
+\]
+are satisfied everywhere in $H_+$.  Assuming moreover that $f$ is holomorphic on $H_+$, the derivative of $f$ is thus
+\begin{align*}
+f'(x+iy) & = \pd{u}{x} + i \pd{v}{x} \\
+& = \frac{x}{x^2+y^2}+i \frac{-y}{x^2+y^2} \\
+& = \frac{x-iy}{(x+iy)(x-iy)} = \frac{1}{x+iy}
+\end{align*}
+for all $x+iy \in H_+$ as required.
+\end{answer}
+
+\question Describe the geometric effect of applying the functions:
+\begin{parts}
+\part $f(z) = \dfrac{1}{z}$ to a small disc centred at $1-i$, and 
+\part $g(z) = \exp(2iz)$ to a small disc centred at $\frac{\pi}{4}+i$.
+\end{parts}
+\begin{answer}
+For a function $f$ that is holomorphic at a point $z_0$, we know that a small disc centred at $z_0$ is approximately mapped to a small disc centred at $f(z_0)$, and is scaled by a factor of $\abs{f'(z_0)}$ and rotated by an angle of $\arg (f'(z_0))$ about the point $f(z_0)$.
+\begin{parts}
+\part In this example, $f(1-i)=\dfrac{1}{1-i}=\dfrac{1}{2}+\dfrac{i}{2}$, so a small disc centred at $1-i$ is approximately mapped to a small disc centred at $\dfrac{1}{2}+\dfrac{i}{2}$.  Since $f'(z) = -\dfrac{1}{z^2}$ for all $z \in \C \backslash \set{0}$, we have $f'(i)=-\dfrac{1}{(1-i)^2} = \frac{i}{2}$.  Thus the disc is scaled by a factor of $\frac{1}{2}$ and rotated by an angle of $\frac{\pi}{2}$ about $\dfrac{1}{2}-\dfrac{i}{2}$.
+\part Mapped to a disc centred at $g(\frac{\pi}{4}+i)=e^{-2}i$, scaled by a factor of $2e^{-2}$ and rotated by an angle of $\pi$ about this point (clockwise or anticlockwise; it doesn't matter this time).
+\end{parts}
+\end{answer}
+\question  The \emph{set} of points $L=[0,1-2i]$ is a line segment.  It is also a \emph{path} because we have a parametrisation given by  $\gamma:[0,1] \to \C,\ \gamma(t) = (1-2i)t.$  Use this parametrisation to evaluate the integral
+\[
+\int_L \left( \Im (z) + 3i \right)\ dz.
+\]
+\begin{answer}
+
+We have
+\begin{align*}
+\int_{\Gamma} ( \Im (z) + 3i )\ dz & = \int_0^1 \left( \Im ( \gamma (t) ) +3i \right) \gamma' (t)\ dt \\
+& = \int_0^1 \left( -2t + 3i \right) (1-2i)\ dt \\
+& = (1-2i) \int_0^1 (-2t +3i)\ dt \\
+& = (1-2i) \left[ - t^2 +3it \right]_0^1 \\
+& = (1-2i)(-1+3i) = 5 + 5i.
+\end{align*}
+
+\end{answer}
+\question Find the value of
+\[
+\int_{\Gamma_1} f(z)\ dz \text{ and } \int_{\Gamma_2} f(z)\ dz,
+\]
+where $f(z) = 3 \conj{z}$, $\Gamma_1$ is the straight line path from $0$ to $-i$ and $\Gamma_2$ is the straight line path from $1-i$ to $1+i$.
+\begin{answer}
+For the path $\Gamma_1$ we use the parametrisation $\gamma_1:[0,1] \to \C$, $\gamma_1 (t) = -it.$  Then $\gamma_1'(t)=-i$ and $f(\gamma_1(t)) = 3it$.  Hence
+\[
+\int_{\Gamma_1} f = \int_0^1 (3it)(-i)dt = \int_0^1 3t\ dt = \frac{3}{2}.
+\]
+Parametrise $\Gamma_2$ with $\gamma_2:[0,1] \to \C$, where
+\[
+\gamma_2 (t) = (1-i) + t \left[ 1+i-(1-i) \right] = 1+i(2t-1).
+\]
+We get
+\[
+\int_{\Gamma_2} f = 6i.
+\]
+\end{answer}
+
+
+
+
+
+\question Fix a point $z_0 \in \C$ and define a complex function $f$ via
+\[
+f(z) = (z-z_0)^n
+\]
+where $n \in \mathbb{Z}$.  Find the value of
+\[
+\int_{\Gamma} f(z)\ dz,
+\]
+where $\Gamma$ is the circle with centre $z_0$ and radius $r>0$, traversed in the anticlockwise direction (use the parametrisation $\gamma:[0,2\pi] \to \C, \ \gamma (t) = z_0 + r \left( \cos (t) + i \sin (t) \right)$).  Do this separately for the cases $n=-1$ and $n \neq -1$.
+
+(Hint: for the case $n \neq -1$, you need to show that
+\[
+\frac{d}{dt} \left[ \left( \cos(t)+i \sin(t) \right)^{n+1} \right] = i(n+1) \left( \cos(t)+i \sin(t) \right)^{n+1}
+\]
+and then use the (real) Fundamental Theorem of Calculus).
+\begin{answer}
+Following the hint, we first note that
+\begin{align*}
+\frac{d}{dt} \left[ \left( \cos(t)+i \sin(t) \right)^{n+1} \right] & = (n+1) \left( \cos(t)+i \sin(t) \right)^{n} \left( - \sin (t)+i \cos(t) \right) \\
+& = (n+1) \left( \cos(t)+i \sin(t) \right)^{n} i \left( \cos(t)+i \sin(t) \right) \\
+& = i(n+1) \left( \cos(t)+i \sin(t) \right)^{n+1}.
+\end{align*}
+We have
+\[
+f(\gamma(t))=\left( \gamma(t)-z_0 \right)^n = r^n \left( \cos (t)+i \sin (t) \right)^n,\quad \gamma'(t) = i r\left( \cos(t) + i \sin (t) \right).
+\]
+Hence for $n \neq -1$,
+\begin{align*}
+\int_{\Gamma} (z-z_0)^n & = \int_0^{2\pi} i r^{n+1} \left( \cos(t) + i \sin (t) \right)^{n+1}\ dt &&\\
+& = \frac{r^{n+1}}{n+1} \int_0^{2\pi} \frac{d}{dt} \left[ \left( \cos(t) + i \sin (t) \right)^{n+1} \right]\ dt && \\
+& = \frac{r^{n+1}}{n+1} \left[ \left( \cos(t) + i \sin (t) \right)^{n+1} \right]_0^{2\pi} && \text{ by FTC }\\
+& = \frac{r^{n+1}}{n+1} \left[ 1+0i-(1+0i) \right] = 0 &&.
+\end{align*}
+If $n=-1$ then
+\[
+\int_{\Gamma} (z- z_0)^{-1} = \int_0^{2\pi} \frac{1}{r(\cos(t)+i\sin(t) )} \cdot ir (\cos(t)+i\sin(t) )\ dt =  \int_0^{2\pi} i\ dt = i2\pi.
+\]
+
+
+\end{answer}
+\question Let $f,g:U \to \C$ be continuous, and let $\Gamma$ be a smooth path contained in $U$ parametrised by $\gamma:[a,b] \to \C$.  Prove that
+\begin{parts}
+\part for every constant $\alpha \in \C$ we have $\displaystyle \int_{\Gamma} ( f + \alpha g ) = \int_{\Gamma} f + \alpha \int_{\Gamma} g$, and
+\part if $\tilde{\Gamma}$ denotes the reverse of $\Gamma$, we have $\displaystyle \int_{\tilde{\Gamma}} f = - \int_{\Gamma} f$.  As a hint, parametrise $\tilde{\Gamma}$ using $\tilde{\gamma}:[a,b] \to \C$, $\tilde{\gamma}(t)=(a+b-t)$, and use the substitution $s=a+b-t$.
+\end{parts}
+\begin{answer}
+\begin{parts}
+\part 
+\begin{align*}
+\int_{\Gamma} ( f + \alpha g ) & = \int_a^b (f + \alpha g )(\gamma(t)) \gamma'(t)\ dt \\
+& = \int_a^b \left( f(\gamma(t)) + \alpha g(\gamma(t)) \right) \gamma' (t)\ dt \\
+& = \int_a^b \left( f(\gamma(t)) \gamma'(t) + \alpha g (\gamma(t))\gamma'(t) \right)\ dt 
+\end{align*}
+Then using linearity of the real integral this becomes
+\[
+\int_a^b f(\gamma(t)) \gamma'(t)\ dt + \alpha \int_a^b g (\gamma(t))\gamma'(t)\ dt = \int_{\Gamma} f + \alpha \int_{\Gamma} g.
+\]
+\part Following the hint,
+\begin{align*}
+\int_{\tilde{\Gamma}} f & = \int_a^b f ( \tilde{\gamma} (t) ) \tilde{\gamma}' (t)\ dt \\
+& = \int_a^b f ( \gamma(a+b-t) ) \left( - \gamma '(a+b-t) \right)\ dt
+\end{align*}
+and using the substitution $s=a+b-t$, we have $ds=-dt$ and the limits are reversed, so the above becomes
+\begin{align*}
+\int_b^a f ( \gamma (s) ) \left( - \gamma'(s) \right) (- ds) & = \int_b^a f (\gamma(s))\gamma'(s)\ ds \\ 
+& = - \int_a^b f(\gamma(s)) \gamma'(s)\ ds \\
+& = - \int_{\Gamma} f.
+\end{align*}
+\end{parts}
+\end{answer}
+\end{questions}

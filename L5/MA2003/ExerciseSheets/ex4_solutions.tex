@@ -1,0 +1,120 @@
+\RequirePackage[demo]{graphicx}
+\documentclass[oneside, 11pt]{article}
+%\usepackage{amsthm}
+\usepackage[%noproofs,
+%student
+%nosolutions,noanswers
+]{camel}
+
+
+\usepackage[cm]{fullpage}
+
+%\usepackage{cumaths}
+
+%\setscaleimages{3}
+\solutioncolour{blue}
+\proofcolour{blue}
+
+% module info
+%\modulecode{MA2003}
+%\moduletitle{Complex Analysis I}
+%\academicyear{2017-18}
+
+%\renewcommand{\thetheorem}{\arabic{chapter}.\arabic{theorem}}
+% load packages
+\usepackage{amsmath}
+\usepackage{comment}
+\usepackage{verbatim}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{wrapfig}
+\usepackage{setspace}
+
+\usepackage{framed}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage[mode=buildnew]{standalone}% requires -shell-escape
+\usepackage{sidecap}
+\usepackage{version}
+\usepackage{todonotes}
+\sidecaptionvpos{figure}{r}
+\renewcommand\sidecaptionsep{2cm}
+
+\setstretchfactor{3} 
+% document info
+
+\setscaleimages{1}
+
+
+
+\title{MA2003 Complex Analysis Exercise Sheet 1}
+\author{D McConnell}
+\date{Summer 2017}
+
+\graphicspath{{./images/}}
+
+% new commands
+\newcommand{\contint}{\int_{\mathcal{C}}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\conjugate}[1]{\overline{#1}}
+\renewcommand{\Re}{\textsf{Re}}
+\renewcommand{\Im}{\textsf{Im}}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\brac}[1]{\left( #1 \right) }
+\newcommand{\pd}[2]{\dfrac{\partial #1}{\partial #2}}
+\newcommand{\rlim}[2]{\lim_{\substack{#1, \\ #2}}}
+\newcommand{\reverse}[1]{\widetilde{#1}}
+\newcommand{\id}{\textsf{id}}
+\newcommand{\Res}{\mathrm{Res}}
+\newcommand{\Arg}{\mathrm{Arg}}
+\newcommand{\polar}[2]{#1 \left( \cos \left( #2 \right) + i \sin \left( #2 \right) \right)}
+\newcommand{\expform}[2]{ #1 \exp \left( #2 \right)}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\cont}{\mathcal{C}}
+
+\DeclareMathOperator{\Log}{Log}
+
+
+
+
+\let\remark\blankbox
+\let\endremark\endblankbox
+
+
+
+\newcommand{\leftimage}[2]{
+\begin{tabular}{c@{\hskip 1cm} m{0.5\textwidth} }
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\begingroup
+#1
+\endgroup
+\end{center}
+\end{minipage}
+&
+\blankson\begingroup
+#2
+\endgroup\blanksoff
+\end{tabular}
+}
+
+
+
+
+\begin{document}
+\begin{center}
+{
+\large\bf
+MA2003 Complex Analysis \\
+Solutions to Exercise Sheet 4 \\
+}
+
+\end{center}
+\smallskip
+\input{ex4_source}
+\end{document}

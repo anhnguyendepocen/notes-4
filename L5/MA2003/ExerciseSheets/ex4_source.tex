@@ -1,0 +1,361 @@
+% !TEX root = exercises.tex
+
+\exercisetitle{Exercise Sheet 4}
+
+\begin{questions}
+\question Express each of the following complex numbers in Cartesian form $a+ib$:
+\[
+(a)\ \Log (i), \quad (b)\ \Log (ie)\quad (c)\  \Log (-1-i\sqrt{3}).
+\]
+\begin{answer}
+Using $\Log (z) = \log \abs{z} + i \Arg (z)$,
+\begin{align*}
+\Log(i) & = \log \abs{i} + i \Arg (i) = \log(1)+i\frac{\pi}{2} = i\frac{\pi}{2}.\\
+\Log (ie) &= \log(e)+i\frac{\pi}{2}  = 1 + i \frac{\pi}{2} \\
+ \Log (-1-i\sqrt{3}) & =  \log (\sqrt{(-1)^2+(-\sqrt{3})^2}) + i \frac{-2\pi}{3}  = \log(2)-i \frac{2\pi}{3} 
+\end{align*}
+where $\log:[0,+\infty) \to \R$ denotes the real natural logarithm.
+\end{answer}
+
+\question Express each of the following complex numbers in Cartesian form $a+ib$:
+\[
+ (a)\ (1+i)^i, \quad (b)\ (ie)^{i\pi}, \quad (c)\ (-1-i\sqrt{3})^{1+i}.
+\]
+\begin{answer}
+\begin{align*}
+(1+i)^i & = \exp \left( i \Log (1+i) \right) = \exp \left( -\frac{\pi}{4} + i \frac{1}{2} \log(2) \right) \\
+& = e^{-\frac{\pi}{4}} \cos ( \frac{1}{2} \log (2) ) + i e^{-\frac{\pi}{4}} \sin ( \frac{1}{2} \log (2) ). \\
+(ie)^{i\pi} & = \exp \left( i \pi \Log (ie) \right) \\
+& = \exp \left( i\pi - \frac{\pi^2}{2} \right) \\
+& = e^{-\frac{\pi^2}{2}} \left( \cos(\pi)+i \sin (\pi) \right) \\
+& = -e^{-\frac{\pi^2}{2}} \\
+(-1-i \sqrt{3} )^{1+i} & = \exp \left( (1+i) \Log (-1-i \sqrt{3} ) \right) \\
+& = \exp \left( (1+i) ( \log (2) - i \frac{2\pi}{3} ) \right) \\
+& = \exp \left[ (\log(2)+\frac{2\pi}{3} )+i ( \log(2)- \frac{2\pi}{3}) \right] \\
+& = \polar{e^{\log(2) + 2\pi/3}}{\log(2)-2\pi/3} \\
+& = 2 \polar{e^{2\pi/3}}{\log(2)-2\pi/3} 
+\end{align*}
+\end{answer}
+\question 
+\begin{parts}
+\part Use the definition $z^{\alpha} = \exp ( \alpha \Log (z) )$ to show that $z^3 =zzz$.
+\part Show that $\Log(i^3) \neq 3 \Log (i)$
+\part Define $\sqrt{z} = z^{1/2} ( = \exp ( \frac{1}{2} \Log (z) ) )$ for $z \in \C \backslash \set{0}$.  Where is the mistake in
+\[
+-1 = i^2 = ii = \sqrt{-1}\sqrt{-1} = \sqrt{-1 \times -1 } = \sqrt{1} =1?
+\]
+\part Show that for all $\alpha,\beta \in \C$ and $z \in \C \backslash \set{0}$ we have $z^{\alpha}z^{\beta} = z^{\alpha+\beta}$.  Is it true that $\Log(\alpha \beta) = \Log ( \alpha) + \Log ( \beta)$?
+\end{parts}
+\begin{answer}
+\begin{parts}
+\part Using the definition of the Principal $3^{rd}$ power function
+\begin{align*}
+z^3 & = \exp \left( 3 \Log (z) \right) \\
+& = \exp \left( \Log(z)+\Log(z)+\Log(z) \right) \\
+&= \exp \left(\Log(z) \right)\exp \left(\Log(z) \right)\exp \left(\Log(z) \right) \\
+& = zzz.
+\end{align*}
+\part We have
+\[
+\Log (i^3) = \Log (-i) = - i\frac{\pi}{2}
+\]
+while
+\[
+3 \Log (i) = 3 \left( i \frac{\pi}{2} \right) = i \frac{3\pi}{2}.
+\]
+\part We do not have
+\[
+\sqrt{z} \sqrt{w} = \sqrt{zw}
+\]
+in general.  Indeed
+\begin{align*}
+\sqrt{-1}\sqrt{-1} & = \exp \left( \frac{1}{2} \Log(-1) \right) \exp \left( \frac{1}{2} \Log (-1) \right) \\
+& = \exp ( \Log (-1) ) = -1
+\end{align*}
+while of course
+\[
+\sqrt{-1 \times -1 } = \sqrt{1} = \exp \left( \frac{1}{2} \Log (1) \right) = e^0=1.
+\]
+\part 
+\[
+z^{\alpha}z^{\beta} = \exp\left( \alpha \Log (z) \right) \exp \left( \beta \Log (z) \right) = \exp\left( (\alpha+\beta) \Log (z) \right) = z^{\alpha+\beta}.
+\]
+We do not have $\Log(\alpha\beta) = \Log(\alpha)+\Log(\beta)$ in general; for example if $\alpha=-1$ and $\beta=i$, then
+\[
+\Log(\alpha\beta) = \Log (-i) = -i \frac{\pi}{2}, \text{ while } \Log(\alpha)+\Log(\beta) = i\pi + i \frac{\pi}{2} = i \frac{3\pi}{2}.
+\]
+\end{parts}
+\end{answer}
+\question Recall that the Principal Logarithm function $\Log$ is holomorphic on the region $\C_{\pi}$, where \\ $\C_{\pi} = \set{z \in \C:z \neq 0 \text{ and } \Arg (z) \neq \pi }$. Let $F$ be the function defined by
+\[
+F(z) = \frac{1}{2i} \left( \Log (z+i)-\Log(z-i) \right).
+\]
+\begin{parts}
+\part Describe (or sketch) the region $\mathcal{R}$ on which the function $F$ is holomorphic.
+\part Show that $F$ is an antiderivative for the function $f:\mathcal{R} \to \C$ defined by
+\[
+f(z) = \frac{1}{z^2+1} \quad\text{for all}\quad z \in \mathcal{R}.
+\]
+\end{parts}
+\begin{answer}
+In general, for $z_0 = x_0+iy_0 \in \C$, the function
+$
+z \mapsto \Log (z-z_0)
+$
+is holomorphic on the region $\set{ z \in \C: z-z_0 \in \C_{\pi} }$.  For $z=x+iy \in \C$, $z-z_0$ is \emph{not} in $\C_{\pi}$ if and only if
+\[
+z-z_0 = (x-x_0) + i (y-y_0)
+\]
+lies on the negative real axis.  This occurs when
+\begin{itemize}
+\item $y-y_0=0$, i.e., when $y=y_0$, and
+\item $x-x_0 \leq 0$, i.e. $x \leq x_0$.
+\end{itemize}
+Hence $z \mapsto \Log (z-z_0)$ is holomorphic on
+\[
+\C \backslash \set{z = x+iy \in \C: x \leq x_0 \text{ and } y=y_0},
+\]
+so in particular, $z \mapsto \Log (z+i)$ and $ z \mapsto \Log(z-i)$ are holomorphic on 
+\[ \C \backslash \set{x+iy \in \C: x \leq 0 \text{ and } y=-1}\quad\text{ and}\quad \C \backslash \set{x:iy \in \C: x \leq 0 \text{ and } y=1} \]
+respectively.
+
+We know that our function $F$ is holomorphic on the region where both $z \mapsto \Log ( z+i)$ and $z \mapsto \Log (z-i)$ are holomorphic; i.e. the intersection of these two sets. This is the set
+\[
+ \C \backslash \set{ x+iy \in \C: x \leq 0 \text{ and } y= \pm 1 }.
+\]
+
+\end{answer}
+\question Let $U$ be a starlit region with star centre $z_* \in U$ and  let $g:U \to \C$ be a holomorphic function.
+\begin{parts}
+\part Prove that if $g(z) \neq 0$ for all $ z \in U$, then the function $\dfrac{g'}{g}$ has an antiderivative on $U$, stating any results used (you may assume that $g$ holomorphic on $U$ implies $g'$ holomorphic on $U$).
+\part Prove that if in addition $g(z) \in \C_{\pi}$ for all $z \in U$ then
+\[
+\int_{[z_*,z]} \frac{g'(\zeta)}{g(\zeta)}\ d\zeta = \Log (g(z)) + \alpha
+\]
+for some constant $\alpha$.
+\end{parts}
+\begin{answer}
+Since $g$ is holomorphic and nonzero on $U$, $\dfrac{g'}{g}$ is also holomophic on $U$.
+
+By The Existence of Antiderivatives on Starlit Regions, the function $G:U \to \mathbb{C}$ defined by
+\[
+G(z):= \int_{[z_*,z]} \frac{g'(\zeta)}{g(\zeta)}\ d\zeta
+\]
+is an antiderivative for $\dfrac{g'}{g}$ on $U$.
+
+Since $\mathrm{Log}$ is holomorphic on $\mathbb{C}_{\pi}$ and $g(z) \in \mathbb{C}_{\pi}$ for all $z \in U$, $z \mapsto \mathrm{Log} (g(z))$ is holomorphic on $U$, with derivative
+\[
+\frac{d}{dz} \left[ \mathrm{Log} (g(z)) \right] = \frac{g'(z)}{g(z)}.
+\]
+Together with the first part this shows that
+\[
+\frac{d}{dz} \left[ \mathrm{Log} (g(z)) - G(z) \right] = 0
+\]
+on $U$. Since a starlit region is connected, the Fundamental Theorem of Calculus implies that
+\[
+z \mapsto \mathrm{Log} (g(z)) - G(z) 
+\]
+is constant.
+\end{answer}
+
+\question Evaluate the integral
+\[
+\int_{\mathcal{C}} \frac{\exp (2z)}{4z+i\pi}\ dz
+\]
+where $\mathcal{C}$ is (i) the anticlockwise contour whose points lie on the circle $\set{z:\abs{z}=1}$, and (ii) when $\mathcal{C}$ is the anticlockwise contour whose points lie on the circle $\set{z: \abs{z-2i}=2}$. The use of any Theorems made to obtain the value of these integrals should be justified.
+\begin{answer}
+$(i): \frac{\pi}{2},\quad (ii): 0 $.
+\end{answer}
+\question Evaluate the integral
+\[
+\int_{\mathcal{C}} \frac{\cos (z^2)}{3i+2z}\ dz,
+\]
+where (i) $\mathcal{C}$ is the anticlockwise contour whose points lie on the circle $\set{z:\abs{z}=1}$, and (ii) $\mathcal{C}$ is the anticlockwise contour whose points lie on the circle $\set{z: \abs{z}=5}$.  The use of any Theorems made to obtain the value of these integrals should be justified.
+\begin{answer}
+(i) The given function is holomorphic on $\C \backslash \set{ z: 3i+2z=0 }$, that is to say, on $\C \backslash \set{ -i \frac{3}{2}}$.  In particular, it is holomorphic on the simply connected region 
+\[
+\set{ z \in \C: \Im (z) > - \tfrac{5}{4} }
+\]
+which contains the (closed) contour $\mathcal{C}$.  Thus by Cauchy's Theorem for Starlit regions, 
+\[
+\int_{\mathcal{C}} \frac{\cos (z^2)}{3i+2z}\ dz=0.
+\]
+
+(ii) We have
+\[
+\frac{\cos(z^2)}{3i+2z} = \frac{g(z)}{z-z_0}
+\]
+where
+\[
+z_0 = -i \tfrac{3}{2} \quad \text{ and } \quad g(z) = \tfrac{1}{2} \cos (z^2).
+\]
+The function $g$ is holomorphic on $\C$ (which is simply connected), and $\mathcal{C}$ is a closed, simple anticlockwise contour that encloses $z_0$, so that by Cauchy's Integral Formula
+\[
+\int_{\mathcal{C}} \frac{\cos(z^2)}{3i+2z}\ dz = \int_{\mathcal{C}} \frac{g(z)}{z-(-i\frac{3}{2})}\ dz = 2\pi i g(-i \tfrac{3}{2}) = 2\pi i \tfrac{1}{2} \cos (- \tfrac{9}{4}) = i \pi \cos ( \tfrac{9}{4} ).
+\]
+
+\end{answer}
+
+\question Evaluate the integral
+\[
+\int_{-\infty}^{+\infty} \frac{1}{x^2+6x+25}\ dx
+\]
+in the following way (compare Example 5.8 in the notes):
+\begin{parts}
+\part Define the complex function $f$ by
+$
+\displaystyle f(z) = \frac{1}{z^2+6z+25}$  and find $z_0$  and  $z_1$ so that $\displaystyle
+f(z) = \frac{1}{(z-z_0)(z-z_1)}$ (where $z_0$ lies in the upper half-plane and $z_1$ in the lower half-plane). 
+\begin{answer}
+The roots of $z^2+6z+25$ can be found using the quadratic formula;
+\begin{align*}
+z & = \frac{-6 \pm \sqrt{6^2-4(25)(1)}}{2} \\
+& = \frac{-6 \pm \sqrt{-64}}{2} \\
+& = \frac{-6+i8}{2} = -3 \pm 4i.
+\end{align*}
+Hence
+\[
+f(z) = \frac{1}{(z-(-3+4i))(z-(-3-4i))}.
+\]
+\end{answer}
+\part Choose a suitable function $g$, holomorphic on the simply connected region \\$\mathcal{R} = \set{z \in \C: \Im(z) > \frac{1}{2} \Im (z_1) }$, so that
+\[
+f(z) = \frac{g(z)}{(z-z_0)}.
+\]
+\begin{answer}
+With $z_0=-3+4i$ and
+\[
+g(z) = \frac{1}{z-(-3-4i)}
+\]
+then
+\[
+f(z) = \frac{g(z)}{z-(-3+4i)}.
+\]
+Moreover, $g$ is holomorphic on $\C \backslash \set{ -3-4i}$, and in particular, on the simply connected region $\mathcal{R}:= \set{z \in \C: \Im (z) >-2 }$. 
+\end{answer}
+\part  Justify the use of Cauchy's Integral Formula to find
+\[
+\int_{\mathcal{C}_R} f = \int_{\mathcal{C}_R} \frac{g(z)}{(z-z_0)}\ dz,
+\]
+where $\mathcal{C}_R=L_R+S_R$ with $L_R$ the straight line path from $-R$ to $R$ and $S_R$ a suitable semicircular contour from $R$ to $-R$, with $R$  sufficiently large to apply the Theorem.
+\begin{answer}
+Once $R>5$, the contour simple closed anticlockwise contour $\mathcal{C}_R$ encloses $z_0$.  Moreover $\mathcal{C}_R$ is always contained in the simply connected region $\mathcal{R}$ of the previous part, and $g$ is holomorphic on this region.  Therefore, we may apply Cauchy's Integral formula:
+\begin{align*}
+\int_{\mathcal{C}_R} f = \int_{\mathcal{C}_R} \frac{g(z)}{z-(-3+4i)}\ dz & = 2\pi i g(-3+4i) \\
+& = 2\pi i \cdot \frac{1}{(-3+4i)-(-3-4i)} \\
+& = \frac{2\pi i}{8i} = \frac{\pi}{4},
+\end{align*}
+and this is valid for all $R>5$.
+\end{answer}
+\part Show that for large $R$ and $z \in S_R$, we have $\abs{z^2+6z+25} \geq R^2-6R-25$.
+\begin{answer}
+If $z \in S_R$ then $\abs{z}=R$, so that the reverse triangle inequality gives
+\begin{align*}
+\abs{z^2+6z+25} &\geq \abs{ \abs{z^2} - \abs{6z+25} }\\
+& = \abs{\abs{z}^2-\abs{6z+25}} \\
+& = \abs{ R^2-\abs{6z+25}}.
+\end{align*}
+By the triangle inequality,
+\[
+\abs{6z+25} \leq  6R + 25 \quad \text{ for all } z \in S_R.
+\]
+Moreover, if $R>10$, we have $25 < 2.5 R$ so that
+\[
+6R+25 < 6R+2.5 R < 10 R < R^2.
+\]
+Thus for $R>10$ and $z \in S_R$,
+\[
+\abs{z^2+6z+25} \geq R^2 - 6R - 25.
+\]
+\end{answer}
+\part Use the Estimation Lemma to show that
+\[
+\abs{ \int_{S_R} f } \to 0 \text{ as } R \to \infty.
+\]
+\begin{answer}
+By the previous part, for $R>10$ and $z \in S_R$ we have
+\[
+\abs{
+\frac{1}{z^2+6z+25}
+}
+ \leq \frac{1}{R^2-6R-25}.
+\]
+Since the length of $S_R$ is $\pi R$, for all $R>10$ we have
+\[
+\abs{\int_{S_R} f} \leq \underbrace{\frac{1}{R^2-6R-25}}_{M} \cdot \underbrace{\pi R}_L = \frac{\pi}{R-6-\frac{25}{R}}
+\]
+by the Estimation Lemma.  Hence
+\[
+\abs{ \int_{S_R}} f \to 0 \quad \text{ as }\quad R \to \infty.
+\]
+\end{answer}
+\part Deduce the value of
+\[
+\int_{-\infty}^{+\infty} \frac{1}{x^2+6x+25}\ dx.
+\]
+\begin{answer}
+We have
+\begin{align*}
+\frac{\pi}{4} & = \int_{\mathcal{C}_R} f && \text{ for } R>5 \\
+& = \lim_{R \to \infty} \left( \int_{C_R} f \right) && \\
+&=  \lim_{R \to \infty} \left( \int_{L_R} f \right) + \lim_{R \to \infty} \left( \int_{S_R} f \right) && \\
+& = \lim_{R \to \infty} \left( \int_{-R}^{R} \frac{1}{t^2+6t+25}\ dt \right) + 0 && \text{ by part (d) } \\
+& = \int_{-\infty}^{\infty} \frac{1}{x^2+6x+25}\ dx. &&
+\end{align*}
+
+\end{answer}
+\end{parts}
+
+\question (Liouville's Theorem) Let $f:\C \to \C$ be holomorphic everywhere, and suppose that $f$ is bounded, i.e. there exists $M>0$ with $\abs{f(z)} \leq M$ for all $z \in \C$.  Show that $f$ is constant on $\C$, in the following way:
+\begin{parts}
+\part Let $z_1,z_2 \in \C$, and let $R>0$ be sufficiently large so that $z_1$ and $z_2$ are enclosed by the countour $\mathcal{C}_R$ consisting of the anticlockwise circle with centre $0$ and radius $R$. Use Cauchy's Integral Formula to write $f(z_1)-f(z_2)$ as a single integral along $\mathcal{C}_R$.
+\begin{answer}
+As $f$ is holomorphic on $\C$ and $\mathcal{C}_R$ is a simple, closed anticlockwise contour containing both $z_1$ and $z_2$, we can apply Cauchy's Integral formula (twice) to get
+\[
+\int_{\mathcal{C}_R} \frac{f(z)}{z-z_1}\ dz = 2 \pi i f(z_1) \quad \text{ and }\quad \int_{\mathcal{C}_R} \frac{f(z)}{z-z_2}\ dz = 2 \pi i f(z_2).
+\]
+Hence (since we may combine integrals along the same path)
+\begin{align*}
+f(z_1)-f(z_2) & = \frac{1}{2\pi i} \int_{\mathcal{C}_R} \frac{f(z)}{z-z_1}\ dz - \frac{1}{2\pi i} \int_{\mathcal{C}_R} \frac{f(z)}{z-z_2}\ dz \\
+& = \frac{1}{2\pi i} \int_{\mathcal{C}_R} \left( \frac{f(z)}{z-z_1} - \frac{f(z)}{z-z_2} \right)\ dz \\
+& = \frac{1}{2\pi i} \int_{\mathcal{C}_R} \frac{f(z)(z-z_2)-f(z)(z-z_1)}{(z-z_1)(z-z_2)}\ dz \\
+& = \frac{1}{2\pi i} \int_{\mathcal{C}_R} \frac{f(z)(z_1-z_2)}{(z-z_1)(z-z_2)}\ dz.
+\end{align*}
+\end{answer}
+\part Use the Estimation Lemma (and the backwards triangle inequality) to show that
+\[
+\abs{f(z_1)-f(z_2)} \leq M \frac{\abs{z_1-z_2}}{(R-\abs{z_1})(R-\abs{z_2})}\cdot 2\pi R
+\]
+for all (sufficiently large) $R$.
+\begin{answer}
+If $R> \max ( \abs{z_1}, \abs{z_2} )$ and $z \in \mathcal{C}_R$, then by the backwards triangle inequality
+\[
+\abs{z-z_1} \geq \abs{ \abs{z} - \abs{z_1}} = R - \abs{z_1}
+\]
+and similarly $\abs{z-z_2} \geq R - \abs{z_2}$.  Since $\abs{f(z)} \leq M$ we have
+\begin{align*}
+\abs{ \frac{f(z)(z_1-z_2)}{(z-z_1)(z-z_2)} }  &= \frac{\abs{f(z)} \cdot \abs{z_1-z_2}}{\abs{z-z_1} \cdot \abs{z-z_2}} \\
+& \leq \frac{M \abs{z_1-z_2}}{(R-\abs{z_1})(R-\abs{z_2})}.
+\end{align*}
+The path $\mathcal{C}_R$ has length $2 \pi R$, thus by the Estimation Lemma
+\[
+\abs{ \int_{\mathcal{C}_R} \frac{f(z)(z_1-z_2)}{(z-z_1)(z-z_2)}\ dz } \leq M \frac{\abs{z_1-z_2}}{(R-\abs{z_1})(R-\abs{z_2})}\cdot 2\pi R
+\]
+\end{answer}
+\part Deduce that $f(z_1)=f(z_2)$.
+\begin{answer}
+By parts (b) and (c) we have
+\begin{align*}
+\abs{f(z_1)-f(z_2)} &= \abs{ \frac{1}{2\pi i} \int_{\mathcal{C}_R} \frac{f(z)(z_1-z_2)}{(z-z_1)(z-z_2)}\ dz } \\
+& \leq \abs{ \frac{1}{2\pi i} }  M \frac{\abs{z_1-z_2}}{(R-\abs{z_1})(R-\abs{z_2})}\cdot 2\pi R \\
+& = \frac{MR \abs{z_1-z_2}}{(R-\abs{z_1})(R-\abs{z_2})} \\
+& = \frac{M \abs{z_1-z_2}}{(1-\abs{z_1}/R)(R-\abs{z_2})}
+\end{align*}
+for all $R>\max(\abs{z_1},\abs{z_2})$.  Since $M$ and $\abs{z_1-z_2}$ are constants, it follows that
+\[
+\frac{M \abs{z_1-z_2}}{(1-\abs{z_1}/R)(R-\abs{z_2})} \to 0 \quad\text{as}\quad R \to \infty.
+\]
+Hence $\abs{f(z_1)-f(z_2)}=0$, or in other words $f(z_1)=f(z_2)$.
+\end{answer}
+\end{parts}
+\end{questions}

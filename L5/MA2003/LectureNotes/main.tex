@@ -1,0 +1,185 @@
+% main.tex for MA2003
+
+% uncomment to set options for camnotes
+%\PassOptionsToPackage{blanks}{camnotes}
+%\PassOptionsToPackage{noanswers}{camnotes}
+%\PassOptionsToPackage{blankanswers}{camnotes}
+
+%\PassOptionsToPackage{draft}{graphicx}
+\PassOptionsToPackage{dvipsnames}{xcolor}
+
+% document class
+%\RequirePackage[demo]{graphicx}
+\documentclass[oneside, 11pt]{book}
+
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{summary}[theorem]{Summary}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{note}[theorem]{Note}
+\newtheorem*{notation}{Notation}
+\newtheorem*{question}{Question}
+\newtheorem*{exercise}{Exercise}
+\newtheorem*{remark}{Remark}
+
+% camstyle must be loaded after amsthm
+\usepackage{camstyle}
+\usepackage{camnotes}
+
+\proofcolour{blue}
+\solutioncolour{blue}
+\answercolour{red}
+
+
+%\setimagestretchfactor{3}
+
+% Palatino for main text and math
+%\usepackage[osf,sc]{mathpazo}
+
+% Helvetica for sans serif
+% (scaled to match size of Palatino)
+%\usepackage[scaled=0.90]{helvet}
+
+% Bera Mono for monospaced
+% (scaled to match size of Palatino)
+%\usepackage[scaled=0.85]{beramono}
+
+
+
+% module info
+\modulecode{MA2003}
+\moduletitle{Complex Analysis I}
+\academicyear{2017-18}
+
+%\renewcommand{\thetheorem}{\arabic{chapter}.\arabic{theorem}}
+% load packages
+\usepackage{amsmath}
+\usepackage{comment}
+\usepackage{verbatim}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage{array}
+
+\allowdisplaybreaks
+
+\usepackage{float}
+\usepackage[mode=buildnew]{standalone}% requires -shell-escape
+\usepackage{sidecap}
+\usepackage{version}
+\usepackage{todonotes}
+\sidecaptionvpos{figure}{r}
+\renewcommand\sidecaptionsep{2cm}
+
+% document info
+\title{Lecture Notes}
+\author{DM}
+\date{Spring 2018}
+
+\graphicspath{{./images/}}
+
+% new commands
+\newcommand{\contint}{\int_{\mathcal{C}}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\conjugate}[1]{\overline{#1}}
+\renewcommand{\Re}{\textsf{Re}}
+\renewcommand{\Im}{\textsf{Im}}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\brac}[1]{\left( #1 \right) }
+\newcommand{\pd}[2]{\dfrac{\partial #1}{\partial #2}}
+\newcommand{\rlim}[2]{\displaystyle \lim_{\substack{#1 \\ #2}}}
+\newcommand{\reverse}[1]{\widetilde{#1}}
+\newcommand{\id}{\textsf{id}}
+\newcommand{\Res}{\mathrm{Res}}
+\newcommand{\Arg}{\mathrm{Arg}}
+\newcommand{\polar}[2]{#1 \left( \cos \left( #2 \right) + i \sin \left( #2 \right) \right)}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\cont}{\mathcal{C}}
+
+\DeclareMathOperator{\Log}{Log}
+
+\excludecomment{exercise}
+
+\newenvironment{sfig}{\begin{SCfigure}[50][h]}{\end{SCfigure}}
+
+\let\longsolution\solution
+\let\endlongsolution\endlongsolution
+\includecomment{longsolution}
+
+\newcommand{\blanktext}{\blankson}
+\newcommand{\showtext}{\blanksoff}
+
+\newenvironment{master}{}{}
+\newenvironment{absolutelynopagebreak}{}{}
+\renewcommand{\marginpar}[1]{\footnote{#1}}
+
+\newcommand{\leftimage}[2]{
+\begin{tabular}{c@{\hskip 1cm} m{0.4\linewidth} }
+\begin{minipage}{0.4\linewidth}
+\begin{center}
+\begingroup
+#1
+\endgroup
+\end{center}
+\end{minipage}
+&
+\begin{blankbox}
+\begingroup
+#2
+\endgroup
+\end{blankbox}
+\end{tabular}
+}
+
+\includecomment{full}
+
+\begin{comment}
+\tcbuselibrary{breakable}
+\tcbuselibrary{skins}
+\tcbuselibrary{theorems}
+\tcbset{
+  style1/.style={breakable,skin=enhanced,height fixed for = first and middle,enlargepage flexible=2cm
+}
+  }
+\tcolorboxenvironment{exercise}{style1}
+\tcolorboxenvironment{definition}{style1}
+\tcolorboxenvironment{theorem}{style1}
+\tcolorboxenvironment{lemma}{style1}
+\tcolorboxenvironment{example}{style1}
+\tcolorboxenvironment{remark}{style1}
+\tcolorboxenvironment{proposition}{style1}
+\tcolorboxenvironment{question}{style1}
+\end{comment}
+
+\setstretchfactor{2} 
+\setimagestretchfactor{1.5}
+\setboxrule{0.5pt}
+
+%----------------------------------------
+\begin{document}
+\maketitle
+\tableofcontents
+
+\input{Chapter_1}
+\input{Chapter_2}
+\input{Chapter_3}
+\input{Chapter_4}
+\input{Chapter_5}
+\input{Chapter_6}
+
+\end{document}
+%----------------------------------------
+
+
