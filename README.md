@@ -7,7 +7,9 @@ This is a repository of lecture notes for modules taught at the School of Mathem
 ## Instructions for Authors
 See [here](https://vknight.org/rsd/chapters/05/) for VK's introduction to git.
 
-## \*nix
+You can download the [GitHub Desktop](https://desktop.github.com/) interface.
+
+## Command line (\*nix)
 This assumes that git is installed on your system.
 
 ```bash
