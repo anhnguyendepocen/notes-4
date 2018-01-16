@@ -36,3 +36,4 @@ $ git commit
 # push files to (the master branch of) the remote repository
 $ git push origin master
 ```
+TODO: fetch, branch, merge, ...
