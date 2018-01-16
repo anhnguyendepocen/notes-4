@@ -7,16 +7,29 @@ This is a repository of lecture notes for modules taught at the School of Mathem
 ## Instructions for Authors
 See [here](https://vknight.org/rsd/chapters/05/) for VK's introduction to git.
 
-## Command line
+## \*nix
 This assumes that git is installed on your system.
 ```bash
-# clone the notes repository 
-$git clone https://github.com/cardiffmaths/notes 
+# clone the repository 
+$ git clone https://github.com/cardiffmaths/notes 
 
 # navigate to the module folder (create if necessary)
 $ cd notes/L5
 $ mkdir MA2500
-$ c
+$ cd MA2500
+
+# get to work!
+$ vim main.tex
+$ etc...
+
+# check status
+$ git status
+
+# add files to be committed (. adds everything)
+$ git add .
+
+# add files to be committed (. adds everything)
+$ git add .
 
 ```
 
