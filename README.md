@@ -5,14 +5,18 @@ This is a repository of lecture notes for modules taught at the School of Mathem
 | [GCSE](L2) | [A-Level](L3) | [Year 1](L4) | [Year 2](L5) | [Year 3](L6) | [Year 4](L7) |
 
 ## Instructions for Authors
-See [here](https://vknight.org/rsd/chapters/05/) for an introduction to git.
+See [here](https://vknight.org/rsd/chapters/05/) for VK's introduction to git.
 
+## Command line
+This assumes that git is installed on your system.
 ```bash
-# initialise repository
-$git init
+# clone the notes repository 
+$git clone https://github.com/cardiffmaths/notes 
 
-# initialise repository
-$git init
+# navigate to the module folder (create if necessary)
+$ cd notes/L5
+$ mkdir MA2500
+$ c
 
 ```
 
