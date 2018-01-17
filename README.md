@@ -5,7 +5,7 @@ This is a repository of lecture notes for mathematics modules taught in Cardiff.
 | [GCSE](L2) | [A-Level](L3) | [Year 1](L4) | [Year 2](L5) | [Year 3](L6) | [Year 4](L7) |
 
 ## Instructions for Authors
-See [here](https://github.com/cardiffmaths/texmf/blob/master/tex/latex/camnotes/) for the `camnotes` package and examples of how to use it -including how to typeset question lists and multiple-choice/multiple-answer questions
+See [here](https://github.com/cardiffmaths/texmf/blob/master/tex/latex/camnotes/) for the `camnotes` package and examples of how to use it (inc. multiple-choice/multiple-answer questions).
 
 See [here](https://vknight.org/rsd/chapters/05/) for VK's introduction to git.
 
